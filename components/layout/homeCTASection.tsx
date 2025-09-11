@@ -16,7 +16,7 @@ const HomeCTASection = () => {
           >
             {/* Arrow */}
             <div className="flex justify-end text-arrow-icon items-center  ">
-              <ArrowIcon  className="w-3 h-3 lg:size-4 "/>
+              <ArrowIcon  className="w-5 h-5 lg:h-10 lg:w-10"/>
             </div>
 
             {/* Icon */}
