@@ -1,4 +1,6 @@
+import FeaturedPropertySection from '@/components/layout/FeaturedPropertySection'
 import HeroSection from '@/components/layout/heroSection'
+import HomeCTASection from '@/components/layout/homeCTASection'
 import Navbar from '@/components/layout/navbar'
 import React from 'react'
 
@@ -7,6 +9,8 @@ const page = () => {
     <div>
       <Navbar/>
       <HeroSection/>
+      <HomeCTASection/>
+      <FeaturedPropertySection/>
     </div>
   )
 }
