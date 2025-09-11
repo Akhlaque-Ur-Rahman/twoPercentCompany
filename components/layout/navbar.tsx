@@ -11,10 +11,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="xl:px-[40px] xl:py-[16px] flex justify-between items-center bg-2nd-bg relative z-50 outline-2 outline-header-stroke">
+    <header className="xl:px-[40px] p-[24px] xl:py-[16px] flex justify-between items-center bg-2nd-bg relative z-50 outline-2 outline-header-stroke">
       {/* Logo */}
-      <div className="logo-container relative h-[49px] w-[160px]">
-        <Image src="/images/logo.png" fill alt="brand-logo" />
+      <div className="logo-container relative">
+        <Image src="/images/logo.png" height={49} width={160} alt="brand-logo" />
       </div>
 
       {/* Desktop Nav */}
@@ -28,7 +28,7 @@ const Navbar = () => {
               className={`px-12 py-4 rounded-[12px] block transition-all duration-200 ${
                 isActive
                   ? "text-primary bg-main-bg shadow-[0_0_0_2px_var(--color-header-stroke)]"
-                  : "hover:bg-main-bg hover:shadow-[0_0_0_2px_var(--color-header-stroke)] text-secondary-text"
+                  : "hover:bg-main-bg hover:shadow-[0_0_0_2px_var(--color-header-stroke)]"
               }`}
             >
               {item.label}
@@ -38,7 +38,7 @@ const Navbar = () => {
       </div>
 
       {/* Contact Btn (Desktop) */}
-      <div className="contact-btn hidden xl:block border-2 border-white rounded-[12px] xl:px-[32px] xl:py-[16px]">
+      <div className="contact-btn hidden xl:block border-2 border-header-stroke rounded-[12px] xl:px-[32px] xl:py-[16px]">
         <button className="text-16-semibold cursor-pointer">Contact Us</button>
       </div>
 
@@ -60,20 +60,23 @@ const Navbar = () => {
 
       {/* Bottom Drawer */}
       <div
-        className={`fixed bottom-0 left-0 right-0 bg-2nd-bg rounded-t-2xl p-6 z-50 transform transition-transform duration-300 ${
+        className={`fixed bottom-0 left-0 right-0 bg-2nd-bg rounded-t-2xl z-50 transform transition-transform duration-300  px-[32px] ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
         {/* Close button */}
-        <button
-          className="absolute top-4 right-6 text-white"
+        
+
+        {/* Drawer Nav Links */}
+        <nav className="flex flex-col mt-8 border-1 border-header-stroke p-[24px] gap-[24px] rounded-[24px]">
+          <div className="text-right">
+          <button
+          className=" text-white"
           onClick={() => setIsOpen(false)}
         >
           <X size={28} />
         </button>
-
-        {/* Drawer Nav Links */}
-        <nav className="flex flex-col gap-4 mt-8">
+        </div>
           {navbarData.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -81,22 +84,23 @@ const Navbar = () => {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)} // close on click
-                className={`text-lg py-3 px-4 rounded-lg text-center border-1 border-white ${
+                className={`text-lg py-3 px-4 rounded-lg text-center border-1 border-header-stroke ${
                   isActive
                     ? "bg-primary shadow-[0_0_0_2px_var(--color-header-stroke)] border-none"
-                    : "text-secondary-text hover:bg-main-bg"
+                    : " hover:bg-main-bg"
                 }`}
               >
                 {item.label}
               </Link>
             );
           })}
+          {/* Contact Button */}
+        <div className=" border-2 border-header-stroke rounded-xl py-3 text-center">
+          <button className="text-lg  w-full">Contact Us</button>
+        </div>
         </nav>
 
-        {/* Contact Button */}
-        <div className="mt-6 border-2 border-white rounded-xl py-3 text-center">
-          <button className="text-2xl font-bold w-full">Contact Us</button>
-        </div>
+        
       </div>
     </header>
   );
