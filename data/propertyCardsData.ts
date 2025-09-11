@@ -1,74 +1,85 @@
-// /data/propertyCardsData.ts
-export interface PropertyCard {
+// data/propertySliderData.ts
+import { LucideIcon, BedDouble, Bath, Home } from "lucide-react";
+
+export interface PropertyTag {
+  icon: LucideIcon;
+  label: string;
+}
+
+export interface PropertyItem {
   id: number;
   title: string;
   description: string;
-  bedrooms: string;
-  bathrooms: string;
-  type: string;
-  price: number; // store numeric price and format in component
-  image: string; // path under /public
+  image: string;
+  price: string;
+  tags: PropertyTag[];
 }
 
-export const propertyCardsData: PropertyCard[] = [
+export const propertySliderData: PropertyItem[] = [
   {
     id: 1,
     title: "Seaside Serenity Villa",
-    description: "A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood.",
-    bedrooms: "4-Bedroom",
-    bathrooms: "3-Bathroom",
-    type: "Villa",
-    price: 1250000,
-    image: "/images/property1.jpg",
+    description:
+      "A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood.",
+    image: "/images/seasidevilla.png",
+    price: "1,250,000",
+    tags: [
+      { icon: BedDouble, label: "4-Bedroom" },
+      { icon: Bath, label: "3-Bathroom" },
+      { icon: Home, label: "Villa" },
+    ],
   },
   {
     id: 2,
-    title: "Seaside Serenity Villa",
-    description: "A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood.",
-    bedrooms: "4-Bedroom",
-    bathrooms: "3-Bathroom",
-    type: "Villa",
-    price: 1250000,
-    image: "/images/property2.jpg",
+    title: "Mountain Retreat Cabin",
+    description:
+      "A cozy 2-bedroom cabin with breathtaking mountain views and modern amenities.",
+    image: "/images/seasidevilla.png",
+    price: "850,000",
+    tags: [
+      { icon: BedDouble, label: "2-Bedroom" },
+      { icon: Bath, label: "2-Bathroom" },
+      { icon: Home, label: "Cabin" },
+    ],
   },
   {
     id: 3,
-    title: "Seaside Serenity Villa",
-    description: "A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood.",
-    bedrooms: "4-Bedroom",
-    bathrooms: "3-Bathroom",
-    type: "Villa",
-    price: 1250000,
-    image: "/images/property3.jpg",
+    title: "Urban Luxury Apartment",
+    description:
+      "A modern 3-bedroom apartment located in the heart of the city with skyline views.",
+    image: "/images/seasidevilla.png",
+    price: "980,000",
+    tags: [
+      { icon: BedDouble, label: "3-Bedroom" },
+      { icon: Bath, label: "2-Bathroom" },
+      { icon: Home, label: "Apartment" },
+    ],
   },
   {
     id: 4,
-    title: "Seaside Serenity Villa",
-    description: "A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood.",
-    bedrooms: "4-Bedroom",
-    bathrooms: "3-Bathroom",
-    type: "Villa",
-    price: 1250000,
-    image: "/images/property4.jpg",
+    title: "Urban Luxury Apartment",
+    description:
+      "A modern 3-bedroom apartment located in the heart of the city with skyline views.",
+    image: "/images/seasidevilla.png",
+    price: "980,000",
+    tags: [
+      { icon: BedDouble, label: "3-Bedroom" },
+      { icon: Bath, label: "2-Bathroom" },
+      { icon: Home, label: "Apartment" },
+    ],
   },
   {
     id: 5,
-    title: "Seaside Serenity Villa",
-    description: "A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood.",
-    bedrooms: "4-Bedroom",
-    bathrooms: "3-Bathroom",
-    type: "Villa",
-    price: 1250000,
-    image: "/images/property5.jpg",
+    title: "Urban Luxury Apartment",
+    description:
+      "A modern 3-bedroom apartment located in the heart of the city with skyline views.",
+    image: "/images/seasidevilla.png",
+    price: "980,000",
+    tags: [
+      { icon: BedDouble, label: "3-Bedroom" },
+      { icon: Bath, label: "2-Bathroom" },
+      { icon: Home, label: "Apartment" },
+    ],
   },
-  {
-    id: 6,
-    title: "Seaside Serenity Villa",
-    description: "A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood.",
-    bedrooms: "4-Bedroom",
-    bathrooms: "3-Bathroom",
-    type: "Villa",
-    price: 1250000,
-    image: "/images/property6.jpg",
-  },
+  
 ];
