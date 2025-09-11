@@ -1,5 +1,5 @@
 "use client";
-import { X } from "lucide-react";
+
 import React from "react";
 import Image from "next/image";
 import { heroSectionData } from "@/data/heroSectionData";
@@ -27,7 +27,7 @@ const HeroSection = () => {
           sizes="(max-width: 768px) 100vw, 50vw"
           className="h-full w-full object-cover bg-bottom bg-no-repeat relative z-10"
         />
-        <div className="absolute bottom-0 left-0 lg:top-1/5 lg:left-0 lg:-translate-x-1/2 w-[72px] h-[72px] lg:w-[88px] lg:h-[88px] z-60">
+        <div className="absolute bottom-0 left-0 lg:top-1/5 lg:left-0 lg:-translate-x-1/2 w-[72px] h-[72px] lg:w-[88px] lg:h-[88px]">
           <Image
             src="/images/Sub.png"
             alt="Decorative-circle"
