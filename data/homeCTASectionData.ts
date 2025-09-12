@@ -2,7 +2,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { HomeCTASectionItem } from "@/types/homeCTASection";
 
-export const homeCTASectionData: HomeCTASectionItem[] = [
+export const HomeCTASectionData: HomeCTASectionItem[] = [
   {
     id: 1,
     title: "Find Your Dream Home",
