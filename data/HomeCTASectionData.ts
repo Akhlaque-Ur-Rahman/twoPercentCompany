@@ -1,6 +1,6 @@
 // data/homeCTASectionData.ts
 import { ArrowUpRight } from "lucide-react";
-import { HomeCTASectionItem } from "@/types/homeCTASection";
+import { HomeCTASectionItem } from "@/types/HomeCTASection";
 
 export const HomeCTASectionData: HomeCTASectionItem[] = [
   {
