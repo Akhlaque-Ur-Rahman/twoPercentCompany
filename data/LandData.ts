@@ -13,7 +13,7 @@ export interface LandItem {
   }[];
 }
 
-export const LandData: LandItem[] = [
+export const landData: LandItem[] = [
   {
     id: 1,
     title: "Agricultural Land",

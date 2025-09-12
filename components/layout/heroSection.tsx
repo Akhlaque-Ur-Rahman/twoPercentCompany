@@ -25,6 +25,7 @@ const HeroSection = () => {
           fill
           alt="Building"
           sizes="(max-width: 768px) 100vw, 50vw"
+          priority
           className="h-full w-full object-cover bg-bottom bg-no-repeat relative z-10"
         />
         <div className="absolute bottom-0 left-0 lg:top-1/5 lg:left-0 lg:-translate-x-1/2 w-[72px] h-[72px] lg:w-[88px] lg:h-[88px]">
