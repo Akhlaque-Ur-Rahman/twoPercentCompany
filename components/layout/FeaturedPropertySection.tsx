@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import React from 'react'
-import PropertyGrid from '../PropertyGrid'
+import PropertyGrid from '@/components/PropertyGrid'
 import Link from 'next/link'
 
 

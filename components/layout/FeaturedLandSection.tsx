@@ -2,7 +2,8 @@
 'use client'
 import Image from "next/image";
 import React from "react";
-import LandGrid from "../LandGrid";
+import LandGrid from "@/components/LandGrid";
+
 
 const FeaturedLandSection = () => {
   return (
@@ -36,7 +37,7 @@ const FeaturedLandSection = () => {
       </div>
 
       {/* Grid */}
-      <LandGrid />
+      <LandGrid/>
     </div>
   );
 };

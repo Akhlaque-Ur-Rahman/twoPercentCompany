@@ -1,8 +1,9 @@
+
 import FeaturedLandSection from '@/components/layout/FeaturedLandSection'
 import FeaturedPropertySection from '@/components/layout/FeaturedPropertySection'
-import HeroSection from '@/components/layout/heroSection'
-import HomeCTASection from '@/components/layout/homeCTASection'
-import Navbar from '@/components/layout/navbar'
+import HeroSection from '@/components/layout/HeroSection'
+import HomeCTASection from '@/components/layout/HomeCTASection'
+import Navbar from '@/components/layout/Navbar'
 import React from 'react'
 
 const page = () => {
@@ -13,6 +14,11 @@ const page = () => {
       <HomeCTASection/>
       <FeaturedPropertySection/>
       <FeaturedLandSection/>
+      
+      
+      
+      
+      
     </div>
   )
 }

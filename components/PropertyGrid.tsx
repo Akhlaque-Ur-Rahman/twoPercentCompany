@@ -1,5 +1,5 @@
-// components/PropertyGrid.tsx
 'use client'
+// components/PropertyGrid.tsx
 import Image from "next/image";
 import React from "react";
 import { propertyData } from "@/data/propertyData";

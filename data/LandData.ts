@@ -13,12 +13,12 @@ export interface LandItem {
   }[];
 }
 
-export const landData: LandItem[] = [
+export const LandData: LandItem[] = [
   {
     id: 1,
     title: "Agricultural Land",
     description: "Spacious land ideal for farming and development.",
-    image: "/images/land1.jpg",
+    image: "/images/plainland.png",
     price: "45,00,000",
     tags: [
       { label: "2 Acres", icon: BedDouble },
@@ -29,7 +29,7 @@ export const landData: LandItem[] = [
     id: 2,
     title: "Residential Plot",
     description: "Perfect location for your dream home construction.",
-    image: "/images/land2.jpg",
+    image: "/images/plainland.png",
     price: "60,00,000",
     tags: [
       { label: "600 Sq. Yards", icon: BedDouble },
@@ -40,7 +40,7 @@ export const landData: LandItem[] = [
     id: 3,
     title: "Commercial Land",
     description: "Prime spot suitable for commercial establishments.",
-    image: "/images/land3.jpg",
+    image: "/images/plainland.png",
     price: "1,20,00,000",
     tags: [
       { label: "Highway Facing", icon: BedDouble },
@@ -51,7 +51,7 @@ export const landData: LandItem[] = [
     id: 4,
     title: "Industrial Plot",
     description: "Spacious plot for factory or warehouse setup.",
-    image: "/images/land4.jpg",
+    image: "/images/plainland.png",
     price: "80,00,000",
     tags: [
       { label: "1000 Sq. Yards", icon: BedDouble },
@@ -62,7 +62,7 @@ export const landData: LandItem[] = [
     id: 5,
     title: "Farmhouse Land",
     description: "Peaceful location for your farmhouse getaway.",
-    image: "/images/land5.jpg",
+    image: "/images/plainland.png",
     price: "70,00,000",
     tags: [
       { label: "1 Acre", icon: BedDouble },

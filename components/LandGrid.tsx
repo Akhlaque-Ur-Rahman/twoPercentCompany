@@ -1,44 +1,135 @@
-// components/LandSection.tsx
 'use client'
+// components/PropertyGrid.tsx
 import Image from "next/image";
 import React from "react";
-import LandGrid from "./LandGrid";
+import { LandData } from "@/data/LandData";
 
-const LandSection = () => {
+const PropertyGrid = () => {
   return (
-    <div className="px-4 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] lg:space-y-[16px] rounded-[16px]">
-      {/* Icon */}
-      <div className="flex justify-center lg:justify-start">
-        <Image
-          src="/svg/Stars.svg"
-          height={0}
-          width={0}
-          alt="Stars"
-          className="size-[40px] sm:size-[48px] lg:size-[56px]"
-        />
+    <div className="lg:py-[24px] lg:px-0 py-6 px-4 space-y-[16px]">
+      {/* Row 1 - 3 Columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px]">
+        {LandData.slice(0, 3).map((property) => (
+          <div
+            key={property.id}
+            className="card lg:p-[24px] p-4 gap-[16px] flex flex-col justify-between rounded-[24px] border-2 border-header-stroke"
+          >
+            {/* Image */}
+            <div className="w-full flex justify-center bg-cover">
+              <Image
+                src={property.image}
+                height={240}
+                width={394}
+                alt={property.title}
+                className="rounded-[16px] w-full object-cover"
+              />
+            </div>
+
+            {/* Title + Desc */}
+            <div className="w-full">
+              <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                {property.title}
+              </h2>
+              <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
+                {property.description}
+              </p>
+            </div>
+
+            {/* Tags */}
+            <div className="card-category-tags w-full flex flex-wrap items-center gap-[12px]">
+              {property.tags.map((tag, index) => (
+                <div
+                  key={index}
+                  className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
+                >
+                  <tag.icon width={20} height={20} />
+                  <p className="font-semibold text-[clamp(13px,1.5vw,16px)]">
+                    {tag.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Price + Button */}
+            <div className="price-btn-container py-[8px] flex sm:flex-row sm:items-center justify-between gap-3">
+              <div className="price-box flex items-center sm:items-start flex-col gap-[6px]">
+                <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
+                  Price
+                </p>
+                <p className="font-semibold text-[clamp(18px,2vw,24px)]">
+                  ₹{property.price}
+                </p>
+              </div>
+              <button className="px-[clamp(16px,2vw,32px)] py-[clamp(16px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)]">
+                View Property Details
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Heading + Button */}
-      <div className="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
-        <div className="text-center lg:text-left max-w-[800px]">
-          <h2 className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold">
-            Featured Land Listings
-          </h2>
-          <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px] mt-2">
-            Explore prime plots and land for investment or development.
-          </p>
-        </div>
-        <div className="rounded-[12px] h-fit bg-2nd-bg border-2 border-header-stroke">
-          <button className="px-4 py-2 sm:px-5 sm:py-2.5 lg:px-[24px] lg:py-[16px] text-[14px] sm:text-[15px] lg:text-[16px] font-medium">
-            View All Lands
-          </button>
-        </div>
-      </div>
+      {/* Row 2 - 2 Columns */}
+      <div className="lg:grid grid-cols-1 sm:grid-cols-2 gap-[16px] hidden">
+        {LandData.slice(3, 5).map((property) => (
+          <div
+            key={property.id}
+            className="card lg:p-[24px] p-4 gap-[16px] flex flex-col rounded-[24px] border-2 border-header-stroke"
+          >
+            {/* Image */}
+            <div className="w-full flex justify-center bg-cover">
+              <Image
+                src={property.image}
+                height={240}
+                width={394}
+                alt={property.title}
+                className="rounded-[16px] w-full object-cover"
+              />
+            </div>
 
-      {/* Grid */}
-      <LandGrid />
+            {/* Title + Desc */}
+            <div className="w-full">
+              <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                {property.title}
+              </h2>
+              <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
+                {property.description}
+              </p>
+            </div>
+
+            {/* Tags */}
+            <div className="card-category-tags w-full flex flex-wrap items-center gap-[12px]">
+              {property.tags.map((tag, index) => (
+                <div
+                  key={index}
+                  className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
+                >
+                  <tag.icon width={20} height={20} />
+                  <p className="font-semibold text-[clamp(13px,1.5vw,16px)]">
+                    {tag.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Price + Button */}
+            <div className="price-btn-container py-[8px] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="price-box flex items-center sm:items-start flex-col gap-[6px]">
+                <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
+                  Price
+                </p>
+                <p className="font-semibold text-[clamp(18px,2vw,24px)]">
+                  ₹{property.price}
+                </p>
+              </div>
+              <button className="w-full sm:w-auto px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)]">
+                View Property Details
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default LandSection;
+export default PropertyGrid;
