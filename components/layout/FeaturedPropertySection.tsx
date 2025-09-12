@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
-import PropertySlider from '../PropertySlider'
+import PropertyGrid from '../PropertyGrid'
+import Link from 'next/link'
 
 
 
@@ -34,14 +35,14 @@ const FeaturedPropertySection = () => {
 
     {/* Button */}
     <div className="view-all-btn rounded-[12px] h-fit bg-2nd-bg border-2 border-header-stroke flex justify-center items-center text-nowrap">
-      <button className="px-4 py-2 sm:px-5 sm:py-2.5 lg:px-[24px] lg:py-[16px] text-[14px] sm:text-[15px] lg:text-[16px] font-medium">
+      <Link href='/properties' className="px-4 py-2 sm:px-5 sm:py-2.5 lg:px-[24px] lg:py-[16px] text-[14px] sm:text-[15px] lg:text-[16px] font-medium">
         View All Properties
-      </button>
+      </Link>
     </div>
   </div>
 
   {/* Slider */}
-  <PropertySlider />
+  <PropertyGrid />
     </div>
 
   )

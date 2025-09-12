@@ -1,67 +1,65 @@
-import { BedDouble } from "lucide-react";
+// components/PropertyGrid.tsx
 import Image from "next/image";
 import React from "react";
+import { propertyData } from "@/data/propertyData";
 
-const PropertySlider = () => {
-  const properties = Array.from({ length: 5 });
-
+const PropertyGrid = () => {
   return (
     <div className="lg:py-[24px] lg:px-0 py-6 px-4 space-y-[16px]">
       {/* Row 1 - 3 Columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px]">
-        {properties.slice(0, 3).map((_, i) => (
+        {propertyData.slice(0, 3).map((property) => (
           <div
-            key={i}
-            className="card lg:p-[24px] p-4 gap-[16px] flex flex-col rounded-[24px] border-2 border-header-stroke"
+            key={property.id}
+            className="card lg:p-[24px] p-4 gap-[16px] flex flex-col justify-between rounded-[24px] border-2 border-header-stroke"
           >
             {/* Image */}
             <div className="w-full flex justify-center bg-cover">
               <Image
-                src="/images/seasidevilla.png"
+                src={property.image}
                 height={240}
                 width={394}
-                alt="seaside villa"
+                alt={property.title}
                 className="rounded-[16px] w-full object-cover"
               />
             </div>
 
             {/* Title + Desc */}
             <div className="w-full">
-              <h2 className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold">
-                Seaside Serenity Villa
+              <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                {property.title}
               </h2>
-              <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px]">
-                A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban
-                neighborhood..
+              <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
+                {property.description}
               </p>
             </div>
 
             {/* Tags */}
             <div className="card-category-tags w-full flex flex-wrap items-center gap-[12px]">
-              {Array.from({ length: 3 }).map((_, j) => (
+              {property.tags.map((tag, index) => (
                 <div
-                  key={j}
+                  key={index}
                   className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
                 >
-                  <BedDouble width={20} height={20} />
-                  <p className="font-semibold text-[14px] sm:text-[15px] lg:text-[16px]">
-                    4-Bedroom
+                  <tag.icon width={20} height={20} />
+                  <p className="font-semibold text-[clamp(13px,1.5vw,16px)]">
+                    {tag.label}
                   </p>
                 </div>
               ))}
             </div>
 
             {/* Price + Button */}
-            <div className="price-btn-container py-[8px] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="price-btn-container py-[8px] flex sm:flex-row sm:items-center justify-between gap-3">
               <div className="price-box flex items-center sm:items-start flex-col gap-[6px]">
-                <p className="text-secondary-text text-[14px] sm:text-[15px]">
+                <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
                   Price
                 </p>
-                <p className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold">
-                  ₹1,250,000
+                <p className="font-semibold text-[clamp(18px,2vw,24px)]">
+                  ₹{property.price}
                 </p>
               </div>
-              <button className="w-full sm:w-auto px-[20px] sm:px-[24px] lg:px-[32px] py-[10px] sm:py-[12px] lg:py-[16px] rounded-[16px] bg-primary font-semibold text-[14px] sm:text-[15px] lg:text-[16px]">
+              <button className="px-[clamp(16px,2vw,32px)] py-[clamp(16px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)]">
                 View Property Details
               </button>
             </div>
@@ -70,44 +68,43 @@ const PropertySlider = () => {
       </div>
 
       {/* Row 2 - 2 Columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-        {properties.slice(3, 5).map((_, i) => (
+      <div className="lg:grid grid-cols-1 sm:grid-cols-2 gap-[16px] hidden">
+        {propertyData.slice(3, 5).map((property) => (
           <div
-            key={i + 3}
+            key={property.id}
             className="card lg:p-[24px] p-4 gap-[16px] flex flex-col rounded-[24px] border-2 border-header-stroke"
           >
             {/* Image */}
             <div className="w-full flex justify-center bg-cover">
               <Image
-                src="/images/seasidevilla.png"
+                src={property.image}
                 height={240}
                 width={394}
-                alt="seaside villa"
+                alt={property.title}
                 className="rounded-[16px] w-full object-cover"
               />
             </div>
 
             {/* Title + Desc */}
             <div className="w-full">
-              <h2 className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold">
-                Seaside Serenity Villa
+              <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                {property.title}
               </h2>
-              <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px]">
-                A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban
-                neighborhood..
+              <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
+                {property.description}
               </p>
             </div>
 
             {/* Tags */}
             <div className="card-category-tags w-full flex flex-wrap items-center gap-[12px]">
-              {Array.from({ length: 3 }).map((_, j) => (
+              {property.tags.map((tag, index) => (
                 <div
-                  key={j}
+                  key={index}
                   className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
                 >
-                  <BedDouble width={20} height={20} />
-                  <p className="font-semibold text-[14px] sm:text-[15px] lg:text-[16px]">
-                    4-Bedroom
+                  <tag.icon width={20} height={20} />
+                  <p className="font-semibold text-[clamp(13px,1.5vw,16px)]">
+                    {tag.label}
                   </p>
                 </div>
               ))}
@@ -116,14 +113,14 @@ const PropertySlider = () => {
             {/* Price + Button */}
             <div className="price-btn-container py-[8px] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="price-box flex items-center sm:items-start flex-col gap-[6px]">
-                <p className="text-secondary-text text-[14px] sm:text-[15px]">
+                <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
                   Price
                 </p>
-                <p className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold">
-                  ₹1,250,000
+                <p className="font-semibold text-[clamp(18px,2vw,24px)]">
+                  ₹{property.price}
                 </p>
               </div>
-              <button className="w-full sm:w-auto px-[20px] sm:px-[24px] lg:px-[32px] py-[10px] sm:py-[12px] lg:py-[16px] rounded-[16px] bg-primary font-semibold text-[14px] sm:text-[15px] lg:text-[16px]">
+              <button className="w-full sm:w-auto px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)]">
                 View Property Details
               </button>
             </div>
@@ -134,4 +131,4 @@ const PropertySlider = () => {
   );
 };
 
-export default PropertySlider;
+export default PropertyGrid;

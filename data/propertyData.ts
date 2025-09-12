@@ -1,5 +1,5 @@
 // data/propertySliderData.ts
-import { LucideIcon, BedDouble, Bath, Home } from "lucide-react";
+import { LucideIcon, BedDouble, Bath, Building2 } from "lucide-react";
 
 export interface PropertyTag {
   icon: LucideIcon;
@@ -15,7 +15,7 @@ export interface PropertyItem {
   tags: PropertyTag[];
 }
 
-export const propertySliderData: PropertyItem[] = [
+export const propertyData: PropertyItem[] = [
   {
     id: 1,
     title: "Seaside Serenity Villa",
@@ -26,7 +26,7 @@ export const propertySliderData: PropertyItem[] = [
     tags: [
       { icon: BedDouble, label: "4-Bedroom" },
       { icon: Bath, label: "3-Bathroom" },
-      { icon: Home, label: "Villa" },
+      { icon: Building2, label: "Villa" },
     ],
   },
   {
@@ -39,7 +39,7 @@ export const propertySliderData: PropertyItem[] = [
     tags: [
       { icon: BedDouble, label: "2-Bedroom" },
       { icon: Bath, label: "2-Bathroom" },
-      { icon: Home, label: "Cabin" },
+      { icon: Building2, label: "Cabin" },
     ],
   },
   {
@@ -52,7 +52,7 @@ export const propertySliderData: PropertyItem[] = [
     tags: [
       { icon: BedDouble, label: "3-Bedroom" },
       { icon: Bath, label: "2-Bathroom" },
-      { icon: Home, label: "Apartment" },
+      { icon: Building2, label: "Apartment" },
     ],
   },
   {
@@ -65,7 +65,7 @@ export const propertySliderData: PropertyItem[] = [
     tags: [
       { icon: BedDouble, label: "3-Bedroom" },
       { icon: Bath, label: "2-Bathroom" },
-      { icon: Home, label: "Apartment" },
+      { icon: Building2, label: "Apartment" },
     ],
   },
   {
@@ -78,7 +78,7 @@ export const propertySliderData: PropertyItem[] = [
     tags: [
       { icon: BedDouble, label: "3-Bedroom" },
       { icon: Bath, label: "2-Bathroom" },
-      { icon: Home, label: "Apartment" },
+      { icon: Building2, label: "Apartment" },
     ],
   },
   

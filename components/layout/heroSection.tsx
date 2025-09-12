@@ -51,7 +51,7 @@ const HeroSection = () => {
         </div>
 
         {/* Buttons */}
-        <div className="hero-left-btn-box w-full xl:py-[40px] gap-[16px] flex flex-col sm:flex-row mt-6">
+        <div className="hero-left-btn-box w-full xl:py-[40px] gap-[16px] flex flex-col lg:flex-row mt-6">
           {buttons.map((btn) => (
             <Link
               key={btn.id}

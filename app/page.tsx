@@ -1,3 +1,4 @@
+import FeaturedLandSection from '@/components/layout/FeaturedLandSection'
 import FeaturedPropertySection from '@/components/layout/FeaturedPropertySection'
 import HeroSection from '@/components/layout/heroSection'
 import HomeCTASection from '@/components/layout/homeCTASection'
@@ -11,6 +12,7 @@ const page = () => {
       <HeroSection/>
       <HomeCTASection/>
       <FeaturedPropertySection/>
+      <FeaturedLandSection/>
     </div>
   )
 }
