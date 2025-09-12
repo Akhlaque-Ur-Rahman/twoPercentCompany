@@ -15,7 +15,7 @@ export interface PropertyItem {
   tags: PropertyTag[];
 }
 
-export const propertyData: PropertyItem[] = [
+export const PropertyData: PropertyItem[] = [
   {
     id: 1,
     title: "Seaside Serenity Villa",

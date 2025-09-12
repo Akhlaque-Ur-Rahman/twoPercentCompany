@@ -2,14 +2,14 @@
 // components/PropertyGrid.tsx
 import Image from "next/image";
 import React from "react";
-import { propertyData } from "@/data/propertyData";
+import { PropertyData } from "@/data/PropertyData";
 
 const PropertyGrid = () => {
   return (
     <div className="lg:py-[24px] lg:px-0 py-6 px-4 space-y-[16px]">
       {/* Row 1 - 3 Columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px]">
-        {propertyData.slice(0, 3).map((property) => (
+        {PropertyData.slice(0, 3).map((property) => (
           <div
             key={property.id}
             className="card lg:p-[24px] p-4 gap-[16px] flex flex-col justify-between rounded-[24px] border-2 border-header-stroke"
@@ -70,7 +70,7 @@ const PropertyGrid = () => {
 
       {/* Row 2 - 2 Columns */}
       <div className="lg:grid grid-cols-1 sm:grid-cols-2 gap-[16px] hidden">
-        {propertyData.slice(3, 5).map((property) => (
+        {PropertyData.slice(3, 5).map((property) => (
           <div
             key={property.id}
             className="card lg:p-[24px] p-4 gap-[16px] flex flex-col rounded-[24px] border-2 border-header-stroke"

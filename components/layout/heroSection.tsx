@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { heroSectionData } from "@/data/heroSectionData";
+import { heroSectionData } from "@/data/HeroSectionData";
 import Link from "next/link";
 
 const HeroSection = () => {

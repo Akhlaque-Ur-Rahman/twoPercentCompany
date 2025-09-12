@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
-import { navbarData } from "@/data/navbarData";
+import { navbarData } from "@/data/NavbarData";
 import { usePathname } from "next/navigation";
 import { ChartNoAxesGantt, X } from "lucide-react";
 

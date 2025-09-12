@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { homeCTASectionData } from "@/data/homeCTASectionData";
+import { homeCTASectionData } from "@/data/HomeCTASectionData";
 
 const HomeCTASection = () => {
   return (
