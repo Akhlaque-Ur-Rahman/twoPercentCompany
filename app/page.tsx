@@ -6,7 +6,7 @@ import HomeCTASection from '@/components/layout/HomeCTASection'
 import Navbar from '@/components/layout/Navbar'
 import React from 'react'
 
-const page = () => {
+const Home = () => {
   return (
     <div>
       <Navbar/>
@@ -23,4 +23,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Home
