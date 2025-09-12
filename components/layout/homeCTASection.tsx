@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { homeCTASectionData } from "@/data/HomeCTASectionData";
+import { HomeCTASectionData } from "@/data/HomeCTASectionData";
 
 const HomeCTASection = () => {
   return (
     <div className="home-cta-section px-[24px] py-0 lg:px-[16px] lg:py-[16px] lg:border-2 lg:border-header-stroke rounded-[16px]">
         <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-[16px] border-2 lg:border-none border-header-stroke p-[12px] lg:p-0 rounded-[16px]">
-      {homeCTASectionData.map((item) => {
+      {HomeCTASectionData.map((item) => {
         const ArrowIcon = item.arrow;
         return (
           <div

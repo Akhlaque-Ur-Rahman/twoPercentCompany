@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
-import { navbarData } from "@/data/NavbarData";
+import { NavbarData } from "@/data/NavbarData";
 import { usePathname } from "next/navigation";
 import { ChartNoAxesGantt, X } from "lucide-react";
 
@@ -19,7 +19,7 @@ const Navbar = () => {
 
       {/* Desktop Nav */}
       <div className="nav-items hidden xl:flex xl:px-[32px] xl:py-[8px] xl:gap-[24px]">
-        {navbarData.map((item) => {
+        {NavbarData.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
@@ -77,7 +77,7 @@ const Navbar = () => {
           <X size={28} />
         </button>
         </div>
-          {navbarData.map((item) => {
+          {NavbarData.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link

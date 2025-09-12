@@ -2,12 +2,12 @@
 
 import React from "react";
 import Image from "next/image";
-import { heroSectionData } from "@/data/HeroSectionData";
+import { HeroSectionData } from "@/data/HeroSectionData";
 import Link from "next/link";
 
 const HeroSection = () => {
   const { heading, description, imageMain, imageOverlay, buttons, cards } =
-    heroSectionData;
+    HeroSectionData;
 
   return (
     <div className="bg-main-bg p-[24px] lg:pl-[40px] lg:pr-0 lg:pt-0 lg:pb-0 relative gap-[32px] lg:gap-[16px] flex flex-col lg:flex-row w-full">
