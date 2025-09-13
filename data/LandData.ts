@@ -1,5 +1,16 @@
 // data/landData.ts
-import { BedDouble } from "lucide-react"; // Example icon, replace with relevant ones
+import {
+  LucideIcon,
+  Waves,
+  Route,
+  Zap,
+  Fullscreen,
+  Factory,
+  Building2,
+  ShieldCheck,
+  Trees,
+  LandPlot,
+} from "lucide-react";
 
 export interface LandItem {
   id: number;
@@ -9,7 +20,7 @@ export interface LandItem {
   price: string;
   tags: {
     label: string;
-    icon: any;
+    icon: LucideIcon;
   }[];
 }
 
@@ -21,8 +32,8 @@ export const LandData: LandItem[] = [
     image: "/images/plainland.png",
     price: "45,00,000",
     tags: [
-      { label: "2 Acres", icon: BedDouble },
-      { label: "Water Source", icon: BedDouble },
+      { label: "2 Acres", icon: LandPlot },
+      { label: "Water Source", icon: Waves },
     ],
   },
   {
@@ -32,8 +43,8 @@ export const LandData: LandItem[] = [
     image: "/images/plainland.png",
     price: "60,00,000",
     tags: [
-      { label: "600 Sq. Yards", icon: BedDouble },
-      { label: "Road Access", icon: BedDouble },
+      { label: "600 Sq. Yards", icon: LandPlot },
+      { label: "Road Access", icon: Route },
     ],
   },
   {
@@ -43,8 +54,8 @@ export const LandData: LandItem[] = [
     image: "/images/plainland.png",
     price: "1,20,00,000",
     tags: [
-      { label: "Highway Facing", icon: BedDouble },
-      { label: "500 Sq. Yards", icon: BedDouble },
+      { label: "Highway Facing", icon: Route },
+      { label: "500 Sq. Yards", icon: LandPlot },
     ],
   },
   {
@@ -54,8 +65,9 @@ export const LandData: LandItem[] = [
     image: "/images/plainland.png",
     price: "80,00,000",
     tags: [
-      { label: "1000 Sq. Yards", icon: BedDouble },
-      { label: "Electricity", icon: BedDouble },
+      { label: "1000 Sq. Yards", icon: LandPlot },
+      { label: "Electricity", icon: Zap },
+      { label: "Factory Zone", icon: Factory },
     ],
   },
   {
@@ -65,8 +77,9 @@ export const LandData: LandItem[] = [
     image: "/images/plainland.png",
     price: "70,00,000",
     tags: [
-      { label: "1 Acre", icon: BedDouble },
-      { label: "Scenic View", icon: BedDouble },
+      { label: "1 Acre", icon: LandPlot },
+      { label: "Scenic View", icon: Trees },
+      { label: "Secure Property", icon: ShieldCheck },
     ],
   },
 ];
