@@ -14,7 +14,7 @@ const Navbar = () => {
     <header className="xl:px-[40px] p-[24px] xl:py-[16px] flex justify-between items-center bg-2nd-bg relative z-50 outline-2 outline-header-stroke">
       {/* Logo */}
       <div className="logo-container relative">
-        <Image src="/images/2PercentCompany.png" height={49} width={160} alt="brand-logo" className="w-[70px] h-[70px] lg:h-[80px] lg:w-[80px]" />
+        <Image src="/images/2PercentCompany.png" height={49} width={160} alt="brand-logo" className="w-[32px] h-[32px] lg:h-[48px] lg:w-[48px]" />
       </div>
 
       {/* Desktop Nav */}
