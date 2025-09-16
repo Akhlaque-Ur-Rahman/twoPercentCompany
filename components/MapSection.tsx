@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import React from "react";
@@ -36,11 +36,13 @@ const PatnaMap: React.FC = () => {
           <Marker key={prop.id} position={prop.position}>
             <Popup className="custom-popup">
               <div className="text-center w-[200px]">
-                <img
-                  src={prop.image}
-                  alt={prop.name}
-                  className="w-[180px] h-[110px] object-cover rounded-md shadow-md mx-auto mb-2"
-                />
+                <Image
+  src={prop.image}
+  alt={prop.name}
+  width={180}
+  height={110}
+  className="w-[180px] h-[110px] object-cover rounded-md shadow-md mx-auto mb-2"
+/>
                 <h3 className="font-semibold text-sm text-gray-800">
                   {prop.name}
                 </h3>
