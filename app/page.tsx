@@ -4,6 +4,7 @@ import FeaturedPropertySection from '@/components/layout/FeaturedPropertySection
 import HeroSection from '@/components/layout/HeroSection'
 import HomeCTASection from '@/components/layout/HomeCTASection'
 import Navbar from '@/components/layout/Navbar'
+import MapSection from '@/components/MapSection'
 import TestimonialSection from '@/components/TestimonialSection'
 import React from 'react'
 
@@ -16,6 +17,7 @@ const Home = () => {
       <FeaturedPropertySection/>
       <FeaturedLandSection/>
       <TestimonialSection/>
+      <MapSection/>
       
       
       
