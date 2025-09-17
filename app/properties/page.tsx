@@ -48,20 +48,24 @@ const PropertiesPage: React.FC = () => {
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] lg:space-y-[16px] rounded-[16px]">
         {/* Video Banner */}
 {/* Video Banner */}
-<div className="w-full mb-8 relative rounded-lg overflow-hidden border border-header-stroke h-[300px] lg:h-[400px]">
-  {/* YouTube Video */}
-  <iframe
-    className="absolute inset-0 w-full h-full filter brightness-90 contrast-90"
-    src="https://www.youtube.com/embed/Ht6YuFAxICs?autoplay=1&mute=1&loop=1&playlist=Ht6YuFAxICs&controls=0&modestbranding=1&rel=0"
-    title="Property Showcase"
-    frameBorder="0"
-    allow="autoplay; encrypted-media; fullscreen"
-    allowFullScreen
-  ></iframe>
+<div className="w-full mb-8 relative rounded-lg overflow-hidden border border-header-stroke">
+  {/* Aspect Ratio Wrapper */}
+  <div className="relative w-full pt-[50%] sm:pt-[56.25%] lg:pt-[40%]"> 
+    {/* Mobile: 50%, Tablet: 16:9, Desktop: taller 40% */}
+    <iframe
+      className="absolute top-0 left-0 w-full h-full filter brightness-90 contrast-90"
+      src="https://www.youtube.com/embed/Ht6YuFAxICs?autoplay=1&mute=1&loop=1&playlist=Ht6YuFAxICs&controls=0&modestbranding=1&rel=0"
+      title="Property Showcase"
+      frameBorder="0"
+      allow="autoplay; encrypted-media; fullscreen"
+      allowFullScreen
+    ></iframe>
 
-  {/* Optional Overlay */}
-  <div className="absolute inset-0 bg-black/10 z-10 rounded-lg"></div>
+    {/* Optional Overlay */}
+    <div className="absolute inset-0 bg-black/10 z-10 rounded-lg"></div>
+  </div>
 </div>
+
 
 
 
