@@ -21,6 +21,7 @@ const Navbar = () => {
           width={160}
           alt="brand-logo"
           className="w-[32px] h-[32px] lg:h-[48px] lg:w-[48px]"
+          priority
         />
       </div>
 

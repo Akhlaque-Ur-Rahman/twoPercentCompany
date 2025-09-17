@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
         {/* Logo / About */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-4 flex-[1_1_200px]">
           <div className="relative w-[48px] h-[48px]">
-            <Image src={logo} alt="BrandLogo" sizes="48px" fill className="object-contain" />
+            <Image src={logo} alt="BrandLogo" sizes="48px" fill className="object-contain" priority />
           </div>
           <p className="text-secondary-text text-[14px] sm:text-[15px]">
             {footerDescription}
