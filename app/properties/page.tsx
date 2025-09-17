@@ -47,20 +47,22 @@ const PropertiesPage: React.FC = () => {
       <Navbar />
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] lg:space-y-[16px] rounded-[16px]">
         {/* Video Banner */}
-<div className="w-full mb-8 aspect-video relative rounded-lg overflow-hidden border border-header-stroke h-[300px] lg:h-[400px]">
-  {/* Video */}
+<div className="w-full mb-8 relative rounded-lg overflow-hidden border border-header-stroke h-[300px] lg:h-[400px]">
   <video
-    src="/videos/RealEstate.mp4" // put your video inside the public folder
+    src="/videos/RealEstate.mp4" // put compressed video in public folder
     autoPlay
     loop
     muted
     playsInline
-    className="absolute inset-0 w-full h-full object-cover filter brightness-90 contrast-90"
+    preload="metadata" 
+    poster="/images/property-poster.jpg" // shows while video loads
+    className="absolute inset-0 w-full h-full object-cover filter brightness-90 contrast-90 transition-opacity duration-700"
   ></video>
 
   {/* Optional Overlay */}
   <div className="absolute inset-0 bg-black/10 z-10 rounded-lg"></div>
 </div>
+
 
 
         {/* Search + Custom Dropdown */}
