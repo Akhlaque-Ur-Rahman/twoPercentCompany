@@ -34,7 +34,7 @@ const Newsletter: React.FC = () => {
       {!submitted ? (
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row lg:justify-center gap-3 sm:gap-4 w-full mt-4"
+          className="flex flex-col sm:flex-row sm:justify-center gap-3 sm:gap-4 w-full mt-4"
         >
           {/* Input with Email Icon */}
           <div className="relative flex items-center gap-2 sm:gap-3 bg-main-bg border-2 border-header-stroke px-3 py-2 sm:py-3 rounded-[12px] ">

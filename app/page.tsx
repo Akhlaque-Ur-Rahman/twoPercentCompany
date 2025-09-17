@@ -8,7 +8,6 @@ import Navbar from '@/components/layout/Navbar'
 import TestimonialSection from '@/components/TestimonialSection'
 import React from 'react'
 import CTA from "@/components/CTA";
-
 import Footer from "@/components/layout/Footer";
 
 const MapSection = dynamic(() => import("@/components/MapSection"), {

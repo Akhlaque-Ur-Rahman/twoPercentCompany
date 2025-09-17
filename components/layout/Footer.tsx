@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
     <footer className="bg-2nd-bg text-white py-10 px-6 sm:px-10">
       <Newsletter />
 
-      <div className="flex flex-wrap justify-center lg:justify-between gap-8 max-w-[1200px] mx-auto">
+      <div className="flex flex-wrap justify-center lg:justify-between gap-8 ">
         {/* Logo / About */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-4 flex-[1_1_200px]">
           <div className="relative w-[48px] h-[48px]">
