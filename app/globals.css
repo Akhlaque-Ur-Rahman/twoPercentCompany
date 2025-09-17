@@ -39,3 +39,28 @@ body {
   color: #ffffff;
 }
 
+/* Override Leaflet popup background */
+.leaflet-popup-content-wrapper {
+  background: transparent !important; /* remove white */
+  box-shadow: none !important; /* remove default shadow */
+  border-radius: 0 !important; /* so only your card radius applies */
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important; /* reset */
+  line-height: normal !important;
+  width: auto !important;
+}
+
+.leaflet-popup-tip {
+  background: transparent !important; /* remove white triangle */
+}
+/* globals.css */
+.leaflet-marker-icon .marker-icon img {
+  transition: transform 0.2s ease-in-out;
+}
+
+.leaflet-marker-icon .marker-icon:hover img {
+  transform: scale(1.2);
+}
