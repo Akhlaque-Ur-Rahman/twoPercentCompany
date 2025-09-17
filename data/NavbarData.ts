@@ -1,4 +1,4 @@
-// data/navbar.ts
+// data/NavbarData.ts
 export const NavbarData = [
   { label: "Home", href: "/" },
   { label: "About", href: "/aboutUs" },
@@ -6,3 +6,9 @@ export const NavbarData = [
   { label: "Services", href: "/services" },
   
 ];
+
+// Contact button config
+export const ContactBtnData = {
+  label: "Contact Us",
+  href: "/contact",
+};

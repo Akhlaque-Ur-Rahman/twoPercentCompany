@@ -28,7 +28,7 @@ const TestimonialSection = () => {
 
       {/* Heading */}
       <div>
-        <h2 className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold">
+        <h2 className="text-[20px] sm:text-[22px] lg:text-[40px] font-semibold">
           What Our Clients Say
         </h2>
         <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px] mt-2">

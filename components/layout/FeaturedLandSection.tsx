@@ -23,7 +23,7 @@ const FeaturedLandSection = () => {
       {/* Heading + Button */}
       <div className="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
         <div className="text-center lg:text-left max-w-[800px]">
-          <h2 className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold">
+          <h2 className="text-[20px] sm:text-[22px] lg:text-[40px] font-semibold">
             Featured Lands
           </h2>
           <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px] mt-2">

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
-import { NavbarData } from "@/data/NavbarData";
+import { NavbarData, ContactBtnData  } from "@/data/NavbarData";
 import { usePathname } from "next/navigation";
 import { ChartNoAxesGantt, X } from "lucide-react";
 
@@ -39,8 +39,10 @@ const Navbar = () => {
 
       {/* Contact Btn (Desktop) */}
       <div className="contact-btn hidden xl:block border-2 border-header-stroke rounded-[12px] xl:px-[32px] xl:py-[16px]">
-        <button className="text-16-semibold cursor-pointer">Contact Us</button>
-      </div>
+  <Link href={ContactBtnData.href}>
+    <button className="text-16-semibold cursor-pointer">{ContactBtnData.label}</button>
+  </Link>
+</div>
 
       {/* Mobile Hamburger */}
       <button
@@ -95,9 +97,10 @@ const Navbar = () => {
             );
           })}
           {/* Contact Button */}
-        <div className=" border-2 border-header-stroke rounded-xl py-3 text-center">
-          <button className="text-lg  w-full">Contact Us</button>
-        </div>
+        <div className="border-2 border-header-stroke rounded-xl py-3 text-center">
+  <Link href={ContactBtnData.href} className="text-lg w-full">{ContactBtnData.label}</Link>
+</div>
+
         </nav>
 
         
