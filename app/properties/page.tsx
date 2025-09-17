@@ -47,21 +47,22 @@ const PropertiesPage: React.FC = () => {
       <Navbar />
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] lg:space-y-[16px] rounded-[16px]">
         {/* Video Banner */}
+{/* Video Banner */}
 <div className="w-full mb-8 relative rounded-lg overflow-hidden border border-header-stroke h-[300px] lg:h-[400px]">
-  <video
-    src="/videos/RealEstate.mp4" // put compressed video in public folder
-    autoPlay
-    loop
-    muted
-    playsInline
-    preload="metadata" 
-    poster="/images/property-poster.jpg" // shows while video loads
-    className="absolute inset-0 w-full h-full object-cover filter brightness-90 contrast-90 transition-opacity duration-700"
-  ></video>
+  {/* YouTube Video */}
+  <iframe
+    className="absolute inset-0 w-full h-full filter brightness-90 contrast-90"
+    src="https://www.youtube.com/embed/Ht6YuFAxICs?autoplay=1&mute=1&loop=1&playlist=Ht6YuFAxICs&controls=0&modestbranding=1&rel=0"
+    title="Property Showcase"
+    frameBorder="0"
+    allow="autoplay; encrypted-media; fullscreen"
+    allowFullScreen
+  ></iframe>
 
   {/* Optional Overlay */}
   <div className="absolute inset-0 bg-black/10 z-10 rounded-lg"></div>
 </div>
+
 
 
 
