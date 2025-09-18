@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import LandGrid from "@/components/LandGrid";
+import LandGrid from "@/components/PlotGrid";
 
 
 const FeaturedLandSection = () => {

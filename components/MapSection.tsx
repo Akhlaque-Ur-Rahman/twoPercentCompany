@@ -1,124 +1,84 @@
 "use client";
-import Image from "next/image";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+
 import React from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Properties, Plots } from "@/data/Properties";
-import Link from "next/link";
 import { PropertyIcon, PlotIcon } from "@/utils/MapIcons";
+import { MarkerType } from "@/types/MarkerType";
+import Link from "next/link";
+import Image from "next/image";
 
-const PatnaMap: React.FC = () => {
+interface MapSectionProps {
+  markers: MarkerType[];
+  center?: [number, number];
+  zoom?: number;
+  showLink?: boolean; // toggle link display
+}
+
+const MapSection: React.FC<MapSectionProps> = ({
+  markers,
+  center = [25.5941, 85.1376],
+  zoom = 13,
+  showLink = true,
+}) => {
+  if (!markers || markers.length === 0) return null;
+
   return (
-    <div className="relative px-6 sm:px-6 lg:px-[40px] py-6 space-y-[24px] rounded-[16px] border-b-2 border-header-stroke mb-6">
-      {/* Top Icon */}
-      <div>
-        <Image
-          src="/svg/Stars.svg"
-          height={0}
-          width={0}
-          alt="Map Icon"
-          className="size-[40px] sm:size-[48px] lg:size-[56px]"
+    <div className="w-full rounded-[16px] overflow-hidden">
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        scrollWheelZoom
+        className="h-[400px] sm:h-[450px] lg:h-[500px] w-full"
+      >
+        <TileLayer
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         />
-      </div>
 
-      {/* Heading */}
-      <div>
-        <h2 className="text-[20px] sm:text-[22px] lg:text-[40px] font-semibold">
-          Explore Our Locations
-        </h2>
-        <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px] mt-2">
-          Find our properties and plots across the city on the map.
-        </p>
-      </div>
-
-      {/* Map Section */}
-      <div className="w-full rounded-[16px] overflow-hidden border-2 border-header-stroke shadow-md">
-        <MapContainer
-          center={[25.5941, 85.1376]}
-          zoom={13}
-          className="h-[400px] sm:h-[450px] lg:h-[500px] w-full"
-          scrollWheelZoom
-          attributionControl={false}
-        >
-          {/* Dark base map */}
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          />
-
-          {/* Properties Markers */}
-          {Properties.map((property) => (
-            <Marker
-              key={property.Id}
-              position={property.Position}
-              icon={PropertyIcon}
-            >
-              <Popup>
-                <div className="bg-main-bg text-gray-200 rounded-lg shadow-lg px-3 pt-6 pb-3 w-[220px] flex flex-col justify-between items-center">
-                  <Image
-                    src={property.Image}
-                    alt={property.Name}
-                    width={180}
-                    height={110}
-                    className="w-[180px] h-[110px] object-cover rounded-md mb-2"
-                  />
-                  <h3 className="font-semibold text-sm text-white">
-                    {property.Name}
-                  </h3>
-                  <p className="text-xs text-gray-400 mb-2">
-                    {property.Address}
-                  </p>
+        {markers.map((marker) => (
+          <Marker
+            key={marker.id}
+            position={marker.position as [number, number]}
+            icon={marker.type === "property" ? PropertyIcon : PlotIcon}
+          >
+            <Popup>
+              <div className="bg-main-bg text-white rounded-lg px-2 py-6 flex flex-col items-center gap-1 w-[200px]">
+                {marker.image && (
+                  <div className="relative w-[180px] h-[100px] rounded-md overflow-hidden">
+                    <Image
+                      src={marker.image}
+                      alt={marker.title}
+                      fill
+                      sizes="180px"
+                      className="object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <h3 className="font-semibold text-sm">{marker.title}</h3>
+                {marker.address && (
+                  <p className="text-xs text-gray-400">{marker.address}</p>
+                )}
+                {showLink && marker.slug && (
                   <Link
-                    href={property.Url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={
+                      marker.type === "property"
+                        ? `/properties/${marker.slug}`
+                        : `/plots/${marker.slug}`
+                    }
                     className="inline-block underline text-xs py-1"
                   >
                     View Details
                   </Link>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-
-          {/* Plots Markers */}
-          {Plots.map((plot) => (
-            <Marker
-              key={plot.Id}
-              position={plot.Position}
-              icon={PlotIcon}
-            >
-              <Popup>
-                <div className="bg-main-bg text-gray-200 rounded-lg shadow-lg px-3 pt-6 pb-3 w-[220px] flex flex-col justify-between items-center">
-                  <Image
-                    src={plot.Image}
-                    alt={plot.Name}
-                    width={180}
-                    height={110}
-                    className="w-[180px] h-[110px] object-cover rounded-md mb-2"
-                  />
-                  <h3 className="font-semibold text-sm text-white">
-                    {plot.Name}
-                  </h3>
-                  <p className="text-xs text-gray-400 mb-2">
-                    {plot.Address}
-                  </p>
-                  <Link
-                    href={plot.Url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block underline text-xs py-1"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      </div>
+                )}
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
     </div>
   );
 };
 
-export default PatnaMap;
+export default MapSection;

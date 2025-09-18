@@ -15,9 +15,9 @@ const PropertyGrid = () => {
   const [isEnd, setIsEnd] = useState(false);
 
   return (
-    <div className=" relative">
+    <div className="relative">
       {/* ✅ Mobile Swiper */}
-      <div className="block lg:hidden ">
+      <div className="block lg:hidden">
         <Swiper
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
@@ -34,14 +34,15 @@ const PropertyGrid = () => {
         >
           {PropertyData.map((property) => (
             <SwiperSlide key={property.id}>
-              <div className="card p-[24px] gap-[16px] flex flex-col justify-between rounded-[24px] border-2 border-header-stroke ">
+              <article className="card p-[24px] gap-[16px] flex flex-col justify-between rounded-[24px] border-2 border-header-stroke">
                 {/* Image */}
                 <div className="w-full flex justify-center items-center bg-cover">
                   <Image
                     src={property.image}
                     height={178}
                     width={294}
-                    alt={property.title}
+                    alt={`${property.title} in ${property.address}`}
+                    loading="lazy"
                     className="rounded-[16px] w-full"
                   />
                 </div>
@@ -63,7 +64,7 @@ const PropertyGrid = () => {
                       key={index}
                       className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
                     >
-                      <tag.icon width={24} height={24} />
+                      <tag.icon width={20} height={20} />
                       <p className="font-semibold text-[clamp(14px,1.5vw,16px)]">
                         {tag.label}
                       </p>
@@ -73,19 +74,21 @@ const PropertyGrid = () => {
 
                 {/* Price + Button */}
                 <div className="price-btn-container py-[8px] flex flex-row items-center justify-between gap-3">
-                  <div className="price-box flex items-center justify-between flex-col gap-[6px]">
-                    <p className="text-secondary-text text-[14px]">
-                      Price
-                    </p>
+                  <div className="price-box flex items-center flex-col gap-[6px]">
+                    <p className="text-secondary-text text-[14px]">Price</p>
                     <p className="font-semibold text-[18px]">
                       ₹{property.price}
                     </p>
                   </div>
-                  <button className="p-4 rounded-[16px] bg-primary font-semibold text-[14px]">
-                    View Property Details
-                  </button>
+                  <Link
+                  href={`/properties/${property.slug}`}
+                  className="w-full sm:w-auto px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center"
+                >
+                  View Property Details
+                </Link>
+
                 </div>
-              </div>
+              </article>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -93,7 +96,7 @@ const PropertyGrid = () => {
         {/* ✅ Custom arrows */}
         <button
           onClick={() => swiperRef.current?.slidePrev()}
-          className={`absolute -left-5 top-2/5 -translate-y-1/2 border-2 border-header-stroke text-white p-2 rounded-full flex justify-center items-center z-50 transition-all ${
+          className={`absolute -left-5 top-2/5 -translate-y-1/2 border-2 border-header-stroke text-white p-2 rounded-full z-50 transition-all ${
             isBeginning ? "opacity-40 pointer-events-none" : "opacity-100"
           }`}
         >
@@ -102,7 +105,7 @@ const PropertyGrid = () => {
 
         <button
           onClick={() => swiperRef.current?.slideNext()}
-          className={`absolute -right-5 top-2/5 -translate-y-1/2 border-2 border-header-stroke text-white p-2 rounded-full flex justify-center items-center z-50 transition-all ${
+          className={`absolute -right-5 top-2/5 -translate-y-1/2 border-2 border-header-stroke text-white p-2 rounded-full z-50 transition-all ${
             isEnd ? "opacity-40 pointer-events-none" : "opacity-100"
           }`}
         >
@@ -123,19 +126,21 @@ const PropertyGrid = () => {
             />
           ))}
         </div>
-        <div className="view-all-btn rounded-[12px] h-fit mt-6 bg-2nd-bg border-2 border-header-stroke  justify-center items-center flex lg:hidden">
-      <Link href='/properties' className=" px-4 py-4 text-[14px] font-medium">
-        View All Properties
-      </Link>
-    </div>
+
+        {/* ✅ View All Btn */}
+        <div className="view-all-btn rounded-[12px] h-fit mt-6 bg-2nd-bg border-2 border-header-stroke justify-center items-center flex lg:hidden">
+          <Link href="/properties" className="px-4 py-4 text-[14px] font-medium">
+            View All Properties
+          </Link>
+        </div>
       </div>
 
-      {/* ✅ Desktop Grid (unchanged) */}
+      {/* ✅ Desktop Grid */}
       <div className="hidden lg:block space-y-4">
         {/* Row 1 - 3 Columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px]">
           {PropertyData.slice(0, 3).map((property) => (
-            <div
+            <article
               key={property.id}
               className="card lg:p-[24px] p-4 gap-[16px] flex flex-col justify-between rounded-[24px] border-2 border-header-stroke"
             >
@@ -185,18 +190,22 @@ const PropertyGrid = () => {
                     ₹{property.price}
                   </p>
                 </div>
-                <button className="px-[clamp(16px,2vw,32px)] py-[clamp(16px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)]">
+                <Link
+                  href={`/properties/${property.slug}`}
+                  className="w-full sm:w-auto px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center"
+                >
                   View Property Details
-                </button>
+                </Link>
+
               </div>
-            </div>
+            </article>
           ))}
         </div>
 
         {/* Row 2 - 2 Columns */}
         <div className="lg:grid grid-cols-1 sm:grid-cols-2 gap-[16px] hidden">
           {PropertyData.slice(3, 5).map((property) => (
-            <div
+            <article
               key={property.id}
               className="card lg:p-[24px] p-4 gap-[16px] flex flex-col rounded-[24px] border-2 border-header-stroke"
             >
@@ -206,7 +215,7 @@ const PropertyGrid = () => {
                   src={property.image}
                   height={240}
                   width={394}
-                  alt={property.title}
+                  alt={`${property.title} in ${property.address}`}
                   className="rounded-[16px] w-full object-cover"
                 />
               </div>
@@ -246,11 +255,14 @@ const PropertyGrid = () => {
                     ₹{property.price}
                   </p>
                 </div>
-                <button className="w-full sm:w-auto px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)]">
+                <Link
+                  href={`/properties/${property.slug}`}
+                  className="w-full sm:w-auto px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center"
+                >
                   View Property Details
-                </button>
+                </Link>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>

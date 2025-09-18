@@ -7,8 +7,9 @@ export const NavbarData = [
   label: "Services",
   href: "/services",
   submenu: [
-    { label: "Plots", href: "/services/plots" }, // only the new page
+    { label: "Plots", href: "/plots" }, // only the new page
   ],
+  
 }
 
   
