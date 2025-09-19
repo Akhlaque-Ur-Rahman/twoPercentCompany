@@ -171,7 +171,7 @@ const PlotsPage: React.FC = () => {
                     </div>
                     <Link
                       href={`/plots/${plot.slug}`}
-                      className="px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center hover:bg-yellow-600 transition-colors duration-300"
+                      className="px-[clamp(16px,2vw,32px)] py-[clamp(10px,1.5vw,16px)] flex justify-center items-center rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center hover:bg-yellow-600 transition-colors duration-300"
                     >
                       View Plot Details
                     </Link>

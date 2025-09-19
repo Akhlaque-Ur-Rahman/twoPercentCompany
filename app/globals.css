@@ -39,6 +39,8 @@ body {
   color: #ffffff;
 }
 
+
+
 /* Override Leaflet popup background */
 .leaflet-popup-content-wrapper {
   background: transparent !important; /* remove white */

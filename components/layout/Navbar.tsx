@@ -11,6 +11,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
+  // ✅ Helper to check active state
+  const checkActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+
   return (
     <header className="xl:px-[40px] p-[24px] xl:py-[16px] flex justify-between items-center bg-2nd-bg relative z-50 outline-2 outline-header-stroke">
       {/* Logo */}
@@ -28,17 +32,19 @@ const Navbar = () => {
       {/* Desktop Nav */}
       <div className="hidden xl:flex xl:px-[32px] xl:py-[8px] xl:gap-[24px] items-center relative">
         {NavbarData.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive =
+            checkActive(item.href) ||
+            (item.submenu &&
+              item.submenu.some((sub) => checkActive(sub.href)));
 
-          // Services with dropdown
           if (item.label === "Services" && item.submenu) {
             return (
               <div key={item.href} className="relative group">
                 <Link
                   href={item.href}
-                  className={`px-12 py-4 rounded-[12px] block transition-all duration-200 flex items-center gap-1 ${
+                  className={`px-12 py-4 rounded-[12px] flex items-center gap-1 transition-all duration-200 ${
                     isActive
-                      ? "text-primary bg-main-bg shadow-[0_0_0_2px_var(--color-header-stroke)]"
+                      ? "bg-primary text-main-bg shadow-[0_0_0_2px_var(--color-header-stroke)]"
                       : "hover:bg-main-bg hover:shadow-[0_0_0_2px_var(--color-header-stroke)]"
                   }`}
                 >
@@ -51,15 +57,22 @@ const Navbar = () => {
 
                 {/* Dropdown */}
                 <div className="absolute left-0 top-full w-full hidden group-hover:flex flex-col bg-2nd-bg border border-header-stroke rounded-lg shadow-lg z-50">
-                  {item.submenu.map((sub) => (
-                    <Link
-                      key={sub.href}
-                      href={sub.href}
-                      className="block px-4 py-2 hover:bg-main-bg rounded-lg"
-                    >
-                      {sub.label}
-                    </Link>
-                  ))}
+                  {item.submenu.map((sub) => {
+                    const subActive = checkActive(sub.href);
+                    return (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        className={`block px-4 py-2 rounded-lg ${
+                          subActive
+                            ? "bg-primary text-main-bg"
+                            : "hover:bg-main-bg"
+                        }`}
+                      >
+                        {sub.label}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -69,9 +82,9 @@ const Navbar = () => {
             <Link
               key={item.href}
               href={item.href}
-              className={`px-12 py-4 rounded-[12px] block transition-all duration-200 ${
+              className={`px-12 py-4 rounded-[12px] transition-all duration-200 ${
                 isActive
-                  ? "text-primary bg-main-bg shadow-[0_0_0_2px_var(--color-header-stroke)]"
+                  ? "bg-primary text-main-bg shadow-[0_0_0_2px_var(--color-header-stroke)]"
                   : "hover:bg-main-bg hover:shadow-[0_0_0_2px_var(--color-header-stroke)]"
               }`}
             >
@@ -82,7 +95,13 @@ const Navbar = () => {
       </div>
 
       {/* Contact Btn (Desktop) */}
-      <div className="contact-btn hidden xl:block border-2 border-header-stroke rounded-[12px] xl:px-[32px] xl:py-[16px]">
+      <div
+        className={`contact-btn hidden xl:block rounded-[12px] xl:px-[32px] xl:py-[16px] transition-all duration-200 ${
+          checkActive(ContactBtnData.href)
+            ? "bg-primary text-black shadow-[0_0_0_2px_var(--color-header-stroke)]"
+            : "border-2 border-header-stroke hover:bg-main-bg"
+        }`}
+      >
         <Link href={ContactBtnData.href}>
           <button className="text-16-semibold cursor-pointer">
             {ContactBtnData.label}
@@ -96,7 +115,12 @@ const Navbar = () => {
       </button>
 
       {/* Overlay */}
-      {isOpen && <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setIsOpen(false)} />}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
       {/* Mobile Drawer */}
       <div
@@ -112,9 +136,11 @@ const Navbar = () => {
 
         <nav className="flex flex-col mt-8 gap-4 pb-6">
           {NavbarData.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive =
+              checkActive(item.href) ||
+              (item.submenu &&
+                item.submenu.some((sub) => checkActive(sub.href)));
 
-            // Services with toggle
             if (item.label === "Services" && item.submenu) {
               return (
                 <div key={item.href} className="flex flex-col gap-2">
@@ -127,18 +153,26 @@ const Navbar = () => {
                     {item.label}
                     {servicesOpen ? <ChevronUp /> : <ChevronDown />}
                   </button>
+
                   {servicesOpen && (
                     <div className="flex flex-col gap-2 pl-4">
-                      {item.submenu.map((sub) => (
-                        <Link
-                          key={sub.href}
-                          href={sub.href}
-                          onClick={() => setIsOpen(false)}
-                          className="py-2 text-center rounded-lg border border-header-stroke hover:bg-primary hover:text-black"
-                        >
-                          {sub.label}
-                        </Link>
-                      ))}
+                      {item.submenu.map((sub) => {
+                        const subActive = checkActive(sub.href);
+                        return (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`py-2 text-center rounded-lg border border-header-stroke ${
+                              subActive
+                                ? "bg-primary text-black"
+                                : "hover:bg-main-bg"
+                            }`}
+                          >
+                            {sub.label}
+                          </Link>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -152,7 +186,7 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
                 className={`py-3 px-4 rounded-lg text-center border border-header-stroke ${
                   isActive
-                    ? "bg-primary shadow-[0_0_0_2px_var(--color-header-stroke)] border-none"
+                    ? "bg-primary text-black shadow-[0_0_0_2px_var(--color-header-stroke)] border-none"
                     : "hover:bg-main-bg"
                 }`}
               >
@@ -161,8 +195,14 @@ const Navbar = () => {
             );
           })}
 
-          {/* Contact Button */}
-          <div className="border-2 border-header-stroke rounded-xl py-3 text-center mt-4">
+          {/* Contact Button (Mobile) */}
+          <div
+            className={`rounded-xl py-3 text-center mt-4 transition-all duration-200 ${
+              checkActive(ContactBtnData.href)
+                ? "bg-primary text-black shadow-[0_0_0_2px_var(--color-header-stroke)]"
+                : "border-2 border-header-stroke hover:bg-main-bg"
+            }`}
+          >
             <Link
               href={ContactBtnData.href}
               className="text-lg w-full"
