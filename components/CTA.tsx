@@ -7,7 +7,7 @@ const CTA = () => {
         <div className="heading-btn-box flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
         {/* Text */}
         <div className="text-box text-center lg:text-left max-w-[800px]">
-          <h2 className="text-[20px] sm:text-[22px] lg:text-[40px] font-bold">
+          <h2 className="text-[20px] sm:text-[22px] lg:text-[40px] font-bold text-primary">
             Featured Properties
           </h2>
           <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px] mt-2">

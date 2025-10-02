@@ -61,7 +61,7 @@ const ContactPage: React.FC = () => {
 
         {/* Right: Form */}
         <div className="lg:w-1/2 bg-2nd-bg p-8 rounded-[24px] border border-header-stroke">
-          <h2 className="text-3xl font-semibold mb-6">Contact Us</h2>
+          <h2 className="text-3xl font-semibold mb-6 text-primary">Contact Us</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <input
               type="text"

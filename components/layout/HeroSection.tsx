@@ -43,7 +43,7 @@ const HeroSection = () => {
       <div className="hero-left-box xl:pt-[80px] xl:pb-[160px] flex flex-col justify-center items-start w-full lg:w-1/2 order-2 lg:order-1">
         {/* Heading + Description */}
         <div>
-          <h2 className="text-white font-semibold text-[clamp(24px,5vw,48px)] leading-tight">
+          <h2 className="text-primary font-semibold text-[clamp(24px,5vw,48px)] leading-tight">
             {heading}
           </h2>
           <p className="text-secondary-text text-[clamp(16px,2.5vw,16px)] mt-2">
@@ -60,7 +60,7 @@ const HeroSection = () => {
               className={`block rounded-[12px] text-center ${
                 btn.type === "primary"
                   ? "bg-primary text-white lg:px-[24px] lg:py-[20px] py-[16px] px-0"
-                  : "border border-header-stroke text-white lg:px-[52px] lg:py-[20px] py-[16px] px-0"
+                  : "border border-header-stroke text-white/70 lg:px-[52px] lg:py-[20px] py-[16px] px-0"
               }`}
             >
               {btn.label}
@@ -79,7 +79,7 @@ const HeroSection = () => {
                   : ""
               }`}
             >
-              <h2 className="text-[clamp(24px,4vw,32px)] font-semibold">
+              <h2 className="text-[clamp(24px,4vw,32px)] font-semibold text-primary">
                 {card.value}
               </h2>
               <p className="text-[clamp(16px,2.5vw,16px)] text-secondary-text">

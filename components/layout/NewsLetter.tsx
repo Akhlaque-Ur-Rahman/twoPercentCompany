@@ -22,7 +22,7 @@ const Newsletter: React.FC = () => {
     <div className="relative mb-7 rounded-[16px]  flex flex-col justify-center items-center w-full">
       {/* Heading */}
       <div>
-        <h2 className="text-[18px] sm:text-[20px] lg:text-[24px] text-center font-semibold text-white">
+        <h2 className="text-[18px] sm:text-[20px] lg:text-[24px] text-center font-semibold text-primary">
           Subscribe to Our Newsletter
         </h2>
         <p className="text-secondary-text text-[14px] sm:text-[16px] text-center mt-1 sm:mt-2">
@@ -45,15 +45,15 @@ const Newsletter: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="text-white placeholder-secondary-text focus:outline-none focus:border-primary w-full text-[14px] sm:text-[16px]"
+              className="text-primary placeholder-primary focus:outline-none focus:border-primary w-full text-[14px] sm:text-[16px]"
             />
-            <Send className="size-4 sm:size-5" strokeWidth={2} />
+            <Send className="size-4 sm:size-5 text-secondary-text" strokeWidth={2} />
           </div>
 
           {/* Button with Animated Icon */}
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 px-4 py-2 sm:py-3 rounded-[12px] bg-primary text-black font-semibold hover:opacity-90 transition w-full sm:w-auto cursor-pointer active:scale-105"
+            className="flex items-center justify-center gap-2 px-4 py-2 sm:py-3 rounded-[12px] bg-primary text-white font-semibold hover:opacity-90 transition w-full sm:w-auto cursor-pointer active:scale-105"
           >
             Subscribe
             <AnimatePresence mode="wait">
@@ -65,7 +65,7 @@ const Newsletter: React.FC = () => {
                   exit={{ scale: 0, opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <CircleCheck className="size-4 sm:size-5" strokeWidth={2} />
+                  <CircleCheck className="size-4 sm:size-5 text-white" strokeWidth={2} />
                 </motion.div>
               ) : (
                 <motion.div

@@ -51,7 +51,7 @@ export default function PropertyPage(props: PropertyPageProps) {
 
       {/* Property Details */}
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">
-        <h1 className="text-white font-bold text-[clamp(24px,4vw,48px)]">
+        <h1 className=" text-primary font-bold text-[clamp(24px,4vw,48px)]">
           {property.title}
         </h1>
 

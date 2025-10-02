@@ -28,7 +28,7 @@ const TestimonialSection = () => {
 
       {/* Heading */}
       <div>
-        <h2 className="text-[20px] sm:text-[22px] lg:text-[40px] font-semibold">
+        <h2 className="text-[20px] sm:text-[22px] lg:text-[40px] font-semibold text-primary">
           What Our Clients Say
         </h2>
         <p className="text-secondary-text text-[14px] sm:text-[15px] lg:text-[16px] mt-2">
@@ -79,7 +79,7 @@ const TestimonialSection = () => {
 
               <div className="space-y-4">
                 {/* Title */}
-                <h4 className="text-[18px] lg:text-[24px]  font-semibold text-white">
+                <h4 className="text-[18px] lg:text-[24px]  font-semibold text-primary">
                   {testimonial.title}
                 </h4>
 
@@ -99,7 +99,7 @@ const TestimonialSection = () => {
                   className="rounded-full object-cover size-12 lg:size-14"
                 />
                 <div>
-                  <h3 className="font-semibold lg:text-[24px] text-[18px] ">{testimonial.name}</h3>
+                  <h3 className="font-semibold lg:text-[24px] text-[18px] text-primary">{testimonial.name}</h3>
                   <p className="lg:text-[16px] text-[14px] lg text-secondary-text">
                     {testimonial.location}
                   </p>

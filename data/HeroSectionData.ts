@@ -38,7 +38,7 @@ export const HeroSectionData: HeroSectionData = {
       id: 2,
       label: "Browse Properties",
       type: "primary",
-      link: "/browse",
+      link: "/properties",
     },
   ],
   cards: [

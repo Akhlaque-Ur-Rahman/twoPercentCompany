@@ -29,7 +29,7 @@ const StatCard = ({ number, label }: { number: number; label: string }) => {
 
   return (
     <div className="bg-[#111111] p-6 rounded-xl shadow-md text-center">
-      <h3 className="text-3xl font-bold text-[#8f7330] mb-2">{count}+</h3>
+      <h3 className="text-3xl font-bold text-primary mb-2">{count}+</h3>
       <p className="text-[#9e9e9e]">{label}</p>
     </div>
   );
@@ -47,7 +47,7 @@ const About = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-[48px] font-[600] mb-4 text-[#8f7330]"
+          className="text-[48px] font-[600] mb-4 text-primary"
         >
           About 2% Company
         </motion.h1>
@@ -84,14 +84,14 @@ const About = () => {
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.6 }}
-    className="text-[32px] lg:text-[40px] font-semibold text-center mb-12 text-[#8f7330]"
+    className="text-[32px] lg:text-[40px] font-semibold text-center mb-12 text-primary"
   >
     Our Journey
   </motion.h2>
 
   <div className=" relative">
     {/* Glowing vertical line */}
-    <div className="absolute left-1/2 top-0 w-[4px] h-full bg-[#8f7330] opacity-40 rounded-full" />
+    <div className="absolute left-1/2 top-0 w-[4px] h-full bg-primary opacity-40 rounded-full" />
 
     {[
       { year: "2010", event: "Company Founded" },
@@ -108,14 +108,14 @@ const About = () => {
         className="mb-20 flex flex-col md:flex-row items-center relative w-full"
       >
         {/* Dot */}
-        <div className="absolute left-1/2 -translate-x-1/2 w-6 h-6 bg-[#8f7330] rounded-full shadow-lg" />
+        <div className="absolute left-1/2 -translate-x-1/2 w-6 h-6 bg-primary rounded-full shadow-lg" />
 
         {/* Card */}
         <div
           className={`md:w-1/2 p-6 bg-[#111111] shadow-md rounded-xl relative z-10 ${idx % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
             }`}
         >
-          <h3 className="text-[24px] font-[600] mb-1 text-[#8f7330]">
+          <h3 className="text-[24px] font-[600] mb-1 text-primary">
             {item.year}
           </h3>
           <p className="text-[#9e9e9e]">{item.event}</p>
@@ -133,7 +133,7 @@ const About = () => {
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.6 }}
-    className="text-[32px] lg:text-[40px] font-semibold text-center mb-12 text-[#8f7330]"
+    className="text-[32px] lg:text-[40px] font-semibold text-center mb-12 text-primary"
   >
     Our Core Values
   </motion.h2>
@@ -163,8 +163,8 @@ const About = () => {
           whileHover={{ scale: 1.05 }}
           className="bg-[#111111] rounded-xl p-6 shadow-md cursor-pointer flex flex-col items-center text-center transition-transform"
         >
-          <Icon size={48} strokeWidth={1.5} className="mb-4 text-[#8f7330]" />
-          <h3 className="text-[24px] font-[600] mb-2 text-[#8f7330]">
+          <Icon size={48} strokeWidth={1.5} className="mb-4 text-primary" />
+          <h3 className="text-[24px] font-[600] mb-2 text-primary">
             {value.title}
           </h3>
           <p className="text-[#9e9e9e]">{value.desc}</p>

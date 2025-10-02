@@ -49,7 +49,7 @@ const PropertyGrid = () => {
 
                 {/* Title + Desc */}
                 <div className="w-full">
-                  <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                  <h2 className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
                     {property.title}
                   </h2>
                   <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
@@ -76,7 +76,7 @@ const PropertyGrid = () => {
                 <div className="price-btn-container py-[8px] flex flex-row items-center justify-between gap-3">
                   <div className="price-box flex items-center flex-col gap-[6px]">
                     <p className="text-secondary-text text-[14px]">Price</p>
-                    <p className="font-semibold text-[18px]">
+                    <p className="font-semibold text-[18px] text-primary">
                       ₹{property.price}
                     </p>
                   </div>
@@ -157,7 +157,7 @@ const PropertyGrid = () => {
 
               {/* Title + Desc */}
               <div className="w-full">
-                <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                <h2 className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
                   {property.title}
                 </h2>
                 <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
@@ -186,7 +186,7 @@ const PropertyGrid = () => {
                   <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
                     Price
                   </p>
-                  <p className="font-semibold text-[clamp(18px,2vw,24px)]">
+                  <p className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
                     ₹{property.price}
                   </p>
                 </div>
@@ -222,7 +222,7 @@ const PropertyGrid = () => {
 
               {/* Title + Desc */}
               <div className="w-full">
-                <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                <h2 className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
                   {property.title}
                 </h2>
                 <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
@@ -251,7 +251,7 @@ const PropertyGrid = () => {
                   <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
                     Price
                   </p>
-                  <p className="font-semibold text-[clamp(18px,2vw,24px)]">
+                  <p className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
                     ₹{property.price}
                   </p>
                 </div>

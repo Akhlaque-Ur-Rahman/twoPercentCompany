@@ -133,7 +133,7 @@ const PropertiesPage: React.FC = () => {
                 <div className="flex-1 flex flex-col justify-between gap-4">
                   {/* Title + Description */}
                   <div>
-                    <h2 className="font-semibold text-[clamp(18px,2vw,24px)]">
+                    <h2 className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
                       {property.title}
                     </h2>
                     <p className="text-secondary-text text-[clamp(14px,1.6vw,16px)] mt-1">
@@ -165,7 +165,7 @@ const PropertiesPage: React.FC = () => {
                       <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
                         Price
                       </p>
-                      <p className="font-semibold text-[clamp(18px,2vw,24px)]">
+                      <p className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
                         ₹{property.price}
                       </p>
                     </div>

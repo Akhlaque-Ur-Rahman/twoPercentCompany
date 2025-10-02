@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
 
         {/* Quick Links */}
         <div className="flex flex-col space-y-2 text-center lg:text-left flex-[1_1_150px]">
-          <h3 className="text-white font-semibold mb-2">Quick Links</h3>
+          <h3 className=" text-primary font-semibold mb-2">Quick Links</h3>
           {quickLinks.map((link) => (
             <Link
               key={link.label}
@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
 
         {/* Services */}
         <div className="flex flex-col space-y-2 text-center lg:text-left flex-[1_1_150px]">
-          <h3 className="text-white font-semibold mb-2">Services</h3>
+          <h3 className=" text-primary font-semibold mb-2">Services</h3>
           {servicesLinks.map((link) => (
             <Link
               key={link.label}
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
 
         {/* Social / Contact */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-4 flex-[1_1_200px]">
-          <h3 className="text-white font-semibold mb-2">Connect With Us</h3>
+          <h3 className=" text-primary font-semibold mb-2">Connect With Us</h3>
           <div className="flex gap-4 justify-center lg:justify-start">
             {socialLinks.map((social) => {
               const Icon = social.icon;
