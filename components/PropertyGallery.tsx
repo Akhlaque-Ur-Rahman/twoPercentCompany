@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
-import { Keyboard, Autoplay, EffectFade } from "swiper/modules";
+import { Keyboard, Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/effect-fade";

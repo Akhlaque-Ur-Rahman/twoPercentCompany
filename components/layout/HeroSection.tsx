@@ -4,12 +4,15 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { HeroSectionSlides } from "@/data/HeroSectionData";
 
 const HeroSection = () => {
-  const swiperRef = useRef<any>(null);
+  
+const swiperRef = useRef<SwiperType | null>(null);
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
