@@ -91,7 +91,9 @@ const Footer: React.FC = () => {
       <div className="border-t border-header-stroke mt-10 pt-4 text-center text-secondary-text text-[13px] sm:text-[14px] space-y-1">
         <div>© 2025 2%Company. All rights reserved.</div>
         <div className="text-[12px] sm:text-[13px]">
-          Made with <span className="text-red-500">❤️</span> by EDUNEX SERVICES
+          <p>
+            Made with <span className="text-red-500">❤️</span> by <a href="https://edunexservices.com/" className="hover:underline">EduNex</a> 
+          </p> 
         </div>
       </div>
     </footer>

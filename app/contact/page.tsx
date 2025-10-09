@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Lottie from "lottie-react";
-import contactAnimation from "@/public/animations/contact2.json"; // Your main Lottie
-import successAnimation from "@/public/animations/success.json"; // Success Lottie
+import contactAnimation from "@/public/animations/contact2.json";
+import successAnimation from "@/public/animations/success.json";
 import { useForm } from "react-hook-form";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
@@ -14,6 +14,8 @@ type FormData = {
   phone: string;
   type: "Property" | "Plot" | "";
   purpose: string;
+  budget: string;
+  location: string;
 };
 
 const ContactPage: React.FC = () => {
@@ -29,13 +31,12 @@ const ContactPage: React.FC = () => {
   const { register, handleSubmit, reset } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    console.log("Form Submitted:", data);
     setIsSubmitted(true);
-    reset(); // Clear form
+    reset();
     setSelectedType("");
     setSelectedPurpose("");
-
-    setTimeout(() => setIsSubmitted(false), 3000); // hide success animation after 3s
+    setTimeout(() => setIsSubmitted(false), 3000);
   };
 
   const currentPurposes =
@@ -55,14 +56,21 @@ const ContactPage: React.FC = () => {
           <Lottie
             animationData={contactAnimation}
             loop={true}
-            className="w-1/2 h-full "
+            className="w-1/2 h-full"
           />
         </div>
 
         {/* Right: Form */}
         <div className="lg:w-1/2 bg-2nd-bg p-8 rounded-[24px] border border-header-stroke">
-          <h2 className="text-3xl font-semibold mb-6 text-primary">Contact Us</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <h2 className="text-3xl font-semibold mb-6 text-primary">
+            Contact Us
+          </h2>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
+            {/* Name */}
             <input
               type="text"
               placeholder="Name"
@@ -70,6 +78,7 @@ const ContactPage: React.FC = () => {
               className="px-4 py-3 rounded-lg bg-main-bg text-white placeholder-secondary-text border border-header-stroke focus:outline-none focus:border-primary"
             />
 
+            {/* Email */}
             <input
               type="email"
               placeholder="Email"
@@ -77,10 +86,27 @@ const ContactPage: React.FC = () => {
               className="px-4 py-3 rounded-lg bg-main-bg text-white placeholder-secondary-text border border-header-stroke focus:outline-none focus:border-primary"
             />
 
+            {/* Phone */}
             <input
               type="tel"
               placeholder="Phone"
               {...register("phone", { required: true })}
+              className="px-4 py-3 rounded-lg bg-main-bg text-white placeholder-secondary-text border border-header-stroke focus:outline-none focus:border-primary"
+            />
+
+            {/* Budget */}
+            <input
+              type="text"
+              placeholder="Budget (e.g., ₹50L – ₹1Cr)"
+              {...register("budget", { required: true })}
+              className="px-4 py-3 rounded-lg bg-main-bg text-white placeholder-secondary-text border border-header-stroke focus:outline-none focus:border-primary"
+            />
+
+            {/* Location */}
+            <input
+              type="text"
+              placeholder="Preferred Location (e.g., Patna)"
+              {...register("location", { required: true })}
               className="px-4 py-3 rounded-lg bg-main-bg text-white placeholder-secondary-text border border-header-stroke focus:outline-none focus:border-primary"
             />
 
@@ -92,7 +118,11 @@ const ContactPage: React.FC = () => {
                 className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-main-bg border border-header-stroke focus:outline-none"
               >
                 {selectedType || "Select Type"}
-                {typeDropdown ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                {typeDropdown ? (
+                  <ChevronUp size={20} />
+                ) : (
+                  <ChevronDown size={20} />
+                )}
               </button>
               {typeDropdown && (
                 <ul className="absolute z-10 mt-1 w-full bg-2nd-bg border border-header-stroke rounded-lg shadow-lg">
@@ -113,6 +143,8 @@ const ContactPage: React.FC = () => {
               )}
             </div>
 
+            
+
             {/* Purpose Dropdown */}
             {selectedType && (
               <div className="relative">
@@ -122,7 +154,11 @@ const ContactPage: React.FC = () => {
                   className="w-full flex justify-between items-center px-4 py-3 rounded-lg bg-main-bg border border-header-stroke focus:outline-none"
                 >
                   {selectedPurpose || "Select Purpose"}
-                  {purposeDropdown ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  {purposeDropdown ? (
+                    <ChevronUp size={20} />
+                  ) : (
+                    <ChevronDown size={20} />
+                  )}
                 </button>
                 {purposeDropdown && (
                   <ul className="absolute z-10 mt-1 w-full bg-2nd-bg border border-header-stroke rounded-lg shadow-lg">
@@ -142,6 +178,8 @@ const ContactPage: React.FC = () => {
                 )}
               </div>
             )}
+
+            
 
             <button
               type="submit"

@@ -60,6 +60,23 @@ export default function PlotPage(props: PlotPageProps) {
 
         {/* Overview */}
         <h2 className="text-[clamp(20px,2.5vw,32px)] font-semibold">Overview</h2>
+        {/* Tags Section */}
+        {plot.tags && plot.tags.length > 0 && (
+          <div className="flex flex-wrap gap-3 mt-4">
+            {plot.tags.map((tag, index) => {
+              const Icon = tag.icon;
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-md"
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tag.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
         <p className="text-secondary-text text-[clamp(14px,1.6vw,18px)] leading-relaxed">
           {plot.longDescription || plot.description}
         </p>

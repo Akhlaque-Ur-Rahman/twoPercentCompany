@@ -11,7 +11,9 @@ import { PropertyData, PropertyItem } from "@/data/PropertyData";
 import { MarkerType } from "@/types/MarkerType";
 import { LatLng } from "leaflet";
 
-const MapSection = dynamic(() => import("@/components/MapSection"), { ssr: false });
+const MapSection = dynamic(() => import("@/components/MapSection"), {
+  ssr: false,
+});
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>;
@@ -59,7 +61,25 @@ export default function PropertyPage(props: PropertyPageProps) {
         <PropertyGallery gallery={property.gallery || [property.image]} />
 
         {/* Overview */}
-        <h2 className="text-[clamp(20px,2.5vw,32px)] font-semibold">Overview</h2>
+        <h2 className="text-[clamp(20px,2.5vw,32px)] font-semibold">
+          Overview
+        </h2>
+        {property.tags && property.tags.length > 0 && (
+          <div className="flex flex-wrap gap-3 mt-4">
+            {property.tags.map((tag, index) => {
+              const Icon = tag.icon;
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tag.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
         <p className="text-secondary-text text-[clamp(14px,1.6vw,18px)] leading-relaxed">
           {property.longDescription || property.description}
         </p>
@@ -67,7 +87,9 @@ export default function PropertyPage(props: PropertyPageProps) {
         {/* Address & Price */}
         <div className="flex flex-col lg:flex-row justify-between gap-6 items-start">
           <div>
-            <h3 className="font-semibold text-[clamp(18px,2vw,24px)]">Address</h3>
+            <h3 className="font-semibold text-[clamp(18px,2vw,24px)]">
+              Address
+            </h3>
             <p className="text-secondary-text">{property.address}</p>
           </div>
           <div>
@@ -88,7 +110,12 @@ export default function PropertyPage(props: PropertyPageProps) {
 
         {/* Map Section */}
         <div className="w-full h-[400px] rounded-[16px] overflow-hidden border border-header-stroke">
-          <MapSection markers={markers} center={positionArray} zoom={15} showLink={false} />
+          <MapSection
+            markers={markers}
+            center={positionArray}
+            zoom={15}
+            showLink={false}
+          />
         </div>
       </div>
 
