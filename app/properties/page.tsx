@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { PropertyData, PropertyItem } from "@/data/PropertyData";
@@ -30,7 +31,10 @@ const PropertiesPage: React.FC = () => {
     "City Center",
   ];
 
+  // ✅ Only show type="property"
   const FilteredProperties = PropertyData.filter((property: PropertyItem) => {
+    if (property.type !== "property") return false;
+
     const MatchesSearch =
       property.title.toLowerCase().includes(SearchText.toLowerCase()) ||
       property.description.toLowerCase().includes(SearchText.toLowerCase());
@@ -143,11 +147,11 @@ const PropertiesPage: React.FC = () => {
 
                   {/* Tags */}
                   <div className="flex flex-wrap items-center gap-[12px]">
-                    {property.tags.map((tag, index) => {
+                    {property.tags.map((tag, idx) => {
                       const Icon = tag.icon;
                       return (
                         <div
-                          key={index}
+                          key={idx}
                           className="px-[8px] py-[4px] rounded-full bg-main-bg flex items-center gap-[4px]"
                         >
                           <Icon width={20} height={20} />

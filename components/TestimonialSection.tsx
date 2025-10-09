@@ -110,7 +110,7 @@ const TestimonialSection = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-                  {/* Navigation for mobile (side arrows, middle of card) */}
+    {/* Navigation for mobile (side arrows, middle of card) */}
       <button
         onClick={() => swiperRef.current?.slidePrev()}
         disabled={isBeginning}

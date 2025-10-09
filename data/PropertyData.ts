@@ -10,11 +10,13 @@ import {
   Sofa,
 } from "lucide-react";
 
+// Tag type (icon + label)
 export interface PropertyTag {
   icon: LucideIcon;
   label: string;
 }
 
+// Main property/plot item type
 export interface PropertyItem {
   id: number;
   title: string;
@@ -27,21 +29,30 @@ export interface PropertyItem {
   price: string;
   tags: PropertyTag[];
   slug: string;
-  type: "property" | "plot";
+  type: "property" | "plot"; // 👈 Used to differentiate
   url?: string;
 }
 
+// All data (Properties + Plots)
 export const PropertyData: PropertyItem[] = [
   // 🏢 PROPERTIES
   {
     id: 1,
     title: "Sai Residency Apartment",
     description: "Premium 3BHK apartment with modern interiors in Patna.",
-    longDescription: "Sai Residency Apartment offers a luxurious living experience in the heart of Patna. The 3BHK units come with spacious bedrooms, modern kitchens, and elegant living spaces. Residents enjoy amenities such as a gym, clubhouse, and 24/7 security. The apartment is strategically located near shopping centers, schools, and hospitals, making it ideal for families seeking comfort and convenience.",
+    longDescription:
+      "Sai Residency Apartment offers a luxurious living experience in the heart of Patna. The 3BHK units come with spacious bedrooms, modern kitchens, and elegant living spaces. Residents enjoy amenities such as a gym, clubhouse, and 24/7 security. The apartment is strategically located near shopping centers, schools, and hospitals, making it ideal for families seeking comfort and convenience.",
     address: "Boring Road, Near Patliputra Colony, Patna, Bihar",
     position: [25.6022, 85.1235],
     image: "/images/seasidevilla.png",
-    gallery: ["/images/seasidevilla.png", "/images/property2.webp", "/images/property3.webp", "/images/property4.webp", "/images/property5.webp", "/images/property6.webp"],
+    gallery: [
+      "/images/seasidevilla.png",
+      "/images/property2.webp",
+      "/images/property3.webp",
+      "/images/property4.webp",
+      "/images/property5.webp",
+      "/images/property6.webp",
+    ],
     price: "1,25,00,000",
     tags: [
       { icon: BedDouble, label: "3BHK" },
@@ -56,11 +67,19 @@ export const PropertyData: PropertyItem[] = [
     id: 2,
     title: "Green Valley Housing",
     description: "Cozy 2BHK independent house with scenic views in Patna.",
-    longDescription: "Green Valley Housing is a serene 2BHK independent house perfect for small families. Surrounded by greenery and open spaces, it offers a peaceful retreat from the city bustle. The house includes modern fittings, ample parking space, and a small garden. It is located in a well-connected area of Patna with easy access to schools, markets, and main roads.",
+    longDescription:
+      "Green Valley Housing is a serene 2BHK independent house perfect for small families. Surrounded by greenery and open spaces, it offers a peaceful retreat from the city bustle. The house includes modern fittings, ample parking space, and a small garden. It is located in a well-connected area of Patna with easy access to schools, markets, and main roads.",
     address: "Kankarbagh Main Road, Opp. Malahi Pakri, Patna, Bihar",
     position: [25.5941, 85.1426],
     image: "/images/seasidevilla.png",
-    gallery: ["/images/seasidevilla.png", "/images/property2.webp", "/images/property3.webp", "/images/property4.webp", "/images/property5.webp", "/images/property6.webp"],
+    gallery: [
+      "/images/seasidevilla.png",
+      "/images/property2.webp",
+      "/images/property3.webp",
+      "/images/property4.webp",
+      "/images/property5.webp",
+      "/images/property6.webp",
+    ],
     price: "85,00,000",
     tags: [
       { icon: BedDouble, label: "2BHK" },
@@ -75,11 +94,19 @@ export const PropertyData: PropertyItem[] = [
     id: 3,
     title: "Ganga View Towers",
     description: "Luxury 4BHK apartment overlooking the Ganga river.",
-    longDescription: "Ganga View Towers features premium 4BHK apartments with stunning views of the Ganga river. The apartments are fully furnished with modern interiors and high-quality materials. Amenities include a rooftop terrace, swimming pool, and secure parking. This property is perfect for those who want luxurious living with a scenic riverside environment and easy access to Patna’s main hubs.",
+    longDescription:
+      "Ganga View Towers features premium 4BHK apartments with stunning views of the Ganga river. The apartments are fully furnished with modern interiors and high-quality materials. Amenities include a rooftop terrace, swimming pool, and secure parking. This property is perfect for those who want luxurious living with a scenic riverside environment and easy access to Patna’s main hubs.",
     address: "Gulzarbagh, Near Ganga River, Patna, Bihar",
-    position: [25.6100, 85.1440],
+    position: [25.61, 85.144],
     image: "/images/seasidevilla.png",
-    gallery: ["/images/seasidevilla.png", "/images/property2.webp", "/images/property3.webp", "/images/property4.webp", "/images/property5.webp", "/images/property6.webp"],
+    gallery: [
+      "/images/seasidevilla.png",
+      "/images/property2.webp",
+      "/images/property3.webp",
+      "/images/property4.webp",
+      "/images/property5.webp",
+      "/images/property6.webp",
+    ],
     price: "1,50,00,000",
     tags: [
       { icon: BedDouble, label: "4BHK" },
@@ -146,109 +173,129 @@ export const PropertyData: PropertyItem[] = [
   },
 
   // 🌳 PLOTS
-{
-  id: 101,
-  title: "Shivaji Enclave Plot",
-  description: "Spacious residential plot in Shivaji Enclave, Patna.",
-  longDescription: "Shivaji Enclave Plot offers a spacious residential area ideal for building your dream home. Strategically located near Bailey Road, it has excellent connectivity and access to amenities such as schools, markets, and hospitals.",
-  address: "Near Bailey Road, Patna, Bihar",
-  position: [25.595, 85.12],
-  image: "/images/plainland.png",
-  gallery: [
-    "/images/plot2.webp", "/images/plot3.webp", 
-    "/images/plot4.webp", "/images/plot5.webp", "/images/plot6.webp",
-  ],
-  price: "45,00,000",
-  tags: [
-    { icon: Trees, label: "Residential Plot" },
-    { icon: Car, label: "Easy Access" },
-  ],
-  slug: "shivaji-enclave-plot",
-  type: "plot",
-  url: "https://example.com/plot-1",
-},
-{
-  id: 102,
-  title: "Rajdhani Nagar Plot",
-  description: "Well-connected plot in Patliputra Industrial Area, Patna.",
-  longDescription: "Rajdhani Nagar Plot is perfect for residential or small-scale commercial purposes. Located in Patliputra Industrial Area, it offers easy connectivity, ample space, and a prime location for investment.",
-  address: "Patliputra Industrial Area, Patna, Bihar",
-  position: [25.605, 85.135],
-  image: "/images/plainland.png",
-  gallery: [
-    "/images/plot2.webp", "/images/plot3.webp", 
-    "/images/plot4.webp", "/images/plot5.webp", "/images/plot6.webp",
-  ],
-  price: "55,00,000",
-  tags: [
-    { icon: Trees, label: "Residential Plot" },
-    { icon: Landmark, label: "Prime Location" },
-  ],
-  slug: "rajdhani-nagar-plot",
-  type: "plot",
-  url: "https://example.com/plot-2",
-},
-{
-  id: 103,
-  title: "Gola Road Plot",
-  description: "Affordable plot located near Gola Road, Patna.",
-  longDescription: "Gola Road Plot provides an affordable option for building a home in a well-connected area of Patna. Close to main roads and local markets, it offers both convenience and value for money.",
-  address: "Gola Road, Patna, Bihar",
-  position: [25.61, 85.115],
-  image: "/images/plainland.png",
-  gallery: [
-    "/images/plot2.webp", "/images/plot3.webp", 
-    "/images/plot4.webp", "/images/plot5.webp", "/images/plot6.webp",
-  ],
-  price: "40,00,000",
-  tags: [
-    { icon: Trees, label: "Residential Plot" },
-    { icon: Car, label: "Accessible Road" },
-  ],
-  slug: "gola-road-plot",
-  type: "plot",
-  url: "https://example.com/plot-3",
-},
-{
-  id: 104,
-  title: "Bailey Road Commercial Plot",
-  description: "Prime commercial plot on Bailey Road, ideal for offices.",
-  longDescription: "Bailey Road Commercial Plot is perfect for setting up offices or commercial establishments. Its prime location and ample space make it ideal for businesses looking to establish a presence in Patna.",
-  address: "Bailey Road, Patna, Bihar",
-  position: [25.597, 85.124],
-  image: "/images/plainland.png",
-  gallery: [
-    "/images/plot2.webp", "/images/plot3.webp", 
-    "/images/plot4.webp", "/images/plot5.webp", "/images/plot6.webp",
-  ],
-  price: "1,20,00,000",
-  tags: [
-    { icon: Landmark, label: "Commercial Use" },
-    { icon: Trees, label: "Spacious Area" },
-  ],
-  slug: "bailey-road-commercial-plot",
-  type: "plot",
-  url: "https://example.com/plot-4",
-},
-{
-  id: 105,
-  title: "Patliputra Colony Plot",
-  description: "Premium plot in Patliputra Colony for luxury housing.",
-  longDescription: "Patliputra Colony Plot offers a premium location for building luxury homes. With wide roads, green surroundings, and a safe neighborhood, it provides an ideal environment for residential development.",
-  address: "Patliputra Colony, Patna, Bihar",
-  position: [25.604, 85.132],
-  image: "/images/plainland.png",
-  gallery: [
-    "/images/plot2.webp", "/images/plot3.webp", 
-    "/images/plot4.webp", "/images/plot5.webp", "/images/plot6.webp",
-  ],
-  price: "95,00,000",
-  tags: [
-    { icon: Trees, label: "Luxury Housing" },
-    { icon: Car, label: "Wide Roads" },
-  ],
-  slug: "patliputra-colony-plot",
-  type: "plot",
-  url: "https://example.com/plot-5",
-},
-]
+  {
+    id: 101,
+    title: "Shivaji Enclave Plot",
+    description: "Spacious residential plot in Shivaji Enclave, Patna.",
+    longDescription:
+      "Shivaji Enclave Plot offers a spacious residential area ideal for building your dream home. Strategically located near Bailey Road, it has excellent connectivity and access to amenities such as schools, markets, and hospitals.",
+    address: "Near Bailey Road, Patna, Bihar",
+    position: [25.595, 85.12],
+    image: "/images/plainland.png",
+    gallery: [
+      "/images/plot2.webp",
+      "/images/plot3.webp",
+      "/images/plot4.webp",
+      "/images/plot5.webp",
+      "/images/plot6.webp",
+    ],
+    price: "45,00,000",
+    tags: [
+      { icon: Trees, label: "Residential Plot" },
+      { icon: Car, label: "Easy Access" },
+    ],
+    slug: "shivaji-enclave-plot",
+    type: "plot",
+    url: "https://example.com/plot-1",
+  },
+  {
+    id: 102,
+    title: "Rajdhani Nagar Plot",
+    description: "Well-connected plot in Patliputra Industrial Area, Patna.",
+    longDescription:
+      "Rajdhani Nagar Plot is perfect for residential or small-scale commercial purposes. Located in Patliputra Industrial Area, it offers easy connectivity, ample space, and a prime location for investment.",
+    address: "Patliputra Industrial Area, Patna, Bihar",
+    position: [25.605, 85.135],
+    image: "/images/plainland.png",
+    gallery: [
+      "/images/plot2.webp",
+      "/images/plot3.webp",
+      "/images/plot4.webp",
+      "/images/plot5.webp",
+      "/images/plot6.webp",
+    ],
+    price: "55,00,000",
+    tags: [
+      { icon: Trees, label: "Residential Plot" },
+      { icon: Landmark, label: "Prime Location" },
+    ],
+    slug: "rajdhani-nagar-plot",
+    type: "plot",
+    url: "https://example.com/plot-2",
+  },
+  {
+    id: 103,
+    title: "Gola Road Plot",
+    description: "Affordable plot located near Gola Road, Patna.",
+    longDescription:
+      "Gola Road Plot provides an affordable option for building a home in a well-connected area of Patna. Close to main roads and local markets, it offers both convenience and value for money.",
+    address: "Gola Road, Patna, Bihar",
+    position: [25.61, 85.115],
+    image: "/images/plainland.png",
+    gallery: [
+      "/images/plot2.webp",
+      "/images/plot3.webp",
+      "/images/plot4.webp",
+      "/images/plot5.webp",
+      "/images/plot6.webp",
+    ],
+    price: "40,00,000",
+    tags: [
+      { icon: Trees, label: "Residential Plot" },
+      { icon: Car, label: "Accessible Road" },
+    ],
+    slug: "gola-road-plot",
+    type: "plot",
+    url: "https://example.com/plot-3",
+  },
+  {
+    id: 104,
+    title: "Bailey Road Commercial Plot",
+    description: "Prime commercial plot on Bailey Road, ideal for offices.",
+    longDescription:
+      "Bailey Road Commercial Plot is perfect for setting up offices or commercial establishments. Its prime location and ample space make it ideal for businesses looking to establish a presence in Patna.",
+    address: "Bailey Road, Patna, Bihar",
+    position: [25.597, 85.124],
+    image: "/images/plainland.png",
+    gallery: [
+      "/images/plot2.webp",
+      "/images/plot3.webp",
+      "/images/plot4.webp",
+      "/images/plot5.webp",
+      "/images/plot6.webp",
+    ],
+    price: "1,20,00,000",
+    tags: [
+      { icon: Landmark, label: "Commercial Use" },
+      { icon: Trees, label: "Spacious Area" },
+    ],
+    slug: "bailey-road-commercial-plot",
+    type: "plot",
+    url: "https://example.com/plot-4",
+  },
+  {
+    id: 105,
+    title: "Patliputra Colony Plot",
+    description: "Premium plot in Patliputra Colony for luxury housing.",
+    longDescription:
+      "Patliputra Colony Plot offers a premium location for building luxury homes. With wide roads, green surroundings, and a safe neighborhood, it provides an ideal environment for residential development.",
+    address: "Patliputra Colony, Patna, Bihar",
+    position: [25.604, 85.132],
+    image: "/images/plainland.png",
+    gallery: [
+      "/images/plot2.webp",
+      "/images/plot3.webp",
+      "/images/plot4.webp",
+      "/images/plot5.webp",
+      "/images/plot6.webp",
+    ],
+    price: "95,00,000",
+    tags: [
+      { icon: Trees, label: "Luxury Housing" },
+      { icon: Car, label: "Wide Roads" },
+    ],
+    slug: "patliputra-colony-plot",
+    type: "plot",
+    url: "https://example.com/plot-5",
+  },
+];
