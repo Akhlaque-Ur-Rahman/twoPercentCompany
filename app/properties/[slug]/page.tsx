@@ -50,6 +50,25 @@ export default function PropertyPage(props: PropertyPageProps) {
   return (
     <section>
       <Navbar />
+      {/* Video Section */}
+      {property.video && (
+  <div className="relative w-full flex justify-center items-center bg-black rounded-[16px] overflow-hidden border border-header-stroke">
+    <video
+      className="max-w-full h-auto object-cover rounded-[16px] max-h-[80vh]"
+      autoPlay
+      muted
+      loop
+      playsInline
+      controls
+      
+    >
+      <source src={property.video} type="video/webm" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+)}
+
+
 
       {/* Property Details */}
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">

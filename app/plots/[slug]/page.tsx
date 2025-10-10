@@ -49,6 +49,22 @@ export default function PlotPage(props: PlotPageProps) {
     <section>
       <Navbar />
 
+      {plot.video && (
+          <div className="relative w-full flex justify-center items-center bg-black rounded-[16px] overflow-hidden border border-header-stroke">
+            <video
+              className="max-w-full h-auto object-contain rounded-[16px] max-h-[80vh]"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+            >
+              <source src={plot.video} type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        )}
+
       {/* Plot Details */}
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">
         <h1 className=" text-primary font-bold text-[clamp(24px,4vw,48px)]">
@@ -68,7 +84,7 @@ export default function PlotPage(props: PlotPageProps) {
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-md"
+                  className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tag.label}</span>

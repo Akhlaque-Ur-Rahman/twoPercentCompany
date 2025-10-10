@@ -26,10 +26,11 @@ export interface PropertyItem {
   position: LatLngExpression;
   image: string;
   gallery?: string[];
+  video?: string; // ✅ Added optional video field
   price: string;
   tags: PropertyTag[];
   slug: string;
-  type: "property" | "plot"; // 👈 Used to differentiate
+  type: "property" | "plot";
   url?: string;
 }
 
@@ -53,6 +54,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/property5.webp",
       "/images/property6.webp",
     ],
+    video: "/videos/property-sale.webm", // ✅ Added
     price: "1,25,00,000",
     tags: [
       { icon: BedDouble, label: "3BHK" },
@@ -80,6 +82,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/property5.webp",
       "/images/property6.webp",
     ],
+    video: "/videos/property-sale.webm", // ✅ Added
     price: "85,00,000",
     tags: [
       { icon: BedDouble, label: "2BHK" },
@@ -107,6 +110,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/property5.webp",
       "/images/property6.webp",
     ],
+    video: "/videos/property-sale.webm", // ✅ Added
     price: "1,50,00,000",
     tags: [
       { icon: BedDouble, label: "4BHK" },
@@ -125,6 +129,7 @@ export const PropertyData: PropertyItem[] = [
     position: [25.609, 85.141],
     image: "/images/seasidevilla.png",
     gallery: ["/images/seasidevilla.png", "/images/seasidevilla5.png"],
+    video: "/videos/property-sale.webm", // ✅ Added
     price: "98,00,000",
     tags: [
       { icon: BedDouble, label: "3BHK" },
@@ -143,6 +148,7 @@ export const PropertyData: PropertyItem[] = [
     position: [25.585, 85.12],
     image: "/images/seasidevilla.png",
     gallery: ["/images/seasidevilla.png", "/images/seasidevilla6.png"],
+    video: "/videos/property-sale.webm", // ✅ Added
     price: "1,50,00,000",
     tags: [
       { icon: BedDouble, label: "5BHK" },
@@ -161,6 +167,7 @@ export const PropertyData: PropertyItem[] = [
     position: [25.61, 85.13],
     image: "/images/seasidevilla.png",
     gallery: ["/images/seasidevilla.png", "/images/seasidevilla7.png"],
+    video: "/videos/property-sale.webm", // ✅ Added
     price: "32,00,000",
     tags: [
       { icon: BedDouble, label: "1BHK" },
@@ -189,6 +196,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
+    video: "/videos/property-sale2.webm", // ✅ Added
     price: "45,00,000",
     tags: [
       { icon: Trees, label: "Residential Plot" },
@@ -214,6 +222,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
+    video: "/videos/property-sale2.webm", // ✅ Added
     price: "55,00,000",
     tags: [
       { icon: Trees, label: "Residential Plot" },
@@ -239,6 +248,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
+    video: "/videos/property-sale2.webm", // ✅ Added
     price: "40,00,000",
     tags: [
       { icon: Trees, label: "Residential Plot" },
@@ -264,6 +274,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
+    video: "/videos/property-sale2.webm", // ✅ Added
     price: "1,20,00,000",
     tags: [
       { icon: Landmark, label: "Commercial Use" },
@@ -289,6 +300,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
+    video: "/videos/property-sale2.webm", // ✅ Added
     price: "95,00,000",
     tags: [
       { icon: Trees, label: "Luxury Housing" },

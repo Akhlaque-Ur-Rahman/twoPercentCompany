@@ -152,7 +152,7 @@ const PropertiesPage: React.FC = () => {
                       return (
                         <div
                           key={idx}
-                          className="px-[8px] py-[4px] rounded-full bg-main-bg flex items-center gap-[4px]"
+                          className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
                         >
                           <Icon width={20} height={20} />
                           <p className="font-semibold text-[clamp(13px,1.5vw,16px)]">
