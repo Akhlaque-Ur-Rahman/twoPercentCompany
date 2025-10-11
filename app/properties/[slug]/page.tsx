@@ -13,9 +13,7 @@ import { MarkerType } from "@/types/MarkerType";
 import { LatLng } from "leaflet";
 import Image from "next/image";
 
-const MapSection = dynamic(() => import("@/components/MapSection"), {
-  ssr: false,
-});
+const MapSection = dynamic(() => import("@/components/MapSection"), { ssr: false });
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>;
@@ -57,6 +55,23 @@ export default function PropertyPage(props: PropertyPageProps) {
     <section>
       <Navbar />
 
+      {/* Video Section */}
+      {property.video && (
+        <div className="relative w-full flex justify-center items-center bg-black rounded-[16px] overflow-hidden border border-header-stroke mb-6 lg:mb-12">
+          <video
+            className="max-w-full h-auto object-contain rounded-[16px]"
+            autoPlay
+            muted
+            loop
+            playsInline
+            
+          >
+            <source src={property.video} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      )}
+
       {/* Gallery Section */}
       <PropertyGallery gallery={property.gallery || [property.image]} />
 
@@ -67,9 +82,7 @@ export default function PropertyPage(props: PropertyPageProps) {
         </h1>
 
         {/* Overview */}
-        <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">
-          Overview
-        </h2>
+        <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">Overview</h2>
         {property.tags && property.tags.length > 0 && (
           <div className="flex flex-wrap gap-3 mt-4">
             {property.tags.map((tag, index) => {
@@ -94,9 +107,7 @@ export default function PropertyPage(props: PropertyPageProps) {
         {/* Address & Price */}
         <div className="flex flex-col lg:flex-row justify-between gap-6 items-start">
           <div>
-            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">
-              Address
-            </h3>
+            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">Address</h3>
             <p className="text-secondary-text">{property.address}</p>
           </div>
           <div>
@@ -119,7 +130,7 @@ export default function PropertyPage(props: PropertyPageProps) {
         {/* ========================== */}
         {floorPlans.length > 0 && (
           <div className="floorplan">
-            <h3 className="font-semibold text-primary text-[clamp(24px,4vw,48px)] mb-4">Floor Plan</h3>
+            <h3 className="font-semibold text-primary text-[48px] mb-4">Floor Plan</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {floorPlans.slice(0, 2).map((plan, index) => (
@@ -128,11 +139,9 @@ export default function PropertyPage(props: PropertyPageProps) {
                   className="relative overflow-hidden rounded-[12px] cursor-pointer"
                   onClick={() => setSelected(plan)}
                 >
-                  <Image
+                  <img
                     src={plan}
                     alt={`Floor Plan ${index + 1}`}
-                    width={800} // set approximate width
-                    height={600} // set approximate height
                     className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
@@ -143,10 +152,8 @@ export default function PropertyPage(props: PropertyPageProps) {
                   className="relative overflow-hidden rounded-[12px] md:col-span-2 cursor-pointer"
                   onClick={() => setSelected(floorPlans[2])}
                 >
-                  <Image
+                  <img
                     src={floorPlans[2]}
-                    width={800} // set approximate width
-                    height={600} // set approximate height
                     alt="Floor Plan 3"
                     className="w-full h-[300px] sm:h-[400px] md:h-[400px] object-cover transition-transform duration-300 hover:scale-105"
                   />

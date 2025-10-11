@@ -59,9 +59,9 @@ export default function PlotPage(props: PlotPageProps) {
 
       {/* Video Section */}
       {plot.video && (
-        <div className="relative w-full flex justify-center items-center bg-black rounded-[16px] overflow-hidden border border-header-stroke">
+        <div className="relative w-full flex justify-center items-center bg-black rounded-[16px] overflow-hidden border border-header-stroke mb-6 lg:mb-12">
           <video
-            className="max-w-full h-auto object-contain rounded-[16px] max-h-[80vh]"
+            className="max-w-full h-auto object-contain rounded-[16px]"
             autoPlay
             muted
             loop
@@ -136,25 +136,23 @@ export default function PlotPage(props: PlotPageProps) {
           </div>
         </div>
 
-       
         {/* FLOOR PLAN SECTION */}
-        {/* ========================== */}
         {floorPlans.length > 0 && (
           <div className="floorplan">
-            <h3 className="font-semibold text-primary text-[clamp(24px,4vw,48px)] mb-4">Floor Plan</h3>
+            <h3 className="font-semibold text-primary text-[48px] mb-4">Floor Plan</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {floorPlans.slice(0, 2).map((plan, index) => (
                 <div
                   key={index}
-                  className="relative overflow-hidden rounded-[12px]  cursor-pointer"
+                  className="relative overflow-hidden rounded-[12px] cursor-pointer"
                   onClick={() => setSelected(plan)}
                 >
                   <Image
                     src={plan}
                     alt={`Floor Plan ${index + 1}`}
-                    width={800} // set approximate width
-                    height={600} // set approximate height
+                    width={800}
+                    height={600}
                     className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
@@ -162,14 +160,14 @@ export default function PlotPage(props: PlotPageProps) {
 
               {floorPlans[2] && (
                 <div
-                  className="relative overflow-hidden rounded-[12px]  md:col-span-2 cursor-pointer"
+                  className="relative overflow-hidden rounded-[12px] md:col-span-2 cursor-pointer"
                   onClick={() => setSelected(floorPlans[2])}
                 >
                   <Image
                     src={floorPlans[2]}
-                    width={800} // set approximate width
-                    height={600} // set approximate height
                     alt="Floor Plan 3"
+                    width={800}
+                    height={600}
                     className="w-full h-[300px] sm:h-[400px] md:h-[400px] object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
