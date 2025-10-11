@@ -65,7 +65,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "sai-residency-apartment",
     type: "property",
     url: "https://example.com/property-1",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 2,
@@ -94,7 +94,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "green-valley-housing",
     type: "property",
     url: "https://example.com/property-2",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 3,
@@ -123,7 +123,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "ganga-view-towers",
     type: "property",
     url: "https://example.com/property-3",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 4,
@@ -143,7 +143,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "urban-luxury-apartment",
     type: "property",
     url: "https://example.com/property-4",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 5,
@@ -163,7 +163,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "countryside-family-home",
     type: "property",
     url: "https://example.com/property-5",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 6,
@@ -183,7 +183,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "compact-1bhk-studio",
     type: "property",
     url: "https://example.com/property-6",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
 
   // 🌳 PLOTS
@@ -212,7 +212,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "shivaji-enclave-plot",
     type: "plot",
     url: "https://example.com/plot-1",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 102,
@@ -239,7 +239,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "rajdhani-nagar-plot",
     type: "plot",
     url: "https://example.com/plot-2",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 103,
@@ -266,7 +266,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "gola-road-plot",
     type: "plot",
     url: "https://example.com/plot-3",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 104,
@@ -293,7 +293,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "bailey-road-commercial-plot",
     type: "plot",
     url: "https://example.com/plot-4",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
   {
     id: 105,
@@ -320,6 +320,6 @@ export const PropertyData: PropertyItem[] = [
     slug: "patliputra-colony-plot",
     type: "plot",
     url: "https://example.com/plot-5",
-    floorPlans: ["/floorplans/first-floor-plan.jpg", "/floorplans/second-floor-plan.jpg","/floorplans/ground-floor-plan.png"],
+    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
   },
 ];

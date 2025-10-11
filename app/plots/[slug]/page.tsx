@@ -11,7 +11,7 @@ import PropertyGallery from "@/components/PropertyGallery";
 import { PropertyData, PropertyItem } from "@/data/PropertyData";
 import { MarkerType } from "@/types/MarkerType";
 import { LatLng } from "leaflet";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import Image from "next/image";
 
 const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
@@ -84,7 +84,7 @@ export default function PlotPage(props: PlotPageProps) {
         <PropertyGallery gallery={plot.gallery || [plot.image]} />
 
         {/* Overview */}
-        <h2 className="text-[clamp(20px,2.5vw,32px)] font-semibold">
+        <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">
           Overview
         </h2>
 
@@ -116,13 +116,13 @@ export default function PlotPage(props: PlotPageProps) {
         {/* Address & Price */}
         <div className="flex flex-col lg:flex-row justify-between gap-6 items-start">
           <div>
-            <h3 className="font-semibold text-[clamp(18px,2vw,24px)]">
+            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">
               Address
             </h3>
             <p className="text-secondary-text">{plot.address}</p>
           </div>
           <div>
-            <h3 className="font-semibold text-[clamp(18px,2vw,24px)]">Price</h3>
+            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">Price</h3>
             <p className="text-primary font-bold text-[clamp(20px,2.5vw,28px)]">
               ₹{plot.price}
             </p>
@@ -136,69 +136,69 @@ export default function PlotPage(props: PlotPageProps) {
           </div>
         </div>
 
+       
+        {/* FLOOR PLAN SECTION */}
         {/* ========================== */}
-        {/* ========================== */}
-{/* FLOOR PLAN SECTION */}
-{/* ========================== */}
-{floorPlans.length > 0 && (
-  <div className="floorplan">
-    <h3 className="font-semibold text-[clamp(18px,2vw,24px)] mb-4">
-      Floor Plan
-    </h3>
+        {floorPlans.length > 0 && (
+          <div className="floorplan">
+            <h3 className="font-semibold text-primary text-[clamp(24px,4vw,48px)] mb-4">Floor Plan</h3>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {floorPlans.slice(0, 2).map((plan, index) => (
-        <div
-          key={index}
-          className="relative overflow-hidden rounded-[12px]  cursor-pointer"
-          onClick={() => setSelected(plan)}
-        >
-          <img
-            src={plan}
-            alt={`Floor Plan ${index + 1}`}
-            className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-contain transition-transform duration-300 hover:scale-105"
-          />
-        </div>
-      ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {floorPlans.slice(0, 2).map((plan, index) => (
+                <div
+                  key={index}
+                  className="relative overflow-hidden rounded-[12px]  cursor-pointer"
+                  onClick={() => setSelected(plan)}
+                >
+                  <Image
+                    src={plan}
+                    alt={`Floor Plan ${index + 1}`}
+                    width={800} // set approximate width
+                    height={600} // set approximate height
+                    className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              ))}
 
-      {floorPlans[2] && (
-        <div
-          className="relative overflow-hidden rounded-[12px]  md:col-span-2 cursor-pointer"
-          onClick={() => setSelected(floorPlans[2])}
-        >
-          <img
-            src={floorPlans[2]}
-            alt="Floor Plan 3"
-            className="w-full h-[300px] sm:h-[400px] md:h-[400px] object-contain transition-transform duration-300 hover:scale-105"
-          />
-        </div>
-      )}
-    </div>
+              {floorPlans[2] && (
+                <div
+                  className="relative overflow-hidden rounded-[12px]  md:col-span-2 cursor-pointer"
+                  onClick={() => setSelected(floorPlans[2])}
+                >
+                  <Image
+                    src={floorPlans[2]}
+                    width={800} // set approximate width
+                    height={600} // set approximate height
+                    alt="Floor Plan 3"
+                    className="w-full h-[300px] sm:h-[400px] md:h-[400px] object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              )}
+            </div>
 
-    {/* Fullscreen Popup */}
-    <AnimatePresence>
-      {selected && (
-        <motion.div
-          className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setSelected(null)}
-        >
-          <motion.img
-            src={selected}
-            alt="Floor Plan Full"
-            className="max-w-full max-h-full rounded-lg shadow-lg"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.8 }}
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-)}
-
+            {/* Fullscreen Popup */}
+            <AnimatePresence>
+              {selected && (
+                <motion.div
+                  className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelected(null)}
+                >
+                  <motion.img
+                    src={selected}
+                    alt="Floor Plan Full"
+                    className="max-w-full max-h-full rounded-lg shadow-lg"
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0.8 }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
 
         {/* Map Section */}
         <div className="w-full h-[400px] rounded-[16px] overflow-hidden border border-header-stroke">
