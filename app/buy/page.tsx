@@ -65,12 +65,16 @@ const BuyPage = () => {
   const [selectedFacing, setSelectedFacing] = useState("");
   const [selectedPrice, setSelectedPrice] = useState("");
 
-  const priceRanges = [
-    { label: "All", min: 0, max: Infinity },
-    { label: "Below ₹50L", min: 0, max: 5000000 },
-    { label: "₹50L - ₹1Cr", min: 5000000, max: 10000000 },
-    { label: "Above ₹1Cr", min: 10000000, max: Infinity },
-  ];
+  // Memoize priceRanges to prevent useMemo warning
+  const priceRanges = useMemo(
+    () => [
+      { label: "All", min: 0, max: Infinity },
+      { label: "Below ₹50L", min: 0, max: 5000000 },
+      { label: "₹50L - ₹1Cr", min: 5000000, max: 10000000 },
+      { label: "Above ₹1Cr", min: 10000000, max: Infinity },
+    ],
+    []
+  );
 
   const filteredData = useMemo(() => {
     return PropertyData.filter((item) => {
@@ -102,7 +106,7 @@ const BuyPage = () => {
 
       return matchesSearch && matchesType && matchesFacing && matchesPrice;
     });
-  }, [searchQuery, selectedType, selectedFacing, selectedPrice]);
+  }, [searchQuery, selectedType, selectedFacing, selectedPrice, priceRanges]);
 
   return (
     <div className="min-h-screen flex flex-col bg-main-bg text-white">
@@ -131,7 +135,6 @@ const BuyPage = () => {
           transition={{ delay: 0.2 }}
           className="flex flex-wrap gap-4 justify-center mb-12"
         >
-          {/* Search */}
           <input
             type="text"
             placeholder="Search by name, location or feature..."
@@ -140,7 +143,6 @@ const BuyPage = () => {
             className="px-4 py-[12px] rounded-[16px] bg-2nd-bg border-2 border-header-stroke text-primary w-full sm:w-[300px] focus:outline-none focus:border-primary transition-all duration-200 placeholder:text-primary"
           />
 
-          {/* Custom Dropdowns */}
           <CustomDropdown
             options={[
               { label: "All Types", value: "" },

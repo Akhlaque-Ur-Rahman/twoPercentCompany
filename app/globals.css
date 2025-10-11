@@ -31,6 +31,9 @@
 
   --text-48-semibold: [48px var(--font-urbanist) 600];
 }
+html {
+  scroll-behavior: smooth;
+}
 
 /* Base styles */
 body {

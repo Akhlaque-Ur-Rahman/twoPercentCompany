@@ -81,7 +81,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         </div>
         <Link
           href={`/properties/${property.slug}`}
-          className="w-full sm:w-auto px-[clamp(16px,2vw,24px)] py-[clamp(10px,1.5vw,12px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center"
+          className="w-full flex justify-center items-center sm:w-auto px-[clamp(16px,2vw,24px)] py-[clamp(10px,1.5vw,12px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center"
         >
           View Property Details
         </Link>
