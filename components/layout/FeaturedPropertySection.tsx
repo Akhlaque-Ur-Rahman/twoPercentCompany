@@ -36,7 +36,7 @@ const FeaturedPropertySection = () => {
         <div className="view-all-btn rounded-[12px] h-fit bg-2nd-bg border-2 border-header-stroke  justify-center items-center text-nowrap hidden lg:flex">
           <Link
             href="/properties"
-            className="px-4 py-2 sm:px-5 sm:py-2.5 lg:px-[24px] lg:py-[16px] text-[14px] sm:text-[15px] lg:text-[16px] font-medium"
+            className="px-4 py-2 sm:px-5 sm:py-2.5 lg:px-[24px] lg:py-[16px] text-[14px] sm:text-[15px] lg:text-[16px] text-primary font-medium"
           >
             View All Properties
           </Link>

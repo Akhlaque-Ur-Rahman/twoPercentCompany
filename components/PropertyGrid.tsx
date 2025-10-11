@@ -62,7 +62,7 @@ const PropertyGrid = () => {
                   {property.tags.map((tag, index) => (
                     <div
                       key={index}
-                      className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
+                      className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
                     >
                       <tag.icon width={20} height={20} />
                       <p className="font-semibold text-[clamp(14px,1.5vw,16px)]">
@@ -75,7 +75,7 @@ const PropertyGrid = () => {
                 {/* Price + Button */}
                 <div className="price-btn-container py-[8px] flex flex-row items-center justify-between gap-3">
                   <div className="price-box flex items-center flex-col gap-[6px]">
-                    <p className="text-secondary-text text-[14px]">Price</p>
+                    <p className="text-secondary-text font-semibold text-[14px]">Price</p>
                     <p className="font-semibold text-[18px] text-primary">
                       ₹{property.price}
                     </p>
@@ -170,7 +170,7 @@ const PropertyGrid = () => {
                 {property.tags.map((tag, index) => (
                   <div
                     key={index}
-                    className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
+                    className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
                   >
                     <tag.icon width={20} height={20} />
                     <p className="font-semibold text-[clamp(13px,1.5vw,16px)]">
@@ -183,7 +183,7 @@ const PropertyGrid = () => {
               {/* Price + Button */}
               <div className="price-btn-container py-[8px] flex sm:flex-row sm:items-center justify-between gap-3">
                 <div className="price-box flex items-center sm:items-start flex-col gap-[6px]">
-                  <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
+                  <p className="text-secondary-text font-semibold text-[clamp(13px,1.5vw,15px)]">
                     Price
                   </p>
                   <p className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
@@ -235,7 +235,7 @@ const PropertyGrid = () => {
                 {property.tags.map((tag, index) => (
                   <div
                     key={index}
-                    className="px-[8px] py-[4px] rounded-full bg-2nd-bg flex items-center gap-[4px]"
+                    className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
                   >
                     <tag.icon width={20} height={20} />
                     <p className="font-semibold text-[clamp(13px,1.5vw,16px)]">
@@ -248,7 +248,7 @@ const PropertyGrid = () => {
               {/* Price + Button */}
               <div className="price-btn-container py-[8px] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="price-box flex items-center sm:items-start flex-col gap-[6px]">
-                  <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
+                  <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)] font-semibold">
                     Price
                   </p>
                   <p className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">

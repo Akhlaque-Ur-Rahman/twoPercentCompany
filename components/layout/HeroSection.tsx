@@ -82,7 +82,7 @@ const swiperRef = useRef<SwiperType | null>(null);
                       className={`block rounded-[12px] text-center ${
                         btn.type === "primary"
                           ? "bg-primary text-white lg:px-[24px] lg:py-[20px] py-[16px] px-0"
-                          : "border border-header-stroke text-white/70 lg:px-[52px] lg:py-[20px] py-[16px] px-0"
+                          : "border border-header-stroke text-primary lg:px-[52px] lg:py-[20px] py-[16px] px-0"
                       }`}
                     >
                       {btn.label}
