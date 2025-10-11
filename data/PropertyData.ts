@@ -33,6 +33,11 @@ export interface PropertyItem {
   type: "property" | "plot";
   url?: string;
   floorPlans?: string[];
+  specifications?: {
+  label: string;
+  value: string;
+}[];
+
 }
 
 // All data (Properties + Plots)
@@ -66,6 +71,18 @@ export const PropertyData: PropertyItem[] = [
     type: "property",
     url: "https://example.com/property-1",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Carpet Area", value: "900 sqft" },
+  { label: "Price per sqft", value: "₹3,500/sqft" },
+  { label: "Floor", value: "3 (Out of 5 Floors)" },
+  { label: "Transaction Type", value: "Resale" },
+  { label: "Status", value: "Ready to Move" },
+  { label: "Facing", value: "East" },
+  { label: "Furnished Status", value: "Semi-Furnished" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Age of Construction", value: "2 years" },
+]
+
   },
   {
     id: 2,
@@ -95,6 +112,18 @@ export const PropertyData: PropertyItem[] = [
     type: "property",
     url: "https://example.com/property-2",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Carpet Area", value: "2200 sqft" },
+  { label: "Price per sqft", value: "₹7,500/sqft" },
+  { label: "Floor", value: "Top Floor" },
+  { label: "Transaction Type", value: "New" },
+  { label: "Status", value: "Ready to Move" },
+  { label: "Facing", value: "South-East" },
+  { label: "Furnished Status", value: "Fully Furnished" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Age of Construction", value: "Less than 1 year" },
+]
+
   },
   {
     id: 3,
@@ -124,6 +153,20 @@ export const PropertyData: PropertyItem[] = [
     type: "property",
     url: "https://example.com/property-3",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Built-up Area", value: "1800 sqft" },
+  { label: "Plot Area", value: "2000 sqft" },
+  { label: "Price per sqft", value: "₹4,000/sqft" },
+  { label: "Transaction Type", value: "Resale" },
+  { label: "Status", value: "Ready to Move" },
+  { label: "Facing", value: "North-West" },
+  { label: "Furnished Status", value: "Semi-Furnished" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Age of Construction", value: "3 years" },
+  { label: "Parking", value: "2 Cars" },
+  { label: "Garden", value: "Yes" },
+]
+
   },
   {
     id: 4,
@@ -144,6 +187,18 @@ export const PropertyData: PropertyItem[] = [
     type: "property",
     url: "https://example.com/property-4",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Carpet Area", value: "400 sqft" },
+  { label: "Price per sqft", value: "₹2,500/sqft" },
+  { label: "Floor", value: "1 (Out of 3 Floors)" },
+  { label: "Transaction Type", value: "New" },
+  { label: "Status", value: "Ready to Move" },
+  { label: "Facing", value: "South" },
+  { label: "Furnished Status", value: "Unfurnished" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Age of Construction", value: "1 year" },
+]
+
   },
   {
     id: 5,
@@ -164,6 +219,19 @@ export const PropertyData: PropertyItem[] = [
     type: "property",
     url: "https://example.com/property-5",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Carpet Area", value: "1500 sqft" },
+  { label: "Price per sqft", value: "₹6,500/sqft" },
+  { label: "Floor", value: "5 (Out of 10 Floors)" },
+  { label: "Transaction Type", value: "New" },
+  { label: "Status", value: "Ready to Move" },
+  { label: "Facing", value: "East" },
+  { label: "Furnished Status", value: "Fully Furnished" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Age of Construction", value: "1 year" },
+  { label: "Amenities", value: "Gym, Swimming Pool, Clubhouse" },
+]
+
   },
   {
     id: 6,
@@ -184,6 +252,18 @@ export const PropertyData: PropertyItem[] = [
     type: "property",
     url: "https://example.com/property-6",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Carpet Area", value: "900 sqft" },
+  { label: "Price per sqft", value: "₹3,500/sqft" },
+  { label: "Floor", value: "3 (Out of 5 Floors)" },
+  { label: "Transaction Type", value: "Resale" },
+  { label: "Status", value: "Ready to Move" },
+  { label: "Facing", value: "East" },
+  { label: "Furnished Status", value: "Semi-Furnished" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Age of Construction", value: "2 years" },
+]
+
   },
 
   // 🌳 PLOTS
@@ -213,6 +293,16 @@ export const PropertyData: PropertyItem[] = [
     type: "plot",
     url: "https://example.com/plot-1",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Plot Area", value: "1200 sqft" },
+  { label: "Price per sqft", value: "₹3,750/sqft" },
+  { label: "Transaction Type", value: "Resale" },
+  { label: "Status", value: "Ready to Build" },
+  { label: "Facing", value: "East" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Nearby Amenities", value: "School, Market, Park" },
+]
+
   },
   {
     id: 102,
@@ -240,6 +330,16 @@ export const PropertyData: PropertyItem[] = [
     type: "plot",
     url: "https://example.com/plot-2",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Plot Area", value: "2000 sqft" },
+  { label: "Price per sqft", value: "₹5,500/sqft" },
+  { label: "Transaction Type", value: "New" },
+  { label: "Status", value: "Ready for Construction" },
+  { label: "Facing", value: "Main Road" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Ideal For", value: "Office/Showroom" },
+]
+
   },
   {
     id: 103,
@@ -267,6 +367,17 @@ export const PropertyData: PropertyItem[] = [
     type: "plot",
     url: "https://example.com/plot-3",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Plot Area", value: "1500 sqft" },
+  { label: "Price per sqft", value: "₹6,000/sqft" },
+  { label: "Transaction Type", value: "Resale" },
+  { label: "Status", value: "Ready to Build" },
+  { label: "Facing", value: "North-East" },
+  { label: "Type of Ownership", value: "Leasehold" },
+  { label: "Nearby Landmarks", value: "Park, Mall" },
+  { label: "Connectivity", value: "Main Road, Bus Stop" },
+]
+
   },
   {
     id: 104,
@@ -294,6 +405,16 @@ export const PropertyData: PropertyItem[] = [
     type: "plot",
     url: "https://example.com/plot-4",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Plot Area", value: "600 sqft" },
+  { label: "Price per sqft", value: "₹3,500/sqft" },
+  { label: "Transaction Type", value: "New" },
+  { label: "Status", value: "Ready to Build" },
+  { label: "Facing", value: "South" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Ideal For", value: "Small House / Office" },
+]
+
   },
   {
     id: 105,
@@ -321,5 +442,15 @@ export const PropertyData: PropertyItem[] = [
     type: "plot",
     url: "https://example.com/plot-5",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    specifications: [
+  { label: "Plot Area", value: "5000 sqft" },
+  { label: "Price per sqft", value: "₹2,500/sqft" },
+  { label: "Transaction Type", value: "New" },
+  { label: "Status", value: "Agricultural Land" },
+  { label: "Type of Ownership", value: "Freehold" },
+  { label: "Soil Type", value: "Fertile" },
+  { label: "Water Source", value: "Borewell/Canal" },
+]
+
   },
 ];

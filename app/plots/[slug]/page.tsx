@@ -74,11 +74,15 @@ export default function PlotPage(props: PlotPageProps) {
         </div>
       )}
 
-      {/* Plot Details */}
-      <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">
+      <div className="px-6 sm:px-6 lg:px-[40px] py-6">
         <h1 className="text-primary font-bold text-[clamp(24px,4vw,48px)]">
           {plot.title}
         </h1>
+      </div>
+
+      {/* Plot Details */}
+      <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">
+        
 
         {/* Gallery */}
         <PropertyGallery gallery={plot.gallery || [plot.image]} />
@@ -122,7 +126,9 @@ export default function PlotPage(props: PlotPageProps) {
             <p className="text-secondary-text">{plot.address}</p>
           </div>
           <div>
-            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">Price</h3>
+            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">
+              Price
+            </h3>
             <p className="text-primary font-bold text-[clamp(20px,2.5vw,28px)]">
               ₹{plot.price}
             </p>
@@ -135,11 +141,32 @@ export default function PlotPage(props: PlotPageProps) {
             </a>
           </div>
         </div>
+        {/* Plot Specifications */}
+        {plot.specifications && plot.specifications.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
+              Plot Specifications
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {plot.specifications.map((spec, index) => (
+                <div
+                  key={index}
+                  className="bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-lg"
+                >
+                  <p className="font-medium">{spec.label}</p>
+                  <p className="font-semibold">{spec.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* FLOOR PLAN SECTION */}
         {floorPlans.length > 0 && (
           <div className="floorplan">
-            <h3 className="font-semibold text-primary text-[48px] mb-4">Floor Plan</h3>
+            <h3 className="font-semibold text-primary text-[48px] mb-4">
+              Floor Plan
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {floorPlans.slice(0, 2).map((plan, index) => (

@@ -13,7 +13,9 @@ import { MarkerType } from "@/types/MarkerType";
 import { LatLng } from "leaflet";
 import Image from "next/image";
 
-const MapSection = dynamic(() => import("@/components/MapSection"), { ssr: false });
+const MapSection = dynamic(() => import("@/components/MapSection"), {
+  ssr: false,
+});
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>;
@@ -64,7 +66,6 @@ export default function PropertyPage(props: PropertyPageProps) {
             muted
             loop
             playsInline
-            
           >
             <source src={property.video} type="video/webm" />
             Your browser does not support the video tag.
@@ -72,17 +73,23 @@ export default function PropertyPage(props: PropertyPageProps) {
         </div>
       )}
 
+      <div className="px-6 sm:px-6 lg:px-[40px] py-6">
+        <h1 className="text-primary font-bold text-[clamp(24px,4vw,48px)]">
+          {property.title}
+        </h1>
+      </div>
+
       {/* Gallery Section */}
       <PropertyGallery gallery={property.gallery || [property.image]} />
 
       {/* Property Details */}
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">
-        <h1 className="text-primary font-bold text-[clamp(24px,4vw,48px)]">
-          {property.title}
-        </h1>
+        
 
         {/* Overview */}
-        <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">Overview</h2>
+        <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">
+          Overview
+        </h2>
         {property.tags && property.tags.length > 0 && (
           <div className="flex flex-wrap gap-3 mt-4">
             {property.tags.map((tag, index) => {
@@ -103,15 +110,38 @@ export default function PropertyPage(props: PropertyPageProps) {
         <p className="text-secondary-text text-[clamp(14px,1.6vw,18px)] leading-relaxed mt-4">
           {property.longDescription || property.description}
         </p>
+        {/* Property Specifications */}
+        {property.specifications && property.specifications.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
+              Property Specifications
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {property.specifications.map((spec, index) => (
+                <div
+                  key={index}
+                  className="bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-lg"
+                >
+                  <p className="font-medium">{spec.label}</p>
+                  <p className="font-semibold">{spec.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Address & Price */}
         <div className="flex flex-col lg:flex-row justify-between gap-6 items-start">
           <div>
-            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">Address</h3>
+            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">
+              Address
+            </h3>
             <p className="text-secondary-text">{property.address}</p>
           </div>
           <div>
-            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">Price</h3>
+            <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">
+              Price
+            </h3>
             <p className="text-primary font-bold text-[clamp(20px,2.5vw,28px)]">
               ₹{property.price}
             </p>
@@ -130,7 +160,9 @@ export default function PropertyPage(props: PropertyPageProps) {
         {/* ========================== */}
         {floorPlans.length > 0 && (
           <div className="floorplan">
-            <h3 className="font-semibold text-primary text-[48px] mb-4">Floor Plan</h3>
+            <h3 className="font-semibold text-primary text-[48px] mb-4">
+              Floor Plan
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {floorPlans.slice(0, 2).map((plan, index) => (
@@ -139,9 +171,11 @@ export default function PropertyPage(props: PropertyPageProps) {
                   className="relative overflow-hidden rounded-[12px] cursor-pointer"
                   onClick={() => setSelected(plan)}
                 >
-                  <img
+                  <Image
                     src={plan}
                     alt={`Floor Plan ${index + 1}`}
+                    width={800}
+                    height={600}
                     className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
@@ -152,9 +186,11 @@ export default function PropertyPage(props: PropertyPageProps) {
                   className="relative overflow-hidden rounded-[12px] md:col-span-2 cursor-pointer"
                   onClick={() => setSelected(floorPlans[2])}
                 >
-                  <img
+                  <Image
                     src={floorPlans[2]}
                     alt="Floor Plan 3"
+                    width={800}
+                    height={600}
                     className="w-full h-[300px] sm:h-[400px] md:h-[400px] object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
