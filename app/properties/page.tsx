@@ -31,21 +31,26 @@ const PropertiesPage: React.FC = () => {
     "City Center",
   ];
 
-  // ✅ Only show type="property"
+  // ✅ Updated Filter Logic (matches search + filter dynamically)
   const FilteredProperties = PropertyData.filter((property: PropertyItem) => {
     if (property.type !== "property") return false;
 
-    const MatchesSearch =
-      property.title.toLowerCase().includes(SearchText.toLowerCase()) ||
-      property.description.toLowerCase().includes(SearchText.toLowerCase());
+    const searchLower = SearchText.toLowerCase();
 
-    const MatchesFilter =
+    const matchesSearch =
+      property.title.toLowerCase().includes(searchLower) ||
+      property.description.toLowerCase().includes(searchLower) ||
+      property.address?.toLowerCase().includes(searchLower) ||
+      property.tags.some((tag) => tag.label.toLowerCase().includes(searchLower));
+
+    const matchesFilter =
       ActiveFilter === "All" ||
       property.tags.some(
         (tag) => tag.label.toLowerCase() === ActiveFilter.toLowerCase()
-      );
+      ) ||
+      property.type.toLowerCase() === ActiveFilter.toLowerCase();
 
-    return MatchesSearch && MatchesFilter;
+    return matchesSearch && matchesFilter;
   });
 
   return (
@@ -73,7 +78,7 @@ const PropertiesPage: React.FC = () => {
               placeholder="Search Properties..."
               value={SearchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="w-full px-4 py-3 pl-10 rounded-lg bg-2nd-bg text-white placeholder-secondary-text border border-header-stroke focus:outline-none focus:border-primary"
+              className="w-full px-4 py-3 pl-10 rounded-lg bg-2nd-bg text-primary placeholder-primary border border-header-stroke focus:outline-none focus:border-primary"
             />
             <Search className="absolute left-3 top-3 text-secondary-text" size={20} />
           </div>
@@ -82,7 +87,7 @@ const PropertiesPage: React.FC = () => {
           <div className="relative w-full lg:w-1/4">
             <button
               onClick={() => setDropdownOpen(!DropdownOpen)}
-              className="w-full flex justify-between items-center px-4 py-3 bg-2nd-bg border border-header-stroke rounded-lg text-white focus:outline-none"
+              className="w-full flex justify-between items-center px-4 py-3 bg-2nd-bg border border-header-stroke rounded-lg text-primary focus:outline-none"
             >
               {ActiveFilter}
               {DropdownOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -166,7 +171,7 @@ const PropertiesPage: React.FC = () => {
                   {/* Price + Link */}
                   <div className="flex sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex flex-col gap-[6px]">
-                      <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
+                      <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)] font-semibold">
                         Price
                       </p>
                       <p className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">

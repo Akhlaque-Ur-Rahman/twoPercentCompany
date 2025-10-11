@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { PropertyData } from "@/data/PropertyData";
+import { PropertyData, PropertyItem } from "@/data/PropertyData";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
@@ -13,9 +13,6 @@ const PlotsPage: React.FC = () => {
   const [SearchText, setSearchText] = useState("");
   const [ActiveFilter, setActiveFilter] = useState("All");
   const [DropdownOpen, setDropdownOpen] = useState(false);
-
-  // Only plots
-  const PlotsOnly = PropertyData.filter((p) => p.type === "plot");
 
   // Filters
   const Filters = [
@@ -29,17 +26,27 @@ const PlotsPage: React.FC = () => {
     "Luxury Housing",
   ];
 
-  // Apply search + filter
-  const FilteredPlots = PlotsOnly.filter((plot) => {
-    const MatchesSearch =
-      plot.title.toLowerCase().includes(SearchText.toLowerCase()) ||
-      plot.description.toLowerCase().includes(SearchText.toLowerCase());
+  // ✅ Only plots
+  const PlotsOnly = PropertyData.filter((p: PropertyItem) => p.type === "plot");
 
-    const MatchesFilter =
+  // ✅ Updated Filter Logic
+  const FilteredPlots = PlotsOnly.filter((plot: PropertyItem) => {
+    const searchLower = SearchText.toLowerCase();
+
+    const matchesSearch =
+      plot.title.toLowerCase().includes(searchLower) ||
+      plot.description.toLowerCase().includes(searchLower) ||
+      plot.address?.toLowerCase().includes(searchLower) ||
+      plot.tags.some((tag) => tag.label.toLowerCase().includes(searchLower));
+
+    const matchesFilter =
       ActiveFilter === "All" ||
-      plot.tags.some((tag) => tag.label.toLowerCase() === ActiveFilter.toLowerCase());
+      plot.tags.some(
+        (tag) => tag.label.toLowerCase() === ActiveFilter.toLowerCase()
+      ) ||
+      plot.type.toLowerCase() === ActiveFilter.toLowerCase();
 
-    return MatchesSearch && MatchesFilter;
+    return matchesSearch && matchesFilter;
   });
 
   return (
@@ -67,7 +74,7 @@ const PlotsPage: React.FC = () => {
               placeholder="Search Plots..."
               value={SearchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="w-full px-4 py-3 pl-10 rounded-lg bg-2nd-bg text-white placeholder-secondary-text border border-header-stroke focus:outline-none focus:border-primary"
+              className="w-full px-4 py-3 pl-10 rounded-lg bg-2nd-bg text-primary placeholder-primary border border-header-stroke focus:outline-none focus:border-primary"
             />
             <Search className="absolute left-3 top-3 text-secondary-text" size={20} />
           </div>
@@ -76,7 +83,7 @@ const PlotsPage: React.FC = () => {
           <div className="relative w-full lg:w-1/4">
             <button
               onClick={() => setDropdownOpen(!DropdownOpen)}
-              className="w-full flex justify-between items-center px-4 py-3 bg-2nd-bg border border-header-stroke rounded-lg text-white focus:outline-none"
+              className="w-full flex justify-between items-center px-4 py-3 bg-2nd-bg border border-header-stroke rounded-lg text-primary focus:outline-none"
             >
               {ActiveFilter}
               {DropdownOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -143,11 +150,11 @@ const PlotsPage: React.FC = () => {
 
                   {/* Tags */}
                   <div className="flex flex-wrap items-center gap-[12px]">
-                    {plot.tags.map((tag, index) => {
+                    {plot.tags.map((tag, idx) => {
                       const Icon = tag.icon;
                       return (
                         <div
-                          key={index}
+                          key={idx}
                           className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
                         >
                           <Icon width={20} height={20} />
@@ -162,7 +169,7 @@ const PlotsPage: React.FC = () => {
                   {/* Price + Link */}
                   <div className="flex sm:flex-row sm:items-center justify-between gap-3">
                     <div className="flex flex-col gap-[6px]">
-                      <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)]">
+                      <p className="text-secondary-text text-[clamp(13px,1.5vw,15px)] font-semibold">
                         Price
                       </p>
                       <p className="font-semibold text-[clamp(18px,2vw,24px)] text-primary">
