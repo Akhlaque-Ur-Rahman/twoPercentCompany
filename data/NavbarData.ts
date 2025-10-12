@@ -2,7 +2,7 @@
 export const NavbarData = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
-  { label: "Buy", href: "/buy" },
+  
   { label: "Sell", href: "/sell" },
   { label: "About", href: "/aboutUs" },
   {

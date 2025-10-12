@@ -83,41 +83,69 @@ export default function PlotPage(props: PlotPageProps) {
       {/* Plot Details */}
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">
         
+        {/* ========================== */}
+        {/* GALLERY */}
+        {/* ========================== */}
+        
 
-        {/* Gallery */}
-        <PropertyGallery gallery={plot.gallery || [plot.image]} />
+        {/* ========================== */}
+        {/* OVERVIEW + SPECIFICATIONS */}
+        {/* ========================== */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-6">
+          {/* Left Column – Overview */}
+          <div>
+            <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">
+              Overview
+            </h2>
 
-        {/* Overview */}
-        <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">
-          Overview
-        </h2>
+            {/* Tags */}
+            {plot.tags && plot.tags.length > 0 && (
+              <div className="flex flex-wrap gap-3 mt-4">
+                {plot.tags.map((tag, index) => {
+                  const Icon = tag.icon;
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span>{tag.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
-        {/* Tags */}
-        {plot.tags && plot.tags.length > 0 && (
-          <div className="flex flex-wrap gap-3 mt-4">
-            {plot.tags.map((tag, index) => {
-              const Icon = tag.icon;
-              return (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full text-[clamp(13px,1.4vw,16px)] font-medium"
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{tag.label}</span>
-                </div>
-              );
-            })}
+            {/* Description */}
+            <p className="text-secondary-text text-[clamp(14px,1.6vw,18px)] leading-relaxed mt-4">
+              {plot.longDescription || plot.description}
+            </p>
           </div>
-        )}
 
-        {/* Description */}
-        <div>
-          <p className="text-secondary-text text-[clamp(14px,1.6vw,18px)] leading-relaxed">
-            {plot.longDescription || plot.description}
-          </p>
+          {/* Right Column – Plot Specifications */}
+          {plot.specifications && plot.specifications.length > 0 && (
+            <div>
+              <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
+                Plot Specifications
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {plot.specifications.map((spec, index) => (
+                  <div
+                    key={index}
+                    className="bg-primary/10 text-primary border border-primary/30 px-4 py-3 rounded-lg"
+                  >
+                    <p className="font-medium">{spec.label}</p>
+                    <p className="font-semibold">{spec.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Address & Price */}
+        {/* ========================== */}
+        {/* ADDRESS & PRICE */}
+        {/* ========================== */}
         <div className="flex flex-col lg:flex-row justify-between gap-6 items-start">
           <div>
             <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">
@@ -141,27 +169,10 @@ export default function PlotPage(props: PlotPageProps) {
             </a>
           </div>
         </div>
-        {/* Plot Specifications */}
-        {plot.specifications && plot.specifications.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
-              Plot Specifications
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {plot.specifications.map((spec, index) => (
-                <div
-                  key={index}
-                  className="bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-lg"
-                >
-                  <p className="font-medium">{spec.label}</p>
-                  <p className="font-semibold">{spec.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
+        {/* ========================== */}
         {/* FLOOR PLAN SECTION */}
+        {/* ========================== */}
         {floorPlans.length > 0 && (
           <div className="floorplan">
             <h3 className="font-semibold text-primary text-[48px] mb-4">
@@ -225,7 +236,12 @@ export default function PlotPage(props: PlotPageProps) {
           </div>
         )}
 
-        {/* Map Section */}
+        <PropertyGallery gallery={plot.gallery || [plot.image]} />
+
+        
+        {/* ========================== */}
+        {/* MAP SECTION */}
+        {/* ========================== */}
         <div className="w-full h-[400px] rounded-[16px] overflow-hidden border border-header-stroke">
           <MapSection
             markers={markers}
