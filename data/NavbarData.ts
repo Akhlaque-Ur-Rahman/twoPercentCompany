@@ -1,20 +1,29 @@
-// data/NavbarData.ts
 export const NavbarData = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
-  
   { label: "Sell", href: "/sell" },
-  { label: "About", href: "/aboutUs" },
+  // Rent dropdown
   {
-  label: "Services",
-  href: "/services",
-  submenu: [
-    { label: "Plots", href: "/plots" }, // only the new page
-  ],
-  
-}
+    label: "Rent",
+    href: "#", // non-clickable
+    submenu: [
+      { label: "Tenants", href: "/rent/tenants" },
+      { label: "Landlords", href: "/rent/landlords" },
+    ],
+  },
+ 
+
+  // Services dropdown
+  {
+    label: "Services",
+    href: "#", // non-clickable
+    submenu: [
+      { label: "Plots", href: "/plots" },
+    ],
+  },
 
   
+  { label: "About", href: "/aboutUs" },
 ];
 
 // Contact button config

@@ -10,8 +10,8 @@ const Navbar = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [rentOpen, setRentOpen] = useState(false);
 
-  // ✅ Helper to check active state
   const checkActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
 
@@ -37,12 +37,11 @@ const Navbar = () => {
             (item.submenu &&
               item.submenu.some((sub) => checkActive(sub.href)));
 
-          if (item.label === "Services" && item.submenu) {
+          if ((item.label === "Services" || item.label === "Rent") && item.submenu) {
             return (
-              <div key={item.href} className="relative group">
-                <Link
-                  href={item.href}
-                  className={`px-12 py-4 rounded-[12px] flex items-center gap-1 transition-all duration-200 ${
+              <div key={item.label} className="relative group ">
+                <span
+                  className={`px-12 py-4 rounded-[12px] flex items-center gap-1 cursor-default select-none transition-all duration-200 ${
                     isActive
                       ? "bg-primary text-main-bg shadow-[0_0_0_2px_var(--color-header-stroke)]"
                       : "hover:bg-main-bg hover:shadow-[0_0_0_2px_var(--color-header-stroke)]"
@@ -53,10 +52,10 @@ const Navbar = () => {
                     size={16}
                     className="transition-transform duration-200 group-hover:-rotate-180"
                   />
-                </Link>
+                </span>
 
                 {/* Dropdown */}
-                <div className="absolute left-0 top-full w-full hidden group-hover:flex flex-col bg-2nd-bg border border-header-stroke rounded-lg shadow-lg z-50">
+                <div className="absolute left-0 top-full hidden group-hover:flex flex-col bg-2nd-bg border border-header-stroke rounded-lg shadow-lg z-50 w-full">
                   {item.submenu.map((sub) => {
                     const subActive = checkActive(sub.href);
                     return (
@@ -64,9 +63,7 @@ const Navbar = () => {
                         key={sub.href}
                         href={sub.href}
                         className={`block px-4 py-2 rounded-lg ${
-                          subActive
-                            ? "bg-primary text-main-bg"
-                            : "hover:bg-main-bg"
+                          subActive ? "bg-primary text-main-bg" : "hover:bg-main-bg"
                         }`}
                       >
                         {sub.label}
@@ -143,7 +140,7 @@ const Navbar = () => {
 
             if (item.label === "Services" && item.submenu) {
               return (
-                <div key={item.href} className="flex flex-col gap-2">
+                <div key={item.label} className="flex flex-col gap-2">
                   <button
                     onClick={() => setServicesOpen(!servicesOpen)}
                     className={`flex justify-center items-center gap-3 w-full py-3 px-4 text-left rounded-lg border border-header-stroke ${
@@ -164,9 +161,43 @@ const Navbar = () => {
                             href={sub.href}
                             onClick={() => setIsOpen(false)}
                             className={`py-2 text-center rounded-lg border border-header-stroke ${
-                              subActive
-                                ? "bg-primary text-black"
-                                : "hover:bg-main-bg"
+                              subActive ? "bg-primary text-black" : "hover:bg-main-bg"
+                            }`}
+                          >
+                            {sub.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            if (item.label === "Rent" && item.submenu) {
+              return (
+                <div key={item.label} className="flex flex-col gap-2">
+                  <button
+                    onClick={() => setRentOpen(!rentOpen)}
+                    className={`flex justify-center items-center gap-3 w-full py-3 px-4 text-left rounded-lg border border-header-stroke ${
+                      isActive ? "bg-primary text-black" : ""
+                    }`}
+                  >
+                    {item.label}
+                    {rentOpen ? <ChevronUp /> : <ChevronDown />}
+                  </button>
+
+                  {rentOpen && (
+                    <div className="flex flex-col gap-2 pl-4">
+                      {item.submenu.map((sub) => {
+                        const subActive = checkActive(sub.href);
+                        return (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`py-2 text-center rounded-lg border border-header-stroke ${
+                              subActive ? "bg-primary text-black" : "hover:bg-main-bg"
                             }`}
                           >
                             {sub.label}
