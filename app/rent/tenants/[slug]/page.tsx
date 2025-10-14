@@ -9,7 +9,6 @@ import Footer from "@/components/layout/Footer";
 import dynamic from "next/dynamic";
 import PropertyGallery from "@/components/PropertyGallery";
 import { PropertyData, PropertyItem } from "@/data/PropertyData";
-import { MarkerType } from "@/types/MarkerType";
 import { LatLng } from "leaflet";
 import Image from "next/image";
 
@@ -17,16 +16,15 @@ const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
 });
 
-export default function PropertyPage() {
+export default function TenantPropertyPage() {
   const [selected, setSelected] = useState<string | null>(null);
-
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  // Extract slug from URL dynamically
+  // Extract slug from URL
   const slug = pathname.split("/").pop() || "";
 
-  const mode = searchParams.get("mode") || "buyer"; // buyer or tenant mode
+  const mode = searchParams.get("mode") || "tenant"; // default to tenant mode
 
   const property: PropertyItem | undefined = useMemo(
     () => PropertyData.find((p) => p.slug === slug),
@@ -42,7 +40,7 @@ export default function PropertyPage() {
       ? [property.position.lat, property.position.lng]
       : (property.position as [number, number]);
 
-  const markers: MarkerType[] = [
+  const markers = [
     {
       id: property.id,
       title: property.title,
@@ -88,17 +86,16 @@ export default function PropertyPage() {
         )}
       </div>
 
-      {/* Property Details */}
+      {/* Overview + Specifications */}
       <div className="bg-main-bg text-white px-6 sm:px-6 lg:px-[40px] py-6 lg:py-[16px] space-y-6 lg:space-y-12">
-        {/* OVERVIEW + SPECIFICATIONS */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-6">
-          {/* Left Column – Overview */}
+          {/* Left Column: Overview */}
           <div>
             <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold">
               Overview
             </h2>
 
-            {property.tags && property.tags.length > 0 && (
+            {property.tags?.length > 0 && (
               <div className="flex flex-wrap gap-3 mt-4">
                 {property.tags.map((tag, index) => {
                   const Icon = tag.icon;
@@ -120,25 +117,28 @@ export default function PropertyPage() {
             </p>
           </div>
 
-          {/* Right Column – Property Specifications */}
-          {property.specifications && property.specifications.length > 0 && (
-            <div>
-              <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
-                Property Specifications
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {property.specifications.map((spec, index) => (
-                  <div
-                    key={index}
-                    className="bg-primary/10 text-primary border border-primary/30 px-4 py-3 rounded-lg"
-                  >
-                    <p className="font-medium">{spec.label}</p>
-                    <p className="font-semibold">{spec.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Right Column: Specifications */}
+          {/* Right Column: Specifications */}
+{property.specifications?.length ? (
+  <div>
+    <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
+      Property Specifications
+    </h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {property.specifications.map((spec, index) => (
+        <div
+          key={index}
+          className="bg-primary/10 text-primary border border-primary/30 px-4 py-3 rounded-lg"
+        >
+          <p className="font-medium">{spec.label}</p>
+          <p className="font-semibold">{spec.value}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+) : null}
+
+
         </div>
 
         {/* Address & Price */}
@@ -157,26 +157,16 @@ export default function PropertyPage() {
               ₹{property.price}
             </p>
 
-            {/* Conditional CTA */}
-            {mode === "tenant" ? (
-              <a
-                href={`/tenant/enquiry?property=${slug}`}
-                className="mt-4 inline-block bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition"
-              >
-                {ctaText}
-              </a>
-            ) : (
-              <a
-                href="/contact"
-                className="mt-4 inline-block bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition"
-              >
-                {ctaText}
-              </a>
-            )}
+            <a
+              href={mode === "tenant" ? `/tenant/enquiry?property=${slug}` : "/contact"}
+              className="mt-4 inline-block bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition"
+            >
+              {ctaText}
+            </a>
           </div>
         </div>
 
-        {/* FLOOR PLAN SECTION */}
+        {/* Floor Plans */}
         {floorPlans.length > 0 && (
           <div className="floorplan">
             <h3 className="font-semibold text-primary text-[48px] mb-4">
@@ -184,22 +174,21 @@ export default function PropertyPage() {
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {floorPlans.slice(0, 2).map((plan, index) => (
+              {floorPlans.slice(0, 2).map((plan, idx) => (
                 <div
-                  key={index}
+                  key={idx}
                   className="relative overflow-hidden rounded-[12px] cursor-pointer"
                   onClick={() => setSelected(plan)}
                 >
                   <Image
                     src={plan}
-                    alt={`Floor Plan ${index + 1}`}
+                    alt={`Floor Plan ${idx + 1}`}
                     width={800}
                     height={600}
                     className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
               ))}
-
               {floorPlans[2] && (
                 <div
                   className="relative overflow-hidden rounded-[12px] md:col-span-2 cursor-pointer"
@@ -216,7 +205,6 @@ export default function PropertyPage() {
               )}
             </div>
 
-            {/* Fullscreen Popup */}
             <AnimatePresence>
               {selected && (
                 <motion.div
@@ -240,10 +228,10 @@ export default function PropertyPage() {
           </div>
         )}
 
-        {/* Gallery Section */}
+        {/* Gallery */}
         <PropertyGallery gallery={property.gallery || [property.image]} />
 
-        {/* Map Section */}
+        {/* Map */}
         <div className="w-full h-[400px] rounded-[16px] overflow-hidden border border-header-stroke">
           <MapSection markers={markers} center={positionArray} zoom={15} showLink={false} />
         </div>

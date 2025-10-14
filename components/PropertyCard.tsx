@@ -6,21 +6,24 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 
-interface PropertyCardProps {
-  property: {
-    id: number;
-    slug: string;
-    title: string;
-    description: string;
-    address: string;
-    price: string;
-    type: string;
-    image: string;
-    tags: { label: string; icon: React.ElementType }[];
-  };
+interface PropertyType {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  address: string;
+  price: string;
+  type: string;
+  image: string;
+  tags: { label: string; icon: React.ElementType }[];
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
+interface PropertyCardProps {
+  property: PropertyType;
+  linkTo?: string; // optional link controlled by parent
+}
+
+const PropertyCard: React.FC<PropertyCardProps> = ({ property, linkTo }) => {
   return (
     <motion.article
       whileHover={{ scale: 1.02 }}
@@ -69,7 +72,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         ))}
       </div>
 
-      {/* Price + Button */}
+      {/* Price + Optional Button */}
       <div className="price-btn-container py-[8px] flex sm:flex-row sm:items-center justify-between gap-3">
         <div className="price-box flex items-center sm:items-start flex-col gap-[6px]">
           <p className="text-secondary-text font-semibold text-[clamp(13px,1.5vw,15px)]">
@@ -79,12 +82,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             ₹{property.price}
           </p>
         </div>
-        <Link
-          href={`/properties/${property.slug}`}
-          className="w-full flex justify-center items-center sm:w-auto px-[clamp(16px,2vw,24px)] py-[clamp(10px,1.5vw,12px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center"
-        >
-          View Property Details
-        </Link>
+
+        {linkTo && (
+          <Link
+            href={linkTo}
+            className="w-full flex justify-center items-center sm:w-auto px-[clamp(16px,2vw,24px)] py-[clamp(10px,1.5vw,12px)] rounded-[16px] bg-primary font-semibold text-[clamp(14px,1.6vw,16px)] text-center"
+          >
+            View Property Details
+          </Link>
+        )}
       </div>
     </motion.article>
   );
