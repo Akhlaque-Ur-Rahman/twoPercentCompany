@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { useSearchParams, usePathname } from "next/navigation";
-import { notFound } from "next/navigation";
+import { useSearchParams, usePathname, notFound } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -11,6 +10,7 @@ import PropertyGallery from "@/components/PropertyGallery";
 import { PropertyData, PropertyItem } from "@/data/PropertyData";
 import { LatLng } from "leaflet";
 import Image from "next/image";
+
 
 const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
@@ -118,27 +118,24 @@ export default function TenantPropertyPage() {
           </div>
 
           {/* Right Column: Specifications */}
-          {/* Right Column: Specifications */}
-{property.specifications?.length ? (
-  <div>
-    <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
-      Property Specifications
-    </h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {property.specifications.map((spec, index) => (
-        <div
-          key={index}
-          className="bg-primary/10 text-primary border border-primary/30 px-4 py-3 rounded-lg"
-        >
-          <p className="font-medium">{spec.label}</p>
-          <p className="font-semibold">{spec.value}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-) : null}
-
-
+          {property.specifications?.length ? (
+            <div>
+              <h2 className="text-[clamp(20px,2.5vw,32px)] text-primary font-semibold mb-4">
+                Property Specifications
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {property.specifications.map((spec, index) => (
+                  <div
+                    key={index}
+                    className="bg-primary/10 text-primary border border-primary/30 px-4 py-3 rounded-lg"
+                  >
+                    <p className="font-medium">{spec.label}</p>
+                    <p className="font-semibold">{spec.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
 
         {/* Address & Price */}
@@ -149,6 +146,7 @@ export default function TenantPropertyPage() {
             </h3>
             <p className="text-secondary-text">{property.address}</p>
           </div>
+
           <div>
             <h3 className="font-semibold text-primary text-[clamp(18px,2vw,24px)]">
               {priceLabel}
@@ -158,7 +156,11 @@ export default function TenantPropertyPage() {
             </p>
 
             <a
-              href={mode === "tenant" ? `/tenant/enquiry?property=${slug}` : "/contact"}
+              href={
+                mode === "tenant"
+                  ? `/rent/tenants/enquiry?property=${slug}`
+                  : "/contact"
+              }
               className="mt-4 inline-block bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition"
             >
               {ctaText}
@@ -205,6 +207,7 @@ export default function TenantPropertyPage() {
               )}
             </div>
 
+            {/* Enlarged floor plan view */}
             <AnimatePresence>
               {selected && (
                 <motion.div
@@ -231,9 +234,14 @@ export default function TenantPropertyPage() {
         {/* Gallery */}
         <PropertyGallery gallery={property.gallery || [property.image]} />
 
-        {/* Map */}
+        {/* Map Section */}
         <div className="w-full h-[400px] rounded-[16px] overflow-hidden border border-header-stroke">
-          <MapSection markers={markers} center={positionArray} zoom={15} showLink={false} />
+          <MapSection
+            markers={markers}
+            center={positionArray}
+            zoom={15}
+            showLink={false}
+          />
         </div>
       </div>
 

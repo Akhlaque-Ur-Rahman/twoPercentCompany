@@ -53,7 +53,7 @@ const Newsletter: React.FC = () => {
           {/* Button with Animated Icon */}
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 px-4 py-2 sm:py-3 rounded-[12px] bg-primary text-white font-semibold hover:opacity-90 transition w-full sm:w-auto cursor-pointer active:scale-105"
+            className="flex items-center justify-center gap-2 px-4 py-2 sm:py-3 rounded-[12px] bg-primary text-black font-semibold hover:opacity-90 transition w-full sm:w-auto cursor-pointer active:scale-105"
           >
             Subscribe
             <AnimatePresence mode="wait">
@@ -65,7 +65,7 @@ const Newsletter: React.FC = () => {
                   exit={{ scale: 0, opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <CircleCheck className="size-4 sm:size-5 text-white" strokeWidth={2} />
+                  <CircleCheck className="size-4 sm:size-5 text-black" strokeWidth={2} />
                 </motion.div>
               ) : (
                 <motion.div

@@ -235,7 +235,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
                   }
-                  className="mb-2 p-3 rounded-xl bg-main-bg border border-header-stroke w-full placeholder:text-primary focus:outline-none focus:border-primary"
+                  className="mb-2 p-3 rounded-xl bg-main-bg border border-header-stroke w-full placeholder:text-primary focus:outline-none focus:border-primary resize-none"
                 />
                 <textarea
                   placeholder="Long Description"
@@ -243,7 +243,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                   onChange={(e) =>
                     setFormData({ ...formData, longDescription: e.target.value })
                   }
-                  className="mb-2 p-3 rounded-xl bg-main-bg border border-header-stroke w-full placeholder:text-primary focus:outline-none focus:border-primary"
+                  className="mb-2 p-3 rounded-xl bg-main-bg border border-header-stroke w-full placeholder:text-primary focus:outline-none focus:border-primary resize-none"
                 />
                 <input
                   type="text"
