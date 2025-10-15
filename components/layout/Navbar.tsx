@@ -152,7 +152,7 @@ const Navbar = () => {
               return (
                 <button
                   key={item.label}
-                  className={`flex justify-center items-center gap-3 w-full py-3 px-4 text-left rounded-lg border border-header-stroke ${
+                  className={`flex justify-start items-center gap-3 w-full py-3 px-30 text-left rounded-lg border border-header-stroke ${
                     isActive ? "bg-primary text-black" : ""
                   }`}
                   onClick={() => setSubmenuOpen(item.label)}
@@ -168,7 +168,7 @@ const Navbar = () => {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`py-3 px-4 rounded-lg text-center border border-header-stroke ${
+                className={`py-3 px-30 rounded-lg text-left border border-header-stroke ${
                   isActive
                     ? "bg-primary text-black shadow-[0_0_0_2px_var(--color-header-stroke)] border-none"
                     : "hover:bg-main-bg"
@@ -181,7 +181,7 @@ const Navbar = () => {
 
           {/* Contact Button */}
           <div
-            className={`rounded-xl py-3 text-center mt-4 transition-all duration-200 ${
+            className={`rounded-xl py-3 text-left  transition-all duration-200 ${
               checkActive(ContactBtnData.href)
                 ? "bg-primary text-black shadow-[0_0_0_2px_var(--color-header-stroke)]"
                 : "border-2 border-header-stroke hover:bg-main-bg"
@@ -189,7 +189,7 @@ const Navbar = () => {
           >
             <Link
               href={ContactBtnData.href}
-              className="text-lg w-full"
+              className="text-lg w-full px-30"
               onClick={() => setIsOpen(false)}
             >
               {ContactBtnData.label}
@@ -220,7 +220,7 @@ const Navbar = () => {
                       setIsOpen(false);
                       setSubmenuOpen(null);
                     }}
-                    className={`py-3 px-4 rounded-lg border border-header-stroke text-center ${
+                    className={`py-3 px-38 rounded-lg border border-header-stroke text-left ${
                       subActive ? "bg-primary text-black" : "hover:bg-main-bg"
                     }`}
                   >
