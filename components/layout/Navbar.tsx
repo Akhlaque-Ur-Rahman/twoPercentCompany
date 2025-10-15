@@ -4,13 +4,12 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { NavbarData, ContactBtnData } from "@/data/NavbarData";
 import { usePathname } from "next/navigation";
-import { ChartNoAxesGantt, X, ChevronDown, ChevronUp } from "lucide-react";
+import { ChartNoAxesGantt, X, ChevronDown, ArrowLeft } from "lucide-react";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [rentOpen, setRentOpen] = useState(false);
+  const [submenuOpen, setSubmenuOpen] = useState<null | string>(null); // "Services" | "Rent" | null
 
   const checkActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -39,7 +38,7 @@ const Navbar = () => {
 
           if ((item.label === "Services" || item.label === "Rent") && item.submenu) {
             return (
-              <div key={item.label} className="relative group ">
+              <div key={item.label} className="relative group">
                 <span
                   className={`px-12 py-4 rounded-[12px] flex items-center gap-1 cursor-default select-none transition-all duration-200 ${
                     isActive
@@ -54,7 +53,7 @@ const Navbar = () => {
                   />
                 </span>
 
-                {/* Dropdown */}
+                {/* Desktop Dropdown */}
                 <div className="absolute left-0 top-full hidden group-hover:flex flex-col bg-2nd-bg border border-header-stroke rounded-lg shadow-lg z-50 w-full">
                   {item.submenu.map((sub) => {
                     const subActive = checkActive(sub.href);
@@ -115,98 +114,52 @@ const Navbar = () => {
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false);
+            setSubmenuOpen(null);
+          }}
         />
       )}
 
-      {/* Mobile Drawer */}
+      {/* Main Drawer */}
       <div
         className={`fixed bottom-0 left-0 right-0 bg-2nd-bg rounded-t-2xl z-50 transform transition-transform duration-300 px-[32px] ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
         <div className="text-right mt-4">
-          <button className="text-white" onClick={() => setIsOpen(false)}>
+          <button
+            className="text-white"
+            onClick={() => {
+              setIsOpen(false);
+              setSubmenuOpen(null);
+            }}
+          >
             <X size={28} />
           </button>
         </div>
 
-        <nav className="flex flex-col mt-8 gap-4 pb-6">
+        {/* Main Menu */}
+        <nav className="flex flex-col mt-8 gap-4 pb-6 relative">
           {NavbarData.map((item) => {
             const isActive =
               checkActive(item.href) ||
               (item.submenu &&
                 item.submenu.some((sub) => checkActive(sub.href)));
 
-            if (item.label === "Services" && item.submenu) {
+            // Only open submenu for Services or Rent
+            if ((item.label === "Services" || item.label === "Rent") && item.submenu) {
               return (
-                <div key={item.label} className="flex flex-col gap-2">
-                  <button
-                    onClick={() => setServicesOpen(!servicesOpen)}
-                    className={`flex justify-center items-center gap-3 w-full py-3 px-4 text-left rounded-lg border border-header-stroke ${
-                      isActive ? "bg-primary text-black" : ""
-                    }`}
-                  >
-                    {item.label}
-                    {servicesOpen ? <ChevronUp /> : <ChevronDown />}
-                  </button>
-
-                  {servicesOpen && (
-                    <div className="flex flex-col gap-2 pl-4">
-                      {item.submenu.map((sub) => {
-                        const subActive = checkActive(sub.href);
-                        return (
-                          <Link
-                            key={sub.href}
-                            href={sub.href}
-                            onClick={() => setIsOpen(false)}
-                            className={`py-2 text-center rounded-lg border border-header-stroke ${
-                              subActive ? "bg-primary text-black" : "hover:bg-main-bg"
-                            }`}
-                          >
-                            {sub.label}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
-            if (item.label === "Rent" && item.submenu) {
-              return (
-                <div key={item.label} className="flex flex-col gap-2">
-                  <button
-                    onClick={() => setRentOpen(!rentOpen)}
-                    className={`flex justify-center items-center gap-3 w-full py-3 px-4 text-left rounded-lg border border-header-stroke ${
-                      isActive ? "bg-primary text-black" : ""
-                    }`}
-                  >
-                    {item.label}
-                    {rentOpen ? <ChevronUp /> : <ChevronDown />}
-                  </button>
-
-                  {rentOpen && (
-                    <div className="flex flex-col gap-2 pl-4">
-                      {item.submenu.map((sub) => {
-                        const subActive = checkActive(sub.href);
-                        return (
-                          <Link
-                            key={sub.href}
-                            href={sub.href}
-                            onClick={() => setIsOpen(false)}
-                            className={`py-2 text-center rounded-lg border border-header-stroke ${
-                              subActive ? "bg-primary text-black" : "hover:bg-main-bg"
-                            }`}
-                          >
-                            {sub.label}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                <button
+                  key={item.label}
+                  className={`flex justify-center items-center gap-3 w-full py-3 px-4 text-left rounded-lg border border-header-stroke ${
+                    isActive ? "bg-primary text-black" : ""
+                  }`}
+                  onClick={() => setSubmenuOpen(item.label)}
+                >
+                  {item.label}
+                  <ChevronDown />
+                </button>
               );
             }
 
@@ -226,7 +179,7 @@ const Navbar = () => {
             );
           })}
 
-          {/* Contact Button (Mobile) */}
+          {/* Contact Button */}
           <div
             className={`rounded-xl py-3 text-center mt-4 transition-all duration-200 ${
               checkActive(ContactBtnData.href)
@@ -243,6 +196,41 @@ const Navbar = () => {
             </Link>
           </div>
         </nav>
+
+        {/* Submenu Drawer */}
+        {submenuOpen && (
+          <div className="absolute top-0 left-0 w-full h-full bg-2nd-bg rounded-t-2xl flex flex-col transform transition-transform duration-300 z-50">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-header-stroke">
+              <button
+                onClick={() => setSubmenuOpen(null)}
+                className="flex items-center gap-2 text-white"
+              >
+                <ArrowLeft size={20} /> Back
+              </button>
+              <span className="font-semibold text-white">{submenuOpen}</span>
+            </div>
+            <div className="flex flex-col mt-4 gap-2 px-4">
+              {NavbarData.find((i) => i.label === submenuOpen)?.submenu?.map((sub) => {
+                const subActive = checkActive(sub.href);
+                return (
+                  <Link
+                    key={sub.href}
+                    href={sub.href}
+                    onClick={() => {
+                      setIsOpen(false);
+                      setSubmenuOpen(null);
+                    }}
+                    className={`py-3 px-4 rounded-lg border border-header-stroke text-center ${
+                      subActive ? "bg-primary text-black" : "hover:bg-main-bg"
+                    }`}
+                  >
+                    {sub.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

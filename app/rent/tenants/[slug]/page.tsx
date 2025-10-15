@@ -11,7 +11,6 @@ import { PropertyData, PropertyItem } from "@/data/PropertyData";
 import { LatLng } from "leaflet";
 import Image from "next/image";
 
-
 const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
 });
@@ -26,10 +25,12 @@ export default function TenantPropertyPage() {
 
   const mode = searchParams.get("mode") || "tenant"; // default to tenant mode
 
-  const property: PropertyItem | undefined = useMemo(
-    () => PropertyData.find((p) => p.slug === slug),
-    [slug]
-  );
+  // ✅ Filter out plots before searching by slug
+  const property: PropertyItem | undefined = useMemo(() => {
+    return PropertyData.filter((p) => p.type !== "plot").find(
+      (p) => p.slug === slug
+    );
+  }, [slug]);
 
   if (!property) return notFound();
 

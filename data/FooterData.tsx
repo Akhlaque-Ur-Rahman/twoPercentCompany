@@ -23,10 +23,11 @@ export const quickLinks: FooterLink[] = [
 
 // Services / Other links
 export const servicesLinks: FooterLink[] = [
-  { label: "Plots", href: "/properties" },
-  { label: "Villas", href: "https://example.com/villas" },
-  { label: "Apartments", href: "https://example.com/apartments" },
-  { label: "Commercial", href: "https://example.com/commercial" },
+  { label: "Sell", href: "/sell" },
+  { label: "Be A Tenant", href: "/tenants" },
+  { label: "Be A Landlord", href: "/landlords" },
+  { label: "Be An Investor", href: "/beaninvestor" },
+
 ];
 
 // Social links
