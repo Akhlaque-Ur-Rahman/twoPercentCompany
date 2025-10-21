@@ -24,8 +24,8 @@ export const quickLinks: FooterLink[] = [
 // Services / Other links
 export const servicesLinks: FooterLink[] = [
   { label: "Sell", href: "/sell" },
-  { label: "Be A Tenant", href: "/tenants" },
-  { label: "Be A Landlord", href: "/landlords" },
+  { label: "Be A Tenant", href: "/rent/tenants" },
+  { label: "Be A Landlord", href: "/rent/landlords" },
   { label: "Be An Investor", href: "/beaninvestor" },
 
 ];
