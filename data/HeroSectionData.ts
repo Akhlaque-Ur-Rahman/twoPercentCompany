@@ -22,13 +22,13 @@ export interface HeroSlide {
 
 export const HeroSectionSlides: HeroSlide[] = [
   {
-    heading: "Discover Your Dream Property with Estatein",
+    heading: "Discover Your Dream Property with 2% Company",
     description:
       "Your journey to finding the perfect property begins here. Explore our listings to find the home that matches your dreams.",
     imageMain: "/images/ImageMainDesktop.png",
     imageOverlay: "/images/AbstractDesign1.png",
     buttons: [
-      { id: 1, label: "Learn More", type: "secondary", link: "/learn-more" },
+      { id: 1, label: "Learn More", type: "secondary", link: "/aboutUs" },
       { id: 2, label: "Browse Properties", type: "primary", link: "/properties" },
     ],
     cards: [
@@ -44,7 +44,7 @@ export const HeroSectionSlides: HeroSlide[] = [
     imageMain: "/images/apartment2.png",
     imageOverlay: "/images/AbstractDesign1.png",
     buttons: [
-      { id: 1, label: "See Apartments", type: "primary", link: "/apartments" },
+      { id: 1, label: "See Apartments", type: "primary", link: "/properties" },
       { id: 2, label: "Contact Us", type: "secondary", link: "/contact" },
     ],
     cards: [
@@ -61,7 +61,7 @@ export const HeroSectionSlides: HeroSlide[] = [
     imageOverlay: "/images/AbstractDesign1.png",
     buttons: [
       { id: 1, label: "View Plots", type: "primary", link: "/plots" },
-      { id: 2, label: "Consult Now", type: "secondary", link: "/consult" },
+      { id: 2, label: "Consult Now", type: "secondary", link: "/contact" },
     ],
     cards: [
       { id: 1, value: "80+", label: "Available Plots" },

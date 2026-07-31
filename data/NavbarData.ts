@@ -5,18 +5,17 @@ export const NavbarData = [
   // Rent dropdown
   {
     label: "Rent",
-    href: "#", // non-clickable
+    href: "/rent",
     submenu: [
       { label: "Tenants", href: "/rent/tenants" },
       { label: "Landlords", href: "/rent/landlords" },
     ],
   },
- 
 
   // Services dropdown
   {
     label: "Services",
-    href: "#", // non-clickable
+    href: "/services",
     submenu: [
       { label: "Plots", href: "/plots" },
     ],

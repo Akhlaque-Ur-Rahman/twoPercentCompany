@@ -15,7 +15,7 @@ export const TestimonialData: TestimonialItem[] = [
     location: "India, Mumbai",
     title: "Outstanding Experience",
     feedback:
-      "Our experience with Estatein was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!",
+      "Our experience with 2% Company was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!",
     rating: 5,
     image: "/images/avatar1.png",
   },
@@ -25,7 +25,7 @@ export const TestimonialData: TestimonialItem[] = [
     location: "India, Delhi",
     title: "Smooth Buying Process",
     feedback:
-      "Estatein guided us perfectly through the buying process. Excellent communication and support throughout.",
+      "2% Company guided us perfectly through the buying process. Excellent communication and support throughout.",
     rating: 4,
     image: "/images/avatar3.png",
   },
@@ -55,7 +55,7 @@ export const TestimonialData: TestimonialItem[] = [
     location: "India, Jaipur",
     title: "Dream Home Secured",
     feedback:
-      "Estatein made buying our dream home simple and stress-free. Truly professional and supportive.",
+      "2% Company made buying our dream home simple and stress-free. Truly professional and supportive.",
     rating: 5,
     image: "/images/avatar2.png",
   },

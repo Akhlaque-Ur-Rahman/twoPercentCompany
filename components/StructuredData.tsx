@@ -76,6 +76,11 @@ export function PropertySchema({
       '@type': 'Brand',
       name: '2% Company',
     },
+    additionalProperty: {
+      '@type': 'PropertyValue',
+      name: 'Address',
+      value: address,
+    },
   }
 
   return (

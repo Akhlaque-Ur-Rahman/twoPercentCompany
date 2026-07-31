@@ -1,4 +1,4 @@
-import { LatLngExpression } from "leaflet";
+﻿import { LatLngExpression } from "leaflet";
 import {
   LucideIcon,
   BedDouble,
@@ -26,7 +26,7 @@ export interface PropertyItem {
   position: LatLngExpression;
   image: string;
   gallery?: string[];
-  video?: string; // ✅ Added optional video field
+  video?: string; // âœ… Added optional video field
   price: string;
   tags: PropertyTag[];
   slug: string;
@@ -42,7 +42,7 @@ export interface PropertyItem {
 
 // All data (Properties + Plots)
 export const PropertyData: PropertyItem[] = [
-  // 🏢 PROPERTIES
+  // ðŸ¢ PROPERTIES
   {
     id: 1,
     title: "Sai Residency Apartment",
@@ -60,7 +60,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/property5.webp",
       "/images/property6.webp",
     ],
-    video: "/videos/property-sale.webm", // ✅ Added
+    video: "/videos/property-sale.webm", // âœ… Added
     price: "1,25,00,000",
     tags: [
       { icon: BedDouble, label: "3BHK" },
@@ -69,11 +69,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "sai-residency-apartment",
     type: "property",
-    url: "https://example.com/property-1",
+    url: "https://www.2percentcompany.in/properties/sai-residency-apartment",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Carpet Area", value: "900 sqft" },
-  { label: "Price per sqft", value: "₹3,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹3,500/sqft" },
   { label: "Floor", value: "3 (Out of 5 Floors)" },
   { label: "Transaction Type", value: "Resale" },
   { label: "Status", value: "Ready to Move" },
@@ -101,7 +101,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/property5.webp",
       "/images/property6.webp",
     ],
-    video: "/videos/property-sale.webm", // ✅ Added
+    video: "/videos/property-sale.webm", // âœ… Added
     price: "85,00,000",
     tags: [
       { icon: BedDouble, label: "2BHK" },
@@ -110,11 +110,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "green-valley-housing",
     type: "property",
-    url: "https://example.com/property-2",
+    url: "https://www.2percentcompany.in/properties/green-valley-housing",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Carpet Area", value: "2200 sqft" },
-  { label: "Price per sqft", value: "₹7,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹7,500/sqft" },
   { label: "Floor", value: "Top Floor" },
   { label: "Transaction Type", value: "New" },
   { label: "Status", value: "Ready to Move" },
@@ -130,7 +130,7 @@ export const PropertyData: PropertyItem[] = [
     title: "Ganga View Towers",
     description: "Luxury 4BHK apartment overlooking the Ganga river.",
     longDescription:
-      "Ganga View Towers features premium 4BHK apartments with stunning views of the Ganga river. The apartments are fully furnished with modern interiors and high-quality materials. Amenities include a rooftop terrace, swimming pool, and secure parking. This property is perfect for those who want luxurious living with a scenic riverside environment and easy access to Patna’s main hubs.",
+      "Ganga View Towers features premium 4BHK apartments with stunning views of the Ganga river. The apartments are fully furnished with modern interiors and high-quality materials. Amenities include a rooftop terrace, swimming pool, and secure parking. This property is perfect for those who want luxurious living with a scenic riverside environment and easy access to Patnaâ€™s main hubs.",
     address: "Gulzarbagh, Near Ganga River, Patna, Bihar",
     position: [25.61, 85.144],
     image: "/images/seasidevilla.png",
@@ -142,7 +142,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/property5.webp",
       "/images/property6.webp",
     ],
-    video: "/videos/property-sale.webm", // ✅ Added
+    video: "/videos/property-sale.webm", // âœ… Added
     price: "1,50,00,000",
     tags: [
       { icon: BedDouble, label: "4BHK" },
@@ -151,12 +151,12 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "ganga-view-towers",
     type: "property",
-    url: "https://example.com/property-3",
+    url: "https://www.2percentcompany.in/properties/ganga-view-towers",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Built-up Area", value: "1800 sqft" },
   { label: "Plot Area", value: "2000 sqft" },
-  { label: "Price per sqft", value: "₹4,000/sqft" },
+  { label: "Price per sqft", value: "â‚¹4,000/sqft" },
   { label: "Transaction Type", value: "Resale" },
   { label: "Status", value: "Ready to Move" },
   { label: "Facing", value: "North-West" },
@@ -176,7 +176,7 @@ export const PropertyData: PropertyItem[] = [
     position: [25.609, 85.141],
     image: "/images/seasidevilla.png",
     gallery: ["/images/seasidevilla.png", "/images/seasidevilla5.png"],
-    video: "/videos/property-sale.webm", // ✅ Added
+    video: "/videos/property-sale.webm", // âœ… Added
     price: "98,00,000",
     tags: [
       { icon: BedDouble, label: "3BHK" },
@@ -185,11 +185,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "urban-luxury-apartment",
     type: "property",
-    url: "https://example.com/property-4",
+    url: "https://www.2percentcompany.in/properties/urban-luxury-apartment",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Carpet Area", value: "400 sqft" },
-  { label: "Price per sqft", value: "₹2,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹2,500/sqft" },
   { label: "Floor", value: "1 (Out of 3 Floors)" },
   { label: "Transaction Type", value: "New" },
   { label: "Status", value: "Ready to Move" },
@@ -208,7 +208,7 @@ export const PropertyData: PropertyItem[] = [
     position: [25.585, 85.12],
     image: "/images/seasidevilla.png",
     gallery: ["/images/seasidevilla.png", "/images/seasidevilla6.png"],
-    video: "/videos/property-sale.webm", // ✅ Added
+    video: "/videos/property-sale.webm", // âœ… Added
     price: "1,50,00,000",
     tags: [
       { icon: BedDouble, label: "5BHK" },
@@ -217,11 +217,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "countryside-family-home",
     type: "property",
-    url: "https://example.com/property-5",
+    url: "https://www.2percentcompany.in/properties/countryside-family-home",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Carpet Area", value: "1500 sqft" },
-  { label: "Price per sqft", value: "₹6,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹6,500/sqft" },
   { label: "Floor", value: "5 (Out of 10 Floors)" },
   { label: "Transaction Type", value: "New" },
   { label: "Status", value: "Ready to Move" },
@@ -241,7 +241,7 @@ export const PropertyData: PropertyItem[] = [
     position: [25.61, 85.13],
     image: "/images/seasidevilla.png",
     gallery: ["/images/seasidevilla.png", "/images/seasidevilla7.png"],
-    video: "/videos/property-sale.webm", // ✅ Added
+    video: "/videos/property-sale.webm", // âœ… Added
     price: "32,00,000",
     tags: [
       { icon: BedDouble, label: "1BHK" },
@@ -250,11 +250,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "compact-1bhk-studio",
     type: "property",
-    url: "https://example.com/property-6",
+    url: "https://www.2percentcompany.in/properties/compact-1bhk-studio",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Carpet Area", value: "900 sqft" },
-  { label: "Price per sqft", value: "₹3,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹3,500/sqft" },
   { label: "Floor", value: "3 (Out of 5 Floors)" },
   { label: "Transaction Type", value: "Resale" },
   { label: "Status", value: "Ready to Move" },
@@ -266,7 +266,7 @@ export const PropertyData: PropertyItem[] = [
 
   },
 
-  // 🌳 PLOTS
+  // ðŸŒ³ PLOTS
   {
     id: 101,
     title: "Shivaji Enclave Plot",
@@ -283,7 +283,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
-    video: "/videos/property-sale2.webm", // ✅ Added
+    video: "/videos/property-sale2.webm", // âœ… Added
     price: "45,00,000",
     tags: [
       { icon: Trees, label: "Residential Plot" },
@@ -291,11 +291,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "shivaji-enclave-plot",
     type: "plot",
-    url: "https://example.com/plot-1",
+    url: "https://www.2percentcompany.in/plots/shivaji-enclave-plot",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Plot Area", value: "1200 sqft" },
-  { label: "Price per sqft", value: "₹3,750/sqft" },
+  { label: "Price per sqft", value: "â‚¹3,750/sqft" },
   { label: "Transaction Type", value: "Resale" },
   { label: "Status", value: "Ready to Build" },
   { label: "Facing", value: "East" },
@@ -320,7 +320,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
-    video: "/videos/property-sale2.webm", // ✅ Added
+    video: "/videos/property-sale2.webm", // âœ… Added
     price: "55,00,000",
     tags: [
       { icon: Trees, label: "Residential Plot" },
@@ -328,11 +328,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "rajdhani-nagar-plot",
     type: "plot",
-    url: "https://example.com/plot-2",
+    url: "https://www.2percentcompany.in/plots/rajdhani-nagar-plot",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Plot Area", value: "2000 sqft" },
-  { label: "Price per sqft", value: "₹5,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹5,500/sqft" },
   { label: "Transaction Type", value: "New" },
   { label: "Status", value: "Ready for Construction" },
   { label: "Facing", value: "Main Road" },
@@ -357,7 +357,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
-    video: "/videos/property-sale2.webm", // ✅ Added
+    video: "/videos/property-sale2.webm", // âœ… Added
     price: "40,00,000",
     tags: [
       { icon: Trees, label: "Residential Plot" },
@@ -365,11 +365,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "gola-road-plot",
     type: "plot",
-    url: "https://example.com/plot-3",
+    url: "https://www.2percentcompany.in/plots/gola-road-plot",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Plot Area", value: "1500 sqft" },
-  { label: "Price per sqft", value: "₹6,000/sqft" },
+  { label: "Price per sqft", value: "â‚¹6,000/sqft" },
   { label: "Transaction Type", value: "Resale" },
   { label: "Status", value: "Ready to Build" },
   { label: "Facing", value: "North-East" },
@@ -395,7 +395,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
-    video: "/videos/property-sale2.webm", // ✅ Added
+    video: "/videos/property-sale2.webm", // âœ… Added
     price: "1,20,00,000",
     tags: [
       { icon: Landmark, label: "Commercial Use" },
@@ -403,11 +403,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "bailey-road-commercial-plot",
     type: "plot",
-    url: "https://example.com/plot-4",
+    url: "https://www.2percentcompany.in/plots/bailey-road-commercial-plot",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Plot Area", value: "600 sqft" },
-  { label: "Price per sqft", value: "₹3,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹3,500/sqft" },
   { label: "Transaction Type", value: "New" },
   { label: "Status", value: "Ready to Build" },
   { label: "Facing", value: "South" },
@@ -432,7 +432,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
     ],
-    video: "/videos/property-sale2.webm", // ✅ Added
+    video: "/videos/property-sale2.webm", // âœ… Added
     price: "95,00,000",
     tags: [
       { icon: Trees, label: "Luxury Housing" },
@@ -440,11 +440,11 @@ export const PropertyData: PropertyItem[] = [
     ],
     slug: "patliputra-colony-plot",
     type: "plot",
-    url: "https://example.com/plot-5",
+    url: "https://www.2percentcompany.in/plots/patliputra-colony-plot",
     floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
     specifications: [
   { label: "Plot Area", value: "5000 sqft" },
-  { label: "Price per sqft", value: "₹2,500/sqft" },
+  { label: "Price per sqft", value: "â‚¹2,500/sqft" },
   { label: "Transaction Type", value: "New" },
   { label: "Status", value: "Agricultural Land" },
   { label: "Type of Ownership", value: "Freehold" },

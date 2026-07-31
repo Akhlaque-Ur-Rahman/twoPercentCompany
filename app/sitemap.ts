@@ -4,7 +4,6 @@ import { PropertyData } from '@/data/PropertyData'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.2percentcompany.in'
 
-  // Static pages
   const staticPages = [
     {
       url: baseUrl,
@@ -35,6 +34,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/rent/tenants`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/rent/tenants/enquiry`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/rent/landlords`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/buy`,
@@ -68,7 +85,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Dynamic property pages
   const propertyPages = PropertyData.filter(item => item.type === 'property').map((property) => ({
     url: `${baseUrl}/properties/${property.slug}`,
     lastModified: new Date(),
@@ -76,7 +92,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  // Dynamic plot pages
   const plotPages = PropertyData.filter(item => item.type === 'plot').map((plot) => ({
     url: `${baseUrl}/plots/${plot.slug}`,
     lastModified: new Date(),
@@ -84,5 +99,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...staticPages, ...propertyPages, ...plotPages]
+  const tenantPages = PropertyData.filter(item => item.type === 'property').map((property) => ({
+    url: `${baseUrl}/rent/tenants/${property.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }))
+
+  return [...staticPages, ...propertyPages, ...plotPages, ...tenantPages]
 }
