@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "tsx scripts/push-schema-on-build.ts && tsx scripts/seed-listings.ts && next build",
+    "build": "tsx scripts/push-schema-on-build.ts && tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed-listings.ts",
+    "seed": "tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts",
     "push:schema": "tsx scripts/push-schema.ts",
     "payload": "payload",
     "generate:types": "payload generate:types",
