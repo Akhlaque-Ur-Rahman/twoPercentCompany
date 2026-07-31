@@ -10,6 +10,7 @@ import PropertyGallery from "@/components/PropertyGallery";
 import MapPlaceholder from "@/components/MapPlaceholder";
 import { PropertyItem } from "@/data/PropertyData";
 import { MarkerType } from "@/types/MarkerType";
+import { iconForTagLabel } from "@/lib/tagIcons";
 
 const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
@@ -97,7 +98,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
             {item.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
                 {item.tags.map((tag, index) => {
-                  const Icon = tag.icon;
+                  const Icon = tag.icon ?? iconForTagLabel(tag.label);
                   return (
                     <div
                       key={`${tag.label}-${index}`}

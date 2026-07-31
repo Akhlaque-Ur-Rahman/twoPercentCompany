@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { PropertyItem } from "@/data/PropertyData";
+import { iconForTagLabel } from "@/lib/tagIcons";
 
 export type ListingCardItem = Pick<
   PropertyItem,
@@ -60,7 +61,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       {property.tags.length > 0 && (
         <div className="w-full flex flex-wrap items-center gap-2">
           {property.tags.map((tag, index) => {
-            const Icon = tag.icon;
+            const Icon = tag.icon ?? iconForTagLabel(tag.label);
             return (
               <div
                 key={`${tag.label}-${index}`}

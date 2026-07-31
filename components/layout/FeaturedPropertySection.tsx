@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import PropertyGrid from "@/components/PropertyGrid";
 import SectionHeader from "@/components/ui/SectionHeader";

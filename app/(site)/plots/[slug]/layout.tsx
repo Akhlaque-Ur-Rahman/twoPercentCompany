@@ -1,40 +1,40 @@
-import { Metadata } from 'next'
-import { PropertyData } from '@/data/PropertyData'
+import { Metadata } from "next";
+import { getListingBySlug } from "@/lib/listings";
 
 type Props = {
-  params: Promise<{ slug: string }>
-  children: React.ReactNode
-}
+  params: Promise<{ slug: string }>;
+  children: React.ReactNode;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const plot = PropertyData.find((p) => p.slug === slug && p.type === 'plot')
+  const { slug } = await params;
+  const plot = await getListingBySlug(slug, "plot");
 
   if (!plot) {
     return {
-      title: 'Plot Not Found',
-    }
+      title: "Plot Not Found",
+    };
   }
 
-  const title = plot.title
-  const description = plot.longDescription || plot.description
-  const imageUrl = plot.image
+  const title = plot.title;
+  const description = plot.longDescription || plot.description;
+  const imageUrl = plot.image;
 
   return {
     title,
     description,
     keywords: [
       plot.title,
-      'plot for sale',
-      'land for sale',
+      "plot for sale",
+      "land for sale",
       plot.address,
-      ...plot.tags.map(tag => tag.label)
+      ...plot.tags.map((tag) => tag.label),
     ],
     openGraph: {
       title: `${title} | 2% Company`,
       description,
       url: `https://www.2percentcompany.in/plots/${slug}`,
-      type: 'website',
+      type: "website",
       images: [
         {
           url: imageUrl,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
       images: [imageUrl],
@@ -53,9 +53,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `/plots/${slug}`,
     },
-  }
+  };
 }
 
 export default function PlotDetailLayout({ children }: Props) {
-  return <>{children}</>
+  return <>{children}</>;
 }

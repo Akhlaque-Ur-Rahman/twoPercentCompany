@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import LandGrid from "@/components/PlotGrid";
 import SectionHeader from "@/components/ui/SectionHeader";

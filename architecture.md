@@ -7,15 +7,16 @@
 
 ## 1. Overview
 
-2% Company is a **Next.js 15 App Router** marketing site with static seed listings and client-side lead forms. There is **no backend API** yet. SEO metadata lives in server layouts; interactive UI is mostly `"use client"`.
+2% Company is a **Next.js 15 App Router** marketing site with **Payload CMS 3** for listings. Lead forms are still client-side (toast / `console.log`). SEO metadata lives in server layouts.
 
 ```
 Browser
   └── Next.js 15 (App Router + Turbopack)
-        ├── Server: root/layout metadata, route layouts, sitemap, robots, JSON-LD
-        ├── Client: pages, Navbar/Footer, Swiper, forms, Framer Motion
-        ├── Data: TypeScript modules under /data (no DB)
-        └── Assets: /public (images, svg, lottie, floorplans, videos)
+        ├── (site): marketing pages, Navbar/Footer
+        ├── (payload): /admin + /api/*
+        ├── lib/listings.ts → Payload Local API (fallback: data/PropertyData.ts)
+        ├── SQLite: payload.db (local)
+        └── Assets: /public + optional /media uploads
 ```
 
 ---
@@ -24,7 +25,9 @@ Browser
 
 | Layer | Choice | Version |
 |-------|--------|---------|
-| Framework | Next.js (App Router) | 15.5.2 |
+| Framework | Next.js (App Router) | 15.4.11 (pinned for Payload) |
+| CMS | Payload | 3.86 |
+| Database (local) | SQLite via `@payloadcms/db-sqlite` | — |
 | UI | React | 19.1.0 |
 | Language | TypeScript | ^5 |
 | Styling | Tailwind CSS v4 (`@theme` in CSS) | ^4 |
@@ -39,16 +42,24 @@ Browser
 
 **Removed in Phase 4 (were unused):** `d3`, `d3-geo`, `topojson-client`, `react-zoom-pan-pinch`.
 
+**Prod CMS path (not wired yet):** Neon Postgres + Vercel Blob with `clientUploads: true`.
+
 ---
 
 ## 3. Repository layout
 
 ```
 twoPercentCompany/
-├── app/                      # Routes, layouts, globals.css, sitemap, robots
+├── app/
+│   ├── (site)/               # Marketing routes
+│   └── (payload)/            # Payload admin + REST/GraphQL API
+├── collections/              # Payload: Users, Media, Listings
 ├── components/               # Shared UI
 │   └── layout/               # Navbar, Footer, Hero, Featured*, Newsletter
-├── data/                     # Static content + domain seed data
+├── data/                     # Static fallback content + seed source
+├── lib/                      # payload.ts, listings.ts, tagIcons.ts
+├── scripts/                  # seed-listings.ts, patch-payload-loadenv.mjs
+├── payload.config.ts
 ├── types/                    # MarkerType, HomeCTASection
 ├── utils/                    # MapIcons
 ├── public/                   # Static assets

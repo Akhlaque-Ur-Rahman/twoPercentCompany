@@ -1,6 +1,3 @@
-"use client";
-
-import dynamic from "next/dynamic";
 import React from "react";
 import HeroSection from "@/components/layout/HeroSection";
 import HomeCTASection from "@/components/layout/HomeCTASection";
@@ -8,17 +5,13 @@ import FeaturedPropertySection from "@/components/layout/FeaturedPropertySection
 import FeaturedLandSection from "@/components/layout/FeaturedLandSection";
 import TestimonialSection from "@/components/TestimonialSection";
 import CTA from "@/components/CTA";
-import { PropertyData } from "@/data/PropertyData";
+import HomeMap from "@/components/layout/HomeMap";
+import { getListings } from "@/lib/listings";
 import { MarkerType } from "@/types/MarkerType";
-import MapPlaceholder from "@/components/MapPlaceholder";
 
-const MapSection = dynamic(() => import("@/components/MapSection"), {
-  ssr: false,
-  loading: () => <MapPlaceholder />,
-});
-
-const Home: React.FC = () => {
-  const markers: MarkerType[] = PropertyData.map((item) => ({
+export default async function Home() {
+  const listings = await getListings();
+  const markers: MarkerType[] = listings.map((item) => ({
     id: item.id,
     title: item.title,
     slug: item.slug,
@@ -36,10 +29,8 @@ const Home: React.FC = () => {
       <FeaturedPropertySection />
       <FeaturedLandSection />
       <TestimonialSection />
-      <MapSection markers={markers} center={[25.5941, 85.1376]} zoom={13} showLink={true} />
+      <HomeMap markers={markers} />
       <CTA />
     </div>
   );
-};
-
-export default Home;
+}

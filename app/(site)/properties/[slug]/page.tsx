@@ -1,20 +1,16 @@
-"use client";
-
-import React, { useMemo } from "react";
-import { useSearchParams, usePathname, notFound } from "next/navigation";
-import { PropertyData, PropertyItem } from "@/data/PropertyData";
+import { notFound } from "next/navigation";
 import ListingDetail from "@/components/listing/ListingDetail";
+import { getListingBySlug } from "@/lib/listings";
 
-export default function PropertyPage() {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const slug = pathname.split("/").pop() || "";
-  const mode = searchParams.get("mode") || "buyer";
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ mode?: string }>;
+};
 
-  const property: PropertyItem | undefined = useMemo(
-    () => PropertyData.find((p) => p.slug === slug && p.type === "property"),
-    [slug]
-  );
+export default async function PropertyPage({ params, searchParams }: Props) {
+  const { slug } = await params;
+  const { mode } = await searchParams;
+  const property = await getListingBySlug(slug, "property");
 
   if (!property) return notFound();
 

@@ -12,7 +12,7 @@ import {
 
 // Tag type (icon + label)
 export interface PropertyTag {
-  icon: LucideIcon;
+  icon?: LucideIcon;
   label: string;
 }
 

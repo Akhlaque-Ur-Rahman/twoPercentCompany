@@ -19,7 +19,7 @@ This file is the **program roadmap**. Detailed UX checklists live in `UI_UX_IMPR
 | **3** | Mobile-first responsive | Gallery, arrows, nav a11y, heights | [x] |
 | **4** | Forms, a11y, content QA | Labels, semantics, images, footer | [ ] |
 | **5** | Polish & performance UX | Motion, empty states, toast, deps | [ ] |
-| **6** | Product backend (future) | Lead APIs, uploads, optional CMS | [ ] |
+| **6** | Product backend | Lead APIs, uploads, CMS | [~] |
 
 ---
 
@@ -124,29 +124,32 @@ This file is the **program roadmap**. Detailed UX checklists live in `UI_UX_IMPR
 
 ---
 
-## Phase 6 — Product backend (future / PRD)
+## Phase 6 — Product backend (PRD)
 
-**Goal:** Real lead capture and optional dynamic listings.
+**Goal:** Real lead capture and dynamic listings.
 
-| ID | Item | Acceptance |
-|----|------|------------|
-| 6.1 | Lead API | Contact / sell / rent / enquiry / investor / newsletter persist |
-| 6.2 | Validation | Shared schema (Zod or equivalent) server + client |
-| 6.3 | Uploads | Secure storage for sell/landlord media |
-| 6.4 | CMS or admin (optional) | Replace or sync `PropertyData` |
-| 6.5 | Env-based site URL | Single `NEXT_PUBLIC_SITE_URL` for metadata/sitemap/schema |
-| 6.6 | Wire remaining JSON-LD | Property + Breadcrumb on detail pages |
+| ID | Item | Acceptance | Status |
+|----|------|------------|--------|
+| 6.1 | Lead API | Contact / sell / rent / enquiry / investor / newsletter persist | [ ] |
+| 6.2 | Validation | Shared schema (Zod or equivalent) server + client | [ ] |
+| 6.3 | Uploads | Secure storage for sell/landlord media | [ ] |
+| 6.4 | CMS or admin | Payload listings CMS + seed + frontend data layer | [x] |
+| 6.5 | Env-based site URL | Single `NEXT_PUBLIC_SITE_URL` for metadata/sitemap/schema | [ ] |
+| 6.6 | Wire remaining JSON-LD | Property + Breadcrumb on detail pages | [ ] |
 
-**Depends on:** Open decisions in prd.md §10  
-**Not started** until backend choice is made.
+**6.4 done (2026-07-31):** Payload 3 + SQLite, `/admin`, `listings`/`media`/`users`, `lib/listings.ts` with static fallback, seed from `PropertyData`. Neon + Vercel Blob still future.
+
+**Depends on:** Open decisions in prd.md §10 for leads (6.1–6.3).
 
 ---
 
 ## Suggested execution order (next)
 
-1. Phase **6** when backend is scoped (leads API, validation, optional CMS)  
+1. Phase **6.1–6.3** lead APIs + validation + uploads  
+2. Prod CMS: Neon Postgres + Vercel Blob  
+3. Phase **6.5–6.6** site URL + JSON-LD
 
-UI program Phases **0–5** are complete. See `prd.md` §10 for backend decisions.
+UI program Phases **0–5** are complete. CMS listings (6.4) are live locally.
 
 ---
 

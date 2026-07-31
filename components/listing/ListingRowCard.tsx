@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ListingCardItem } from "@/components/listing/ListingCard";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { iconForTagLabel } from "@/lib/tagIcons";
 
 export type ListingRowCardProps = {
   property: ListingCardItem;
@@ -57,7 +58,7 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
         {property.tags.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
             {property.tags.map((tag, idx) => {
-              const Icon = tag.icon;
+              const Icon = tag.icon ?? iconForTagLabel(tag.label);
               return (
                 <div
                   key={`${tag.label}-${idx}`}

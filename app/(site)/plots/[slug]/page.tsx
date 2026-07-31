@@ -1,20 +1,14 @@
-"use client";
-
-import React, { use } from "react";
 import { notFound } from "next/navigation";
-import { PropertyData, PropertyItem } from "@/data/PropertyData";
 import ListingDetail from "@/components/listing/ListingDetail";
+import { getListingBySlug } from "@/lib/listings";
 
-interface PlotPageProps {
+type Props = {
   params: Promise<{ slug: string }>;
-}
+};
 
-export default function PlotPage(props: PlotPageProps) {
-  const { slug } = use(props.params);
-
-  const plot: PropertyItem | undefined = PropertyData.find(
-    (p) => p.slug === slug && p.type === "plot"
-  );
+export default async function PlotPage({ params }: Props) {
+  const { slug } = await params;
+  const plot = await getListingBySlug(slug, "plot");
 
   if (!plot) return notFound();
 

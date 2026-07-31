@@ -1,21 +1,14 @@
-"use client";
-
-import React, { useMemo } from "react";
-import { usePathname, notFound } from "next/navigation";
-import { PropertyData, PropertyItem } from "@/data/PropertyData";
+import { notFound } from "next/navigation";
 import ListingDetail from "@/components/listing/ListingDetail";
+import { getListingBySlug } from "@/lib/listings";
 
-export default function TenantPropertyPage() {
-  const pathname = usePathname();
-  const slug = pathname.split("/").pop() || "";
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-  const property: PropertyItem | undefined = useMemo(
-    () =>
-      PropertyData.filter((p) => p.type === "property").find(
-        (p) => p.slug === slug
-      ),
-    [slug]
-  );
+export default async function TenantPropertyPage({ params }: Props) {
+  const { slug } = await params;
+  const property = await getListingBySlug(slug, "property");
 
   if (!property) return notFound();
 

@@ -1,16 +1,14 @@
-"use client";
-
 import React from "react";
-import { PropertyData } from "@/data/PropertyData";
+import { getListingsByType } from "@/lib/listings";
 import ListingGrid from "@/components/listing/ListingGrid";
 
-const PropertyGrid = () => {
-  const properties = PropertyData.filter((item) => item.type === "property");
+const PropertyGrid = async () => {
+  const properties = await getListingsByType("property");
 
   return (
     <ListingGrid
       items={properties}
-      getHref={(item) => `/properties/${item.slug}`}
+      hrefBase="/properties"
       ctaLabel="View Property Details"
       viewAllHref="/properties"
       viewAllLabel="View All Properties"

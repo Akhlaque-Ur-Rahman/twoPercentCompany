@@ -1,40 +1,40 @@
-import { Metadata } from 'next'
-import { PropertyData } from '@/data/PropertyData'
+import { Metadata } from "next";
+import { getListingBySlug } from "@/lib/listings";
 
 type Props = {
-  params: Promise<{ slug: string }>
-  children: React.ReactNode
-}
+  params: Promise<{ slug: string }>;
+  children: React.ReactNode;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const property = PropertyData.find((p) => p.slug === slug && p.type === 'property')
+  const { slug } = await params;
+  const property = await getListingBySlug(slug, "property");
 
   if (!property) {
     return {
-      title: 'Property Not Found',
-    }
+      title: "Property Not Found",
+    };
   }
 
-  const title = property.title
-  const description = property.longDescription || property.description
-  const imageUrl = property.image
+  const title = property.title;
+  const description = property.longDescription || property.description;
+  const imageUrl = property.image;
 
   return {
     title,
     description,
     keywords: [
       property.title,
-      'property for sale',
-      'real estate',
+      "property for sale",
+      "real estate",
       property.address,
-      ...property.tags.map(tag => tag.label)
+      ...property.tags.map((tag) => tag.label),
     ],
     openGraph: {
       title: `${title} | 2% Company`,
       description,
       url: `https://www.2percentcompany.in/properties/${slug}`,
-      type: 'website',
+      type: "website",
       images: [
         {
           url: imageUrl,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
       images: [imageUrl],
@@ -53,9 +53,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `/properties/${slug}`,
     },
-  }
+  };
 }
 
 export default function PropertyDetailLayout({ children }: Props) {
-  return <>{children}</>
+  return <>{children}</>;
 }

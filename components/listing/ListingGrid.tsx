@@ -10,7 +10,8 @@ import ListingCard, { ListingCardItem } from "@/components/listing/ListingCard";
 
 export type ListingGridProps = {
   items: ListingCardItem[];
-  getHref: (item: ListingCardItem) => string;
+  /** Base path without trailing slash, e.g. `/properties` → `/properties/{slug}` */
+  hrefBase: string;
   ctaLabel?: string;
   viewAllHref?: string;
   viewAllLabel?: string;
@@ -19,12 +20,13 @@ export type ListingGridProps = {
 
 const ListingGrid: React.FC<ListingGridProps> = ({
   items,
-  getHref,
+  hrefBase,
   ctaLabel,
   viewAllHref,
   viewAllLabel = "View All",
   showAddress = false,
 }) => {
+  const hrefFor = (item: ListingCardItem) => `${hrefBase}/${item.slug}`;
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isBeginning, setIsBeginning] = useState(true);
@@ -54,7 +56,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
             <SwiperSlide key={item.id}>
               <ListingCard
                 property={item}
-                href={getHref(item)}
+                href={hrefFor(item)}
                 ctaLabel={ctaLabel}
                 showAddress={showAddress}
               />
@@ -119,7 +121,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
             <ListingCard
               key={item.id}
               property={item}
-              href={getHref(item)}
+              href={hrefFor(item)}
               ctaLabel={ctaLabel}
               showAddress={showAddress}
             />
@@ -132,7 +134,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
               <ListingCard
                 key={item.id}
                 property={item}
-                href={getHref(item)}
+                href={hrefFor(item)}
                 ctaLabel={ctaLabel}
                 showAddress={showAddress}
               />
