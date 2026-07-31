@@ -39,7 +39,7 @@ const ServicesPage = () => {
   return (
     <main className="flex-1 page-px section-y">
       <div className="max-w-7xl mx-auto">
-        <h1 className="type-section text-primary mb-3">
+        <h1 className="type-section text-body mb-3">
           Our Services
         </h1>
         <p className="text-secondary-text type-body prose-measure mb-10">
@@ -52,12 +52,12 @@ const ServicesPage = () => {
             <Link
               key={href}
               href={href}
-              className="group p-6 lg:p-8 rounded-card border-2 border-header-stroke bg-2nd-bg hover:border-primary/40 transition-all duration-300"
+              className="group p-6 lg:p-8 rounded-card border border-header-stroke bg-2nd-bg hover:border-primary/40 transition-colors duration-300"
             >
-              <div className="w-12 h-12 flex items-center justify-center rounded-control bg-primary/10 text-primary mb-4 group-hover:bg-primary/20 transition-colors">
+              <div className="w-10 h-10 flex items-center justify-center text-primary mb-4">
                 <Icon size={24} />
               </div>
-              <h2 className="type-card-title text-primary mb-2">
+              <h2 className="type-card-title text-body mb-2">
                 {title}
               </h2>
               <p className="text-secondary-text type-body leading-relaxed">

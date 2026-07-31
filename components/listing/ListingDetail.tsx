@@ -83,25 +83,25 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
       )}
 
       <div className="page-px section-y-sm">
-        <h1 className="text-primary type-display">{item.title}</h1>
-          {modeNote && (
+        <h1 className="text-body type-display">{item.title}</h1>
+        {modeNote && (
           <p className="text-secondary-text italic type-caption mt-1">{modeNote}</p>
-          )}
+        )}
       </div>
 
       <div className="bg-main-bg page-px section-y-sm space-y-6 lg:space-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-6">
           <div>
-            <h2 className="type-subhead text-primary">Overview</h2>
+            <h2 className="type-subhead text-body">Overview</h2>
 
             {item.tags.length > 0 && (
-              <div className="flex flex-wrap gap-3 mt-4">
+              <div className="flex flex-wrap gap-2 mt-4">
                 {item.tags.map((tag, index) => {
                   const Icon = tag.icon;
                   return (
                     <div
                       key={`${tag.label}-${index}`}
-                      className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full type-caption font-medium"
+                      className="flex items-center gap-1.5 text-secondary-text border border-header-stroke px-3 py-1.5 rounded-control type-caption"
                     >
                       <Icon className="w-4 h-4" />
                       <span>{tag.label}</span>
@@ -118,15 +118,15 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
 
           {item.specifications && item.specifications.length > 0 && (
             <div>
-              <h2 className="type-subhead text-primary mb-4">{specificationsTitle}</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <h2 className="type-subhead text-body mb-4">{specificationsTitle}</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {item.specifications.map((spec, index) => (
                   <div
                     key={`${spec.label}-${index}`}
-                    className="bg-primary/10 text-primary border border-primary/30 px-4 py-3 rounded-control"
+                    className="border-b border-header-stroke py-3"
                   >
-                    <p className="font-medium">{spec.label}</p>
-                    <p className="font-semibold">{spec.value}</p>
+                    <p className="type-caption text-secondary-text">{spec.label}</p>
+                    <p className="type-body text-body font-medium mt-0.5">{spec.value}</p>
                   </div>
                 ))}
               </div>
@@ -134,19 +134,17 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           )}
         </div>
 
-        <div className="flex flex-col lg:flex-row justify-between gap-6 items-start">
+        <div className="flex flex-col lg:flex-row justify-between gap-6 items-start border-t border-header-stroke pt-8">
           <div>
-            <h3 className="type-card-title text-primary">Address</h3>
-            <p className="text-secondary-text type-body">{item.address}</p>
+            <h3 className="type-caption text-secondary-text">Address</h3>
+            <p className="text-body type-body mt-1">{item.address}</p>
           </div>
           <div>
-            <h3 className="type-card-title text-primary">{priceLabel}</h3>
-            <p className="text-primary type-price">
-              ₹{item.price}
-            </p>
+            <h3 className="type-caption text-secondary-text">{priceLabel}</h3>
+            <p className="text-body type-price mt-1">₹{item.price}</p>
             <Link
               href={ctaHref}
-              className="mt-4 inline-flex bg-primary text-on-primary font-semibold px-6 py-2 rounded-control hover:brightness-110 transition"
+              className="mt-4 inline-flex bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition"
             >
               {ctaLabel}
             </Link>
@@ -155,7 +153,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
 
         {floorPlans.length > 0 && (
           <div>
-            <h3 className="type-section text-primary mb-4">Floor Plan</h3>
+            <h3 className="type-section text-body mb-4">Floor Plan</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {floorPlans.slice(0, 2).map((plan, index) => (
                 <button

@@ -4,153 +4,175 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 import { TestimonialData } from "@/data/TestimonialData";
-import SectionHeader from "@/components/ui/SectionHeader";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
-const arrowBtn =
-  "min-w-11 min-h-11 flex items-center justify-center rounded-full border-2 border-header-stroke text-body bg-2nd-bg/80 transition disabled:opacity-40 disabled:pointer-events-none hover:bg-main-bg";
+function cx(...parts: Array<string | undefined | false>) {
+  return parts.filter(Boolean).join(" ");
+}
+
+const navBtn =
+  "min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke text-body transition-colors hover:border-primary/40 hover:bg-2nd-bg";
 
 const TestimonialSection = () => {
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isBeginning, setIsBeginning] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
-    <div className="relative page-px section-y-sm space-y-6 rounded-media border-b-2 border-header-stroke mb-6">
-      <SectionHeader
-        title="What Our Clients Say"
-        description="Hear from our happy clients who found their dream homes and investments with 2% Company."
-      />
+    <section className="relative page-px section-y border-b border-header-stroke overflow-x-clip">
+      <div className="flex flex-col gap-8 lg:gap-10">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <div className="max-w-xl">
+            <p className="type-label text-primary mb-2">Testimonials</p>
+            <h2 className="type-section text-body">
+              Trusted by families across Patna
+            </h2>
+            <p className="text-secondary-text type-body mt-2">
+              Real stories from buyers, sellers, and investors who worked with
+              2% Company.
+            </p>
+          </div>
 
-      <div className="relative px-0 sm:px-2">
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={16}
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-          }}
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper;
-            setIsBeginning(swiper.isBeginning);
-            setIsEnd(swiper.isEnd);
-          }}
-          onSlideChange={(swiper) => {
-            setActiveIndex(swiper.activeIndex);
-            setIsBeginning(swiper.isBeginning);
-            setIsEnd(swiper.isEnd);
-          }}
-        >
-          {TestimonialData.map((testimonial) => (
-            <SwiperSlide key={testimonial.id} className="h-auto">
-              <div className="card flex flex-col justify-between gap-4 lg:gap-8 rounded-card border-2 border-header-stroke p-6 lg:p-8 h-full min-h-[280px] lg:min-h-[320px]">
-                <div className="flex gap-2 lg:gap-3 flex-wrap">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              aria-label="Previous testimonial"
+              onClick={() => swiperRef.current?.slidePrev()}
+              className={navBtn}
+            >
+              <ChevronLeft size={20} aria-hidden />
+            </button>
+            <button
+              type="button"
+              aria-label="Next testimonial"
+              onClick={() => swiperRef.current?.slideNext()}
+              className={navBtn}
+            >
+              <ChevronRight size={20} aria-hidden />
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full min-w-0 overflow-hidden">
+          <Swiper
+            modules={[Autoplay]}
+            slidesPerView={1}
+            spaceBetween={16}
+            loop
+            watchOverflow
+            breakpoints={{
+              640: { slidesPerView: 2, spaceBetween: 16 },
+              1024: { slidesPerView: 3, spaceBetween: 20 },
+            }}
+            autoplay={
+              reduceMotion
+                ? false
+                : {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: false,
+                  }
+            }
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+              setActiveIndex(swiper.realIndex);
+            }}
+            onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+            className="w-full"
+          >
+            {TestimonialData.map((testimonial) => (
+              <SwiperSlide key={testimonial.id} className="!h-auto">
+                <article className="h-full min-h-[280px] flex flex-col gap-5 rounded-card border border-header-stroke bg-2nd-bg p-6 lg:p-7 transition-colors duration-300 hover:border-primary/40">
+                  <div className="flex items-start justify-between gap-3">
+                    <Quote
+                      className="size-8 text-primary/50 shrink-0"
+                      strokeWidth={1.25}
+                      aria-hidden
+                    />
                     <div
-                      key={i}
-                      className="p-2 border-2 border-header-stroke rounded-full"
+                      className="flex gap-0.5"
+                      aria-label={`${testimonial.rating} out of 5 stars`}
                     >
-                      <Star className="text-star fill-star" size={16} />
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          size={14}
+                          aria-hidden
+                          className={
+                            i < testimonial.rating
+                              ? "text-star fill-star"
+                              : "text-header-stroke"
+                          }
+                        />
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
 
-                <div className="space-y-4 flex-1">
-                  <h4 className="type-card-title text-primary">{testimonial.title}</h4>
-                  <p className="text-secondary-text type-body leading-relaxed">
-                    {testimonial.feedback}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-4 py-2">
-                  <Image
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    width={56}
-                    height={56}
-                    sizes="56px"
-                    className="rounded-full object-cover size-12 lg:size-14"
-                  />
-                  <div>
-                    <h3 className="font-semibold type-card-title text-primary">
-                      {testimonial.name}
+                  <div className="flex-1 space-y-3">
+                    <h3 className="type-card-title text-body">
+                      {testimonial.title}
                     </h3>
-                    <p className="type-caption text-secondary-text">
-                      {testimonial.location}
+                    <p className="type-body text-secondary-text leading-relaxed">
+                      {testimonial.feedback}
                     </p>
                   </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
 
-        <button
-          type="button"
-          aria-label="Previous testimonial"
-          onClick={() => swiperRef.current?.slidePrev()}
-          disabled={isBeginning}
-          className={`absolute top-1/2 left-2 z-50 -translate-y-1/2 lg:hidden ${arrowBtn}`}
+                  <footer className="flex items-center gap-3 pt-4 border-t border-header-stroke mt-auto">
+                    <Image
+                      src={testimonial.image}
+                      alt=""
+                      width={44}
+                      height={44}
+                      sizes="44px"
+                      className="rounded-full object-cover size-11 shrink-0 border border-header-stroke"
+                    />
+                    <div className="min-w-0">
+                      <p className="type-body font-semibold text-body truncate">
+                        {testimonial.name}
+                      </p>
+                      <p className="type-caption text-secondary-text truncate">
+                        {testimonial.location}
+                      </p>
+                    </div>
+                  </footer>
+                </article>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        <div
+          className="flex justify-center gap-1"
+          role="tablist"
+          aria-label="Testimonials"
         >
-          <ChevronLeft size={20} />
-        </button>
-
-        <button
-          type="button"
-          aria-label="Next testimonial"
-          onClick={() => swiperRef.current?.slideNext()}
-          disabled={isEnd}
-          className={`absolute top-1/2 right-2 z-50 -translate-y-1/2 lg:hidden ${arrowBtn}`}
-        >
-          <ChevronRight size={20} />
-        </button>
-
-        <div className="flex justify-center gap-1 mt-4 lg:hidden">
-          {TestimonialData.map((_, index) => (
+          {TestimonialData.map((item, index) => (
             <button
-              key={index}
+              key={item.id}
               type="button"
+              role="tab"
               aria-label={`Go to testimonial ${index + 1}`}
-              onClick={() => swiperRef.current?.slideTo(index)}
+              aria-selected={index === activeIndex}
+              onClick={() => swiperRef.current?.slideToLoop(index)}
               className="min-w-11 min-h-11 flex items-center justify-center"
             >
               <span
-                className={`block w-3 h-3 rounded-full transition-all ${
+                className={cx(
+                  "block rounded-full transition-all duration-300",
                   index === activeIndex
-                    ? "bg-primary scale-110"
-                    : "border border-header-stroke bg-2nd-bg"
-                }`}
+                    ? "size-2.5 bg-primary"
+                    : "size-2 border border-header-stroke bg-transparent"
+                )}
               />
             </button>
           ))}
         </div>
       </div>
-
-      <div className="hidden lg:flex items-center justify-center gap-4 mt-6">
-        <button
-          type="button"
-          aria-label="Previous testimonial"
-          onClick={() => swiperRef.current?.slidePrev()}
-          disabled={isBeginning}
-          className={arrowBtn}
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <button
-          type="button"
-          aria-label="Next testimonial"
-          onClick={() => swiperRef.current?.slideNext()}
-          disabled={isEnd}
-          className={arrowBtn}
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
-    </div>
+    </section>
   );
 };
 

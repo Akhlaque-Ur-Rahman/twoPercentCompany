@@ -63,8 +63,8 @@ body {
 }
 
 .section-y-lg {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 @media (min-width: 1024px) {
@@ -74,8 +74,8 @@ body {
   }
 
   .section-y-lg {
-    padding-top: 3.75rem; /* 60px */
-    padding-bottom: 3.75rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 }
 

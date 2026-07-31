@@ -29,7 +29,7 @@ const PageState: React.FC<PageStateProps> = ({
     <div
       className={`min-h-[60vh] flex flex-col items-center justify-center text-center page-px py-16 bg-main-bg ${className}`}
     >
-      <h1 className="type-section text-primary max-w-xl">{title}</h1>
+      <h1 className="type-section text-body max-w-xl">{title}</h1>
       {description && (
         <p className="type-body text-secondary-text mt-3 max-w-md">
           {description}

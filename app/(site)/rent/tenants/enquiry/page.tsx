@@ -145,23 +145,23 @@ const TenantEnquiryPageContent = () => {
                 className="object-cover rounded-media"
               />
             </div>
-            <h2 className="type-card-title text-primary">{property.title}</h2>
+            <h2 className="type-card-title text-body">{property.title}</h2>
             <div className="flex items-center type-caption gap-2 text-secondary-text">
-              <MapPin className="w-5 h-5 text-primary" />
+              <MapPin className="w-5 h-5 text-secondary-text" />
               <span>{property.address}</span>
             </div>
             {property.description && (
               <p className="text-secondary-text type-body mt-2">{property.description}</p>
             )}
-            <div className="flex justify-between items-center bg-2nd-bg rounded-control shadow-sm border border-header-stroke px-4 py-3 mt-4">
-              <p className="font-medium text-secondary-text type-body">Price</p>
-              <p className="text-primary type-price">₹{property.price}</p>
+            <div className="flex justify-between items-center border-t border-header-stroke pt-3 mt-4">
+              <p className="font-medium text-secondary-text type-caption">Price</p>
+              <p className="text-body type-price">₹{property.price}</p>
             </div>
           </div>
 
           {/* Enquiry Form */}
-          <div className="w-full lg:w-1/2 bg-2nd-bg rounded-card p-6">
-            <h2 className="type-subhead text-primary mb-2 text-center">
+          <div className="w-full lg:w-1/2 bg-2nd-bg rounded-card p-6 border border-header-stroke">
+            <h2 className="type-subhead text-body mb-2 text-center">
               Tenant Enquiry Form
             </h2>
             <div className="mb-4 type-body text-secondary-text font-medium text-center">

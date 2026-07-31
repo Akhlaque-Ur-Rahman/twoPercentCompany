@@ -4,11 +4,17 @@ import React from "react";
 import { motion } from "framer-motion";
 import CTA from "@/components/CTA";
 import { ShieldCheck, Lightbulb, Leaf } from "lucide-react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const StatCard = ({ number, label }: { number: number; label: string }) => {
   const [count, setCount] = React.useState(0);
+  const reduceMotion = usePrefersReducedMotion();
 
   React.useEffect(() => {
+    if (reduceMotion) {
+      setCount(number);
+      return;
+    }
     let start = 0;
     const end = number;
     if (start === end) return;
@@ -21,139 +27,116 @@ const StatCard = ({ number, label }: { number: number; label: string }) => {
     }, incrementTime);
 
     return () => clearInterval(timer);
-  }, [number]);
+  }, [number, reduceMotion]);
 
   return (
-    <div className="bg-2nd-bg p-6 rounded-card shadow-md text-center">
-      <h3 className="type-stat text-primary mb-2">{count}+</h3>
+    <div className="text-center sm:text-left">
+      <h3 className="type-stat text-body mb-1">{count}+</h3>
       <p className="text-secondary-text type-body">{label}</p>
     </div>
   );
 };
 
 const timeline = [
-  { year: "2010", event: "Company Founded" },
-  { year: "2015", event: "Reached 50 Clients" },
-  { year: "2020", event: "Expanded Globally" },
-  { year: "2025", event: "Launched AI Solutions" },
+  { year: "2010", event: "Founded in Patna to guide local property buyers and sellers." },
+  { year: "2015", event: "Expanded into verified plot and land advisory." },
+  { year: "2020", event: "Grew rental and landlord support across the city." },
+  { year: "2025", event: "Launched investor-focused opportunities with clearer guidance." },
 ];
 
 const values = [
   {
     title: "Integrity",
-    desc: "We operate with honesty and transparency in every step.",
+    desc: "Honest advice and transparent steps from enquiry to closing.",
     icon: ShieldCheck,
   },
   {
-    title: "Innovation",
-    desc: "We embrace creativity to solve real-world challenges.",
+    title: "Clarity",
+    desc: "We simplify decisions so you always know what comes next.",
     icon: Lightbulb,
   },
   {
-    title: "Sustainability",
-    desc: "We design solutions that last and positively impact society.",
+    title: "Local care",
+    desc: "Patna-first knowledge that keeps recommendations grounded.",
     icon: Leaf,
   },
 ];
 
 const About = () => {
+  const reduceMotion = usePrefersReducedMotion();
+
   return (
     <div>
-      <section className="page-px section-y-lg text-center">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+      <section className="page-px section-y-lg text-center border-b border-header-stroke">
+        <motion.p
+          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="type-display mb-4 text-primary"
+          transition={{ duration: 0.5 }}
+          className="type-label text-primary mb-3"
         >
-          About 2% Company
+          2% Company
+        </motion.p>
+        <motion.h1
+          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.05 }}
+          className="type-display mb-4 text-body"
+        >
+          About us
         </motion.h1>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.1 }}
           className="type-body text-secondary-text prose-measure-wide mx-auto"
         >
-          Transforming industries with innovative solutions and measurable
-          impact. At 2% Company, we make every step count.
+          A Patna real-estate partner for buying, selling, renting, and investing —
+          with clear guidance at every step.
         </motion.p>
       </section>
 
-      <section className="page-px section-y">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-8"
-        >
-          <StatCard number={120} label="Projects Completed" />
-          <StatCard number={75} label="Clients Served" />
-          <StatCard number={15} label="Years of Experience" />
-        </motion.div>
-      </section>
-
-      <section className="page-px section-y relative">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="type-section text-center mb-12 text-primary"
-        >
-          Our Journey
-        </motion.h2>
-
-        <div className="relative">
-          <div className="absolute left-1/2 top-0 w-1 h-full bg-primary opacity-40 rounded-full" />
-
-          {timeline.map((item, idx) => (
-            <motion.div
-              key={item.year}
-              initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.2 }}
-              className="mb-20 flex flex-col md:flex-row items-center relative w-full"
-            >
-              <div className="absolute left-1/2 -translate-x-1/2 w-6 h-6 bg-primary rounded-full shadow-lg" />
-              <div
-                className={`md:w-1/2 p-6 bg-2nd-bg shadow-md rounded-card relative z-10 ${
-                  idx % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
-                }`}
-              >
-                <h3 className="type-card-title mb-1 text-primary">{item.year}</h3>
-                <p className="text-secondary-text type-body">{item.event}</p>
-              </div>
-            </motion.div>
-          ))}
+      <section className="page-px section-y border-b border-header-stroke">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-0 sm:divide-x sm:divide-header-stroke">
+          <div className="sm:px-6 first:sm:pl-0 last:sm:pr-0">
+            <StatCard number={120} label="Projects guided" />
+          </div>
+          <div className="sm:px-6">
+            <StatCard number={75} label="Clients served" />
+          </div>
+          <div className="sm:px-6 last:sm:pr-0">
+            <StatCard number={15} label="Years of experience" />
+          </div>
         </div>
       </section>
 
-      <section className="page-px section-y">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="type-section text-center mb-12 text-primary"
-        >
-          Our Core Values
-        </motion.h2>
+      <section className="page-px section-y border-b border-header-stroke">
+        <h2 className="type-section text-body mb-10">Our journey</h2>
+        <ol className="space-y-8 max-w-3xl">
+          {timeline.map((item) => (
+            <li key={item.year} className="grid grid-cols-[4.5rem_1fr] gap-4 sm:gap-8">
+              <p className="type-label text-primary pt-0.5">{item.year}</p>
+              <p className="type-body text-secondary-text border-l border-header-stroke pl-4 sm:pl-6">
+                {item.event}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <section className="page-px section-y">
+        <h2 className="type-section text-body mb-3">What we stand for</h2>
+        <p className="type-body text-secondary-text prose-measure mb-10">
+          Three principles that shape how we work with every client.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           {values.map((value) => {
             const Icon = value.icon;
             return (
-              <motion.div
-                key={value.title}
-                whileHover={{ scale: 1.05 }}
-                className="bg-2nd-bg rounded-card p-6 shadow-md flex flex-col items-center text-center transition-transform"
-              >
-                <Icon size={48} strokeWidth={1.5} className="mb-4 text-primary" />
-                <h3 className="type-card-title mb-2 text-primary">{value.title}</h3>
+              <div key={value.title} className="flex flex-col gap-3">
+                <Icon size={28} strokeWidth={1.5} className="text-primary" />
+                <h3 className="type-card-title text-body">{value.title}</h3>
                 <p className="text-secondary-text type-body">{value.desc}</p>
-              </motion.div>
+              </div>
             );
           })}
         </div>

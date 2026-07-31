@@ -18,7 +18,6 @@ const MapSection = dynamic(() => import("@/components/MapSection"), {
 });
 
 const Home: React.FC = () => {
-  // Convert PropertyData to MarkerType[]
   const markers: MarkerType[] = PropertyData.map((item) => ({
     id: item.id,
     title: item.title,
@@ -37,10 +36,7 @@ const Home: React.FC = () => {
       <FeaturedPropertySection />
       <FeaturedLandSection />
       <TestimonialSection />
-
-      {/* MapSection on homepage */}
       <MapSection markers={markers} center={[25.5941, 85.1376]} zoom={13} showLink={true} />
-
       <CTA />
     </div>
   );

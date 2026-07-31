@@ -4,7 +4,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 const CTA = () => {
   return (
     <div
-      className="page-px section-y-lg rounded-media mb-6"
+      className="page-px section-y-lg border-t border-header-stroke"
       style={{
         backgroundImage: "url('/images/AbstractDesign2.png')",
         backgroundRepeat: "no-repeat",
@@ -13,9 +13,9 @@ const CTA = () => {
     >
       <SectionHeader
         showStars={false}
-        title="Featured Properties"
-        description="Explore our handpicked selection of featured properties. Each listing offers a glimpse into exceptional homes and investments available through 2% Company."
-        action={{ label: "View All Properties", href: "/properties" }}
+        title="Ready to find your next property in Patna?"
+        description="Tell us what you need — buy, sell, rent, or invest — and our team will guide you from first enquiry to closing."
+        action={{ label: "Contact 2% Company", href: "/contact" }}
         actionVariant="primary"
         actionAlwaysVisible
       />

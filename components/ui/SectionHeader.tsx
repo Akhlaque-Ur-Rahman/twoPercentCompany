@@ -25,7 +25,7 @@ export type SectionHeaderProps = {
 const SectionHeader = ({
   title,
   description,
-  showStars = true,
+  showStars = false,
   action,
   actionVariant = "secondary",
   actionAlwaysVisible = false,
@@ -41,30 +41,26 @@ const SectionHeader = ({
         <div className={align === "center" ? "flex justify-center" : undefined}>
           <Image
             src="/svg/Stars.svg"
-            height={56}
-            width={56}
+            height={40}
+            width={40}
             alt=""
             aria-hidden
-            sizes="56px"
-            className="size-[40px] sm:size-[48px] lg:size-[56px]"
+            sizes="40px"
+            className="size-8 sm:size-10 opacity-70"
           />
         </div>
       )}
 
       <div
         className={cx(
-          "flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0",
+          "flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-8",
           align === "center" && "lg:flex-col"
         )}
       >
         <div className={cx(textAlign, "prose-measure-wide")}>
-          <h2 className="type-section text-primary">
-            {title}
-          </h2>
+          <h2 className="type-section text-body">{title}</h2>
           {description && (
-            <p className="text-secondary-text type-body mt-2">
-              {description}
-            </p>
+            <p className="text-secondary-text type-body mt-2">{description}</p>
           )}
         </div>
 
@@ -74,7 +70,7 @@ const SectionHeader = ({
             variant={actionVariant}
             size="md"
             className={cx(
-              "text-nowrap",
+              "text-nowrap shrink-0",
               !actionAlwaysVisible && "hidden lg:inline-flex"
             )}
           >

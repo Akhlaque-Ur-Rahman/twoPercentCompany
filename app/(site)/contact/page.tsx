@@ -78,7 +78,7 @@ const ContactPage: React.FC = () => {
         </div>
 
         <div className="lg:w-1/2 bg-2nd-bg p-8 rounded-card border border-header-stroke">
-          <h1 className="type-subhead text-primary mb-6">Contact Us</h1>
+          <h1 className="type-subhead text-body mb-6">Contact Us</h1>
           <p className="text-secondary-text type-caption mb-6">
             Share your details and we&apos;ll get back to you. Fields marked with *
             are required.

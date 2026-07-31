@@ -1,34 +1,56 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import React, { useCallback, useEffect, useId, useRef, useState } from "react";
-import { NavbarData, ContactBtnData } from "@/data/NavbarData";
+import { NavbarData, ContactBtnData, type NavItem } from "@/data/NavbarData";
 import { usePathname } from "next/navigation";
-import { ChartNoAxesGantt, X, ChevronDown, ArrowLeft } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
+function cx(...parts: Array<string | undefined | false>) {
+  return parts.filter(Boolean).join(" ");
+}
+
 const Navbar = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [submenuOpen, setSubmenuOpen] = useState<null | string>(null);
-  const [desktopOpen, setDesktopOpen] = useState<null | string>(null);
+  const [submenuOpen, setSubmenuOpen] = useState<string | null>(null);
+  const [desktopOpen, setDesktopOpen] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const drawerId = useId();
   const drawerRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const desktopNavRef = useRef<HTMLDivElement>(null);
+  const desktopNavRef = useRef<HTMLElement>(null);
 
-  const checkActive = (href: string) =>
-    pathname === href || pathname.startsWith(`${href}/`);
+  const checkActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const itemActive = (item: NavItem) =>
+    checkActive(item.href) ||
+    Boolean(item.submenu?.some((sub) => checkActive(sub.href)));
 
   const closeDrawer = useCallback(() => {
     setIsOpen(false);
     setSubmenuOpen(null);
   }, []);
 
-  // Body scroll lock
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    closeDrawer();
+    setDesktopOpen(null);
+  }, [pathname, closeDrawer]);
+
   useEffect(() => {
     if (!isOpen) return;
     const prev = document.body.style.overflow;
@@ -38,7 +60,6 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
-  // Escape closes drawer / desktop menu
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
@@ -52,7 +73,6 @@ const Navbar = () => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isOpen, desktopOpen, closeDrawer]);
 
-  // Focus trap + initial focus in drawer
   useEffect(() => {
     if (!isOpen || !drawerRef.current) return;
     const drawer = drawerRef.current;
@@ -77,7 +97,6 @@ const Navbar = () => {
     return () => drawer.removeEventListener("keydown", onKeyDown);
   }, [isOpen, submenuOpen]);
 
-  // Close desktop dropdown on outside click
   useEffect(() => {
     if (!desktopOpen) return;
     const onPointerDown = (e: MouseEvent) => {
@@ -93,271 +112,360 @@ const Navbar = () => {
   }, [desktopOpen]);
 
   return (
-    <header className="xl:px-10 p-6 xl:py-4 flex justify-between items-center bg-2nd-bg relative z-50 outline-2 outline-header-stroke">
-      <Link href="/" className="logo-container relative shrink-0">
-        <Image
-          src="/images/2PercentCompany.png"
-          height={49}
-          width={160}
-          alt="2% Company"
-          sizes="48px"
-          className="w-8 h-8 lg:h-12 lg:w-12 object-contain"
-          priority
-        />
-      </Link>
-
-      {/* Desktop Nav */}
-      <div
-        ref={desktopNavRef}
-        className="hidden xl:flex xl:px-8 xl:py-2 xl:gap-6 items-center relative"
+    <>
+      <header
+        className={cx(
+          "sticky top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300",
+          scrolled
+            ? "bg-main-bg/85 backdrop-blur-md border-b border-header-stroke"
+            : "bg-transparent border-b border-transparent"
+        )}
       >
-        {NavbarData.map((item) => {
-          const isActive =
-            checkActive(item.href) ||
-            (item.submenu && item.submenu.some((sub) => checkActive(sub.href)));
+        <div className="page-px flex items-center justify-between gap-4 h-16 lg:h-[4.5rem]">
+          <Link
+            href="/"
+            className="shrink-0 min-h-11 inline-flex items-center"
+            onClick={closeDrawer}
+            aria-label="2% Company home"
+          >
+            <Image
+              src="/images/2PercentCompany.png"
+              height={48}
+              width={48}
+              alt="2% Company"
+              sizes="40px"
+              className="size-9 lg:size-10 object-contain"
+              priority
+            />
+          </Link>
 
-          if ((item.label === "Services" || item.label === "Rent") && item.submenu) {
-            const open = desktopOpen === item.label;
-            const menuId = `desktop-menu-${item.label}`;
-            return (
-              <div key={item.label} className="relative">
-                <div className="flex items-stretch rounded-control overflow-hidden">
-                  <Link
-                    href={item.href}
-                    className={`px-8 py-4 transition-all duration-200 ${
-                      isActive
-                        ? "bg-primary text-on-primary"
-                        : "hover:bg-main-bg"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                  <button
-                    type="button"
-                    aria-expanded={open}
-                    aria-haspopup="menu"
-                    aria-controls={menuId}
-                    onClick={() =>
-                      setDesktopOpen(open ? null : item.label)
-                    }
-                    className={`px-3 py-4 transition-all duration-200 border-l border-header-stroke ${
-                      isActive
-                        ? "bg-primary text-on-primary"
-                        : "hover:bg-main-bg"
-                    }`}
-                  >
-                    <ChevronDown
-                      size={16}
-                      className={`transition-transform duration-200 ${
-                        open ? "-rotate-180" : ""
-                      }`}
-                      aria-hidden
-                    />
-                    <span className="sr-only">{item.label} submenu</span>
-                  </button>
-                </div>
+          <nav
+            ref={desktopNavRef}
+            className="hidden xl:flex items-center gap-1"
+            aria-label="Primary"
+          >
+            {NavbarData.map((item) => {
+              const active = itemActive(item);
+              const hasSub = Boolean(item.submenu?.length);
+              const open = desktopOpen === item.label;
 
-                {open && (
+              if (hasSub && item.submenu) {
+                const menuId = `desktop-menu-${item.label}`;
+                return (
                   <div
-                    id={menuId}
-                    role="menu"
-                    className="absolute left-0 top-full mt-1 flex flex-col bg-2nd-bg border border-header-stroke rounded-control shadow-lg z-50 min-w-full"
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => setDesktopOpen(item.label)}
+                    onMouseLeave={() => setDesktopOpen(null)}
                   >
-                    {item.submenu.map((sub) => {
-                      const subActive = checkActive(sub.href);
-                      return (
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-haspopup="menu"
+                      aria-controls={menuId}
+                      onClick={() =>
+                        setDesktopOpen(open ? null : item.label)
+                      }
+                      onFocus={() => setDesktopOpen(item.label)}
+                      className={cx(
+                        "relative inline-flex items-center gap-1.5 min-h-11 px-3 type-body transition-colors duration-200 rounded-control",
+                        active || open
+                          ? "text-body"
+                          : "text-secondary-text hover:text-body"
+                      )}
+                    >
+                      {item.label}
+                      <ChevronDown
+                        size={14}
+                        className={cx(
+                          "transition-transform duration-200 opacity-70",
+                          open && "rotate-180"
+                        )}
+                        aria-hidden
+                      />
+                      {(active || open) && (
+                        <span
+                          className="absolute bottom-1 left-3 right-3 h-px bg-primary"
+                          aria-hidden
+                        />
+                      )}
+                    </button>
+
+                    <div
+                      id={menuId}
+                      role="menu"
+                      className={cx(
+                        "absolute left-1/2 -translate-x-1/2 top-full pt-2 transition-all duration-200",
+                        open
+                          ? "opacity-100 visible translate-y-0"
+                          : "opacity-0 invisible -translate-y-1 pointer-events-none"
+                      )}
+                    >
+                      <div className="min-w-[17rem] rounded-media border border-header-stroke bg-2nd-bg/95 backdrop-blur-md p-2">
                         <Link
-                          key={sub.href}
-                          href={sub.href}
+                          href={item.href}
                           role="menuitem"
                           onClick={() => setDesktopOpen(null)}
-                          className={`block px-4 py-3 rounded-control ${
-                            subActive
-                              ? "bg-primary text-on-primary"
-                              : "hover:bg-main-bg"
-                          }`}
+                          className="flex items-center justify-between gap-3 rounded-control px-3 py-2.5 type-caption text-secondary-text hover:text-body hover:bg-main-bg transition-colors"
                         >
-                          {sub.label}
+                          All {item.label.toLowerCase()}
+                          <ArrowUpRight size={14} aria-hidden />
                         </Link>
-                      );
-                    })}
+                        <div className="my-1 border-t border-header-stroke" />
+                        {item.submenu.map((sub) => {
+                          const subActive = checkActive(sub.href);
+                          return (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              role="menuitem"
+                              onClick={() => setDesktopOpen(null)}
+                              className={cx(
+                                "block rounded-control px-3 py-2.5 transition-colors",
+                                subActive ? "bg-main-bg" : "hover:bg-main-bg"
+                              )}
+                            >
+                              <span
+                                className={cx(
+                                  "type-body block",
+                                  subActive ? "text-primary" : "text-body"
+                                )}
+                              >
+                                {sub.label}
+                              </span>
+                              {sub.description && (
+                                <span className="type-caption text-secondary-text block mt-0.5">
+                                  {sub.description}
+                                </span>
+                              )}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
-                )}
-              </div>
-            );
-          }
+                );
+              }
 
-          return (
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cx(
+                    "relative inline-flex items-center min-h-11 px-3 type-body transition-colors duration-200",
+                    active
+                      ? "text-body"
+                      : "text-secondary-text hover:text-body"
+                  )}
+                >
+                  {item.label}
+                  {active && (
+                    <span
+                      className="absolute bottom-1 left-3 right-3 h-px bg-primary"
+                      aria-hidden
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="flex items-center gap-2 shrink-0">
             <Link
-              key={item.href}
-              href={item.href}
-              className={`px-12 py-4 rounded-control transition-all duration-200 ${
-                isActive
-                  ? "bg-primary text-on-primary shadow-[0_0_0_2px_var(--color-header-stroke)]"
-                  : "hover:bg-main-bg hover:shadow-[0_0_0_2px_var(--color-header-stroke)]"
-              }`}
+              href={ContactBtnData.href}
+              className={cx(
+                "hidden sm:inline-flex items-center justify-center min-h-11 px-5 rounded-control type-body font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg",
+                checkActive(ContactBtnData.href)
+                  ? "bg-primary text-on-primary"
+                  : "bg-primary text-on-primary hover:brightness-110"
+              )}
             >
-              {item.label}
+              {ContactBtnData.label}
             </Link>
-          );
-        })}
-      </div>
 
-      <Link
-        href={ContactBtnData.href}
-        className={`contact-btn hidden xl:inline-flex items-center rounded-control xl:px-8 xl:py-4 font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-          checkActive(ContactBtnData.href)
-            ? "bg-primary text-on-primary shadow-[0_0_0_2px_var(--color-header-stroke)]"
-            : "border-2 border-header-stroke hover:bg-main-bg"
-        }`}
-      >
-        {ContactBtnData.label}
-      </Link>
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className="xl:hidden text-body min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke hover:border-primary/40 transition-colors"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              aria-controls={drawerId}
+              onClick={() => (isOpen ? closeDrawer() : setIsOpen(true))}
+            >
+              {isOpen ? (
+                <X size={22} aria-hidden />
+              ) : (
+                <Menu size={22} aria-hidden />
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
 
-      <button
-        ref={menuButtonRef}
-        type="button"
-        className="xl:hidden text-body min-w-11 min-h-11 inline-flex items-center justify-center"
-        aria-label={isOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isOpen}
-        aria-controls={drawerId}
-        onClick={() => setIsOpen(true)}
-      >
-        <ChartNoAxesGantt size={28} aria-hidden />
-      </button>
+      {/* Overlay */}
+      <div
+        className={cx(
+          "fixed inset-0 z-[60] bg-overlay transition-opacity duration-300 xl:hidden",
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+        aria-hidden={!isOpen}
+        onClick={closeDrawer}
+      />
 
-      {isOpen && (
-        <button
-          type="button"
-          aria-label="Close menu overlay"
-          className="fixed inset-0 bg-overlay z-40 cursor-default"
-          onClick={closeDrawer}
-        />
-      )}
-
+      {/* Mobile drawer */}
       <div
         id={drawerId}
         ref={drawerRef}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
-        className={`fixed bottom-0 left-0 right-0 bg-2nd-bg rounded-t-2xl z-50 transform transition-transform duration-300 px-8 max-h-[90vh] overflow-y-auto ${
-          isOpen ? "translate-y-0" : "translate-y-full pointer-events-none"
-        }`}
+        className={cx(
+          "fixed inset-y-0 right-0 z-[70] flex w-full max-w-[22rem] sm:max-w-sm flex-col bg-2nd-bg border-l border-header-stroke transition-transform duration-300 ease-out xl:hidden",
+          isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+        )}
         inert={!isOpen ? true : undefined}
       >
-        <div className="flex justify-end mt-4">
+        <div className="flex items-center justify-between gap-3 page-px h-16 border-b border-header-stroke shrink-0">
+          <p className="type-label text-body">Menu</p>
           <button
             type="button"
-            className="text-body min-w-11 min-h-11 inline-flex items-center justify-center"
+            className="text-body min-w-11 min-h-11 inline-flex items-center justify-center rounded-control hover:bg-main-bg transition-colors"
             aria-label="Close menu"
             onClick={closeDrawer}
           >
-            <X size={28} aria-hidden />
+            <X size={22} aria-hidden />
           </button>
         </div>
 
-        <nav className="flex flex-col mt-8 gap-4 pb-6 relative" aria-label="Primary">
-          {NavbarData.map((item) => {
-            const isActive =
-              checkActive(item.href) ||
-              (item.submenu &&
-                item.submenu.some((sub) => checkActive(sub.href)));
+        <nav
+          className="flex-1 overflow-y-auto custom-scrollbar px-5 py-6"
+          aria-label="Primary"
+        >
+          <ul className="flex flex-col gap-1">
+            {NavbarData.map((item) => {
+              const active = itemActive(item);
+              const hasSub = Boolean(item.submenu?.length);
+              const expanded = submenuOpen === item.label;
 
-            if (
-              (item.label === "Services" || item.label === "Rent") &&
-              item.submenu
-            ) {
+              if (hasSub && item.submenu) {
+                return (
+                  <li key={item.label}>
+                    <button
+                      type="button"
+                      aria-expanded={expanded}
+                      onClick={() =>
+                        setSubmenuOpen(expanded ? null : item.label)
+                      }
+                      className={cx(
+                        "flex w-full items-center justify-between gap-3 min-h-12 px-3 rounded-control type-subhead transition-colors",
+                        active ? "text-body" : "text-secondary-text hover:text-body"
+                      )}
+                    >
+                      <span className="flex items-center gap-3">
+                        {active && (
+                          <span
+                            className="w-1 h-5 rounded-full bg-primary shrink-0"
+                            aria-hidden
+                          />
+                        )}
+                        {item.label}
+                      </span>
+                      <ChevronDown
+                        size={18}
+                        className={cx(
+                          "transition-transform duration-200 shrink-0 opacity-60",
+                          expanded && "rotate-180"
+                        )}
+                        aria-hidden
+                      />
+                    </button>
+
+                    <div
+                      className={cx(
+                        "grid transition-[grid-template-rows] duration-300 ease-out",
+                        expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                      )}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="pl-4 pb-3 pt-1 flex flex-col gap-1 border-l border-header-stroke ml-3">
+                          <Link
+                            href={item.href}
+                            onClick={closeDrawer}
+                            className="min-h-11 px-3 inline-flex items-center type-body text-secondary-text hover:text-body transition-colors"
+                          >
+                            Overview
+                          </Link>
+                          {item.submenu.map((sub) => {
+                            const subActive = checkActive(sub.href);
+                            return (
+                              <Link
+                                key={sub.href}
+                                href={sub.href}
+                                onClick={closeDrawer}
+                                className={cx(
+                                  "min-h-11 px-3 py-2 flex flex-col justify-center rounded-control transition-colors",
+                                  subActive
+                                    ? "bg-main-bg text-primary"
+                                    : "text-body hover:bg-main-bg"
+                                )}
+                              >
+                                <span className="type-body">{sub.label}</span>
+                                {sub.description && (
+                                  <span className="type-caption text-secondary-text mt-0.5">
+                                    {sub.description}
+                                  </span>
+                                )}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                );
+              }
+
               return (
-                <button
-                  key={item.label}
-                  type="button"
-                  aria-expanded={submenuOpen === item.label}
-                  className={`flex justify-start items-center gap-3 w-full min-h-11 py-3 px-6 text-left rounded-control border border-header-stroke ${
-                    isActive ? "bg-primary text-on-primary" : ""
-                  }`}
-                  onClick={() => setSubmenuOpen(item.label)}
-                >
-                  {item.label}
-                  <ChevronDown aria-hidden />
-                </button>
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={closeDrawer}
+                    className={cx(
+                      "flex items-center gap-3 min-h-12 px-3 rounded-control type-subhead transition-colors",
+                      active
+                        ? "text-body"
+                        : "text-secondary-text hover:text-body"
+                    )}
+                  >
+                    {active && (
+                      <span
+                        className="w-1 h-5 rounded-full bg-primary shrink-0"
+                        aria-hidden
+                      />
+                    )}
+                    {item.label}
+                  </Link>
+                </li>
               );
-            }
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={closeDrawer}
-                className={`py-3 px-6 min-h-11 rounded-control text-left border border-header-stroke inline-flex items-center ${
-                  isActive
-                    ? "bg-primary text-on-primary shadow-[0_0_0_2px_var(--color-header-stroke)] border-none"
-                    : "hover:bg-main-bg"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-
-          <Link
-            href={ContactBtnData.href}
-            className={`rounded-control py-3 px-6 min-h-11 inline-flex items-center type-body transition-all duration-200 ${
-              checkActive(ContactBtnData.href)
-                ? "bg-primary text-on-primary shadow-[0_0_0_2px_var(--color-header-stroke)]"
-                : "border-2 border-header-stroke hover:bg-main-bg"
-            }`}
-            onClick={closeDrawer}
-          >
-            {ContactBtnData.label}
-          </Link>
+            })}
+          </ul>
         </nav>
 
-        {submenuOpen && (
-          <div className="absolute top-0 left-0 w-full h-full bg-2nd-bg rounded-t-2xl flex flex-col z-50">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-header-stroke">
-              <button
-                type="button"
-                onClick={() => setSubmenuOpen(null)}
-                className="flex items-center gap-2 text-body min-h-11 px-2"
-              >
-                <ArrowLeft size={20} aria-hidden /> Back
-              </button>
-              <Link
-                href={
-                  NavbarData.find((i) => i.label === submenuOpen)?.href ?? "/"
-                }
-                onClick={closeDrawer}
-                className="font-semibold text-body hover:text-primary transition-colors min-h-11 inline-flex items-center"
-              >
-                {submenuOpen}
-              </Link>
-            </div>
-            <div className="flex flex-col mt-4 gap-2 px-4 pb-6">
-              {NavbarData.find((i) => i.label === submenuOpen)?.submenu?.map(
-                (sub) => {
-                  const subActive = checkActive(sub.href);
-                  return (
-                    <Link
-                      key={sub.href}
-                      href={sub.href}
-                      onClick={closeDrawer}
-                      className={`py-3 px-6 min-h-11 rounded-control border border-header-stroke text-left inline-flex items-center ${
-                        subActive
-                          ? "bg-primary text-on-primary"
-                          : "hover:bg-main-bg"
-                      }`}
-                    >
-                      {sub.label}
-                    </Link>
-                  );
-                }
-              )}
-            </div>
-          </div>
-        )}
+        <div className="shrink-0 border-t border-header-stroke p-5 space-y-3">
+          <Link
+            href={ContactBtnData.href}
+            onClick={closeDrawer}
+            className="flex w-full items-center justify-center gap-2 min-h-12 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
+          >
+            {ContactBtnData.label}
+            <ArrowUpRight size={16} aria-hidden />
+          </Link>
+          <p className="type-caption text-secondary-text text-center">
+            Patna · Buy · Sell · Rent · Invest
+          </p>
+        </div>
       </div>
-    </header>
+    </>
   );
 };
 

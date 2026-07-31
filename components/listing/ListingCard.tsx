@@ -3,10 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { PropertyItem } from "@/data/PropertyData";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export type ListingCardItem = Pick<
   PropertyItem,
@@ -28,59 +26,58 @@ const ListingCard: React.FC<ListingCardProps> = ({
   showAddress = true,
   className = "",
 }) => {
-  const reduceMotion = usePrefersReducedMotion();
   const defaultCta =
     property.type === "plot" ? "View Plot Details" : "View Property Details";
   const label = ctaLabel ?? defaultCta;
 
   return (
-    <motion.article
-      whileHover={reduceMotion ? undefined : { scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 200 }}
-      className={`card p-4 lg:p-6 gap-4 flex flex-col justify-between rounded-card border-2 border-header-stroke bg-2nd-bg transition-all duration-300 hover:border-primary/40 h-full ${className}`}
+    <article
+      className={`group card p-4 lg:p-6 gap-4 flex flex-col justify-between rounded-card border border-header-stroke bg-2nd-bg transition-colors duration-300 hover:border-primary/40 h-full ${className}`}
     >
-      <div className="w-full flex justify-center items-center">
+      <div className="w-full overflow-hidden rounded-media">
         <Image
           src={property.image}
           height={240}
           width={394}
           alt={`${property.title} in ${property.address}`}
           sizes="(max-width: 1024px) 100vw, 33vw"
-          className="rounded-media w-full object-cover aspect-[4/3]"
+          className="w-full object-cover aspect-[4/3] transition-transform duration-500 ease-out motion-safe:group-hover:scale-110"
         />
       </div>
 
       <div className="w-full">
-        <h2 className="type-card-title text-primary">{property.title}</h2>
+        <h2 className="type-card-title text-body">{property.title}</h2>
         <p className="text-secondary-text type-body mt-1">{property.description}</p>
       </div>
 
       {showAddress && (
         <div className="flex items-center gap-2 text-secondary-text type-caption">
-          <MapPin width={16} height={16} className="text-primary shrink-0" />
+          <MapPin width={16} height={16} className="text-secondary-text shrink-0" />
           <span>{property.address}</span>
         </div>
       )}
 
-      <div className="w-full flex flex-wrap items-center gap-3">
-        {property.tags.map((tag, index) => {
-          const Icon = tag.icon;
-          return (
-            <div
-              key={`${tag.label}-${index}`}
-              className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full type-caption font-medium"
-            >
-              <Icon width={20} height={20} />
-              <span className="font-semibold">{tag.label}</span>
-            </div>
-          );
-        })}
-      </div>
+      {property.tags.length > 0 && (
+        <div className="w-full flex flex-wrap items-center gap-2">
+          {property.tags.map((tag, index) => {
+            const Icon = tag.icon;
+            return (
+              <div
+                key={`${tag.label}-${index}`}
+                className="flex items-center gap-1.5 text-secondary-text type-caption border border-header-stroke px-3 py-1.5 rounded-control"
+              >
+                <Icon width={14} height={14} />
+                <span>{tag.label}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
-      <div className="py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex flex-col gap-1.5">
-          <p className="text-secondary-text font-semibold type-caption">Price</p>
-          <p className="type-price text-primary">₹{property.price}</p>
+      <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col gap-0.5">
+          <p className="text-secondary-text type-caption">Price</p>
+          <p className="type-price text-body">₹{property.price}</p>
         </div>
 
         {href && (
@@ -92,7 +89,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </Link>
         )}
       </div>
-    </motion.article>
+    </article>
   );
 };
 

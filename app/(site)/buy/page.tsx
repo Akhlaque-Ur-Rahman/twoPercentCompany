@@ -56,7 +56,7 @@ const BuyPage = () => {
     <div className="flex flex-col bg-main-bg text-body">
       <section className="page-px section-y space-y-8">
         <div>
-          <h1 className="type-display text-primary mb-2">Buy a Property</h1>
+          <h1 className="type-display text-body mb-2">Buy a Property</h1>
           <p className="text-secondary-text type-body">
             Filter listings by type, facing, and budget.
           </p>

@@ -243,14 +243,14 @@ const BeAnInvestor: React.FC = () => {
 
       {/* Header */}
       <div className="max-w-2xl mx-auto text-center mb-10 page-px">
-        <h2 className="type-display text-primary mb-2">Be an Investor</h2>
+        <h2 className="type-display text-body mb-2">Be an Investor</h2>
         <p className="text-secondary-text type-body">
           Join us in shaping the future. Fill in your details step by step to begin your investment journey.
         </p>
       </div>
 
-      {/* Benefits Card Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 page-px">
+      {/* Benefits */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 page-px lg:gap-0 lg:divide-x lg:divide-header-stroke">
         {benefits.map((b, i) => {
           const Icon = b.icon;
           return (
@@ -260,10 +260,10 @@ const BeAnInvestor: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               viewport={{ once: true }}
-              className="bg-2nd-bg border border-header-stroke p-6 rounded-card flex flex-col items-start gap-4"
+              className="flex flex-col items-start gap-3 lg:px-6 first:lg:pl-0 last:lg:pr-0"
             >
-              <Icon size={36} className="text-primary" />
-              <h3 className="type-card-title text-primary">{b.title}</h3>
+              <Icon size={28} className="text-primary" />
+              <h3 className="type-card-title text-body">{b.title}</h3>
               <p className="text-secondary-text type-body leading-relaxed">{b.desc}</p>
             </motion.div>
           );
@@ -271,10 +271,10 @@ const BeAnInvestor: React.FC = () => {
       </div>
 
       {/* Form Section */}
-      <div className="bg-main-bg text-white page-px section-y-sm rounded-media">
+      <div className="bg-main-bg text-body page-px section-y-sm">
         <form
           onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto flex flex-col gap-6 bg-2nd-bg px-4 py-6 rounded-card"
+          className="max-w-2xl mx-auto flex flex-col gap-6 bg-2nd-bg px-4 py-6 rounded-card border border-header-stroke"
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -285,7 +285,7 @@ const BeAnInvestor: React.FC = () => {
               transition={{ duration: 0.4 }}
               className="flex flex-col gap-4"
             >
-              <h3 className="type-card-title text-primary mb-2 text-center">
+              <h3 className="type-card-title text-body mb-2 text-center">
                 Step {step} of {formSteps.length}: {formSteps[step - 1].title}
               </h3>
               {formSteps[step - 1].fields}

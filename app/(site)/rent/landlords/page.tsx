@@ -6,9 +6,9 @@ import PropertyForm from "@/components/PropertyForm";
 
 const LandlordPage = () => {
   return (
-    <section className="flex flex-col bg-main-bg text-white">
-      <div className="section-y page-px text-center max-w-7xl mx-auto w-full">
-        <h1 className="type-display text-primary mb-4">List Your Rental Property</h1>
+    <section className="flex flex-col bg-main-bg text-body">
+      <div className="section-y page-px text-center max-w-7xl mx-auto w-full border-b border-header-stroke">
+        <h1 className="type-display text-body mb-4">List Your Rental Property</h1>
         <p className="text-secondary-text type-body max-w-2xl mx-auto">
           Reach verified tenants and manage enquiries with 2% Company support.
         </p>

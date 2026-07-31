@@ -22,9 +22,9 @@ export interface HeroSlide {
 
 export const HeroSectionSlides: HeroSlide[] = [
   {
-    heading: "Discover Your Dream Property with 2% Company",
+    heading: "Discover your dream property in Patna",
     description:
-      "Your journey to finding the perfect property begins here. Explore our listings to find the home that matches your dreams.",
+      "Explore verified homes and investments matched to how you want to live — and grow.",
     imageMain: "/images/ImageMainDesktop.png",
     imageOverlay: "/images/AbstractDesign1.png",
     buttons: [
@@ -38,9 +38,9 @@ export const HeroSectionSlides: HeroSlide[] = [
     ],
   },
   {
-    heading: "Luxury Apartments for Modern Living",
+    heading: "Luxury apartments for modern living",
     description:
-      "Step into a world of sophistication and comfort. Discover high-end apartments designed to match your lifestyle.",
+      "Sophisticated homes designed for comfort — find an apartment that fits your lifestyle.",
     imageMain: "/images/apartment2.png",
     imageOverlay: "/images/AbstractDesign1.png",
     buttons: [
@@ -54,9 +54,9 @@ export const HeroSectionSlides: HeroSlide[] = [
     ],
   },
   {
-    heading: "Invest Smart with Premium Plots",
+    heading: "Invest smart with premium plots",
     description:
-      "Secure your future with our handpicked investment plots located in fast-growing urban zones.",
+      "Handpicked plots in growing corridors — built for long-term value in and around Patna.",
     imageMain: "/images/apartment3.png",
     imageOverlay: "/images/AbstractDesign1.png",
     buttons: [

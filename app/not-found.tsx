@@ -24,7 +24,7 @@ export default function NotFound() {
         />
       </motion.div>
 
-      <h1 className="type-section text-primary mt-2">Page not found</h1>
+      <h1 className="type-section text-body mt-2">Page not found</h1>
       <p className="type-body text-secondary-text mt-3 prose-measure">
         Oops! The page you’re looking for doesn’t exist or may have moved.
       </p>

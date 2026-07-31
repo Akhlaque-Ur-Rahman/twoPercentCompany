@@ -38,4 +38,4 @@ export const contactInfo = {
 export const logo = "/images/2PercentCompany.png";
 
 export const footerDescription =
-  "Bringing you the latest properties, plots, and real estate insights.";
+  "Premium guidance for buying, selling, renting, and investing in Patna real estate.";

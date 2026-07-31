@@ -5,31 +5,31 @@ import { HomeCTASectionData } from "@/data/HomeCTASectionData";
 
 const HomeCTASection = () => {
   return (
-    <div className="home-cta-section page-px py-0 lg:py-4 lg:border-2 lg:border-header-stroke rounded-media">
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border-2 lg:border-none border-header-stroke p-3 lg:p-0 rounded-media">
+    <div className="page-px section-y border-b border-header-stroke">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 lg:divide-x lg:divide-header-stroke">
         {HomeCTASectionData.map((item) => {
           const ArrowIcon = item.arrow;
           return (
             <div
               key={item.id}
-              className="p-4 space-y-4 rounded-media bg-2nd-bg border-2 border-header-stroke w-full"
+              className="flex flex-col gap-3 lg:px-6 first:lg:pl-0 last:lg:pr-0"
             >
-              <div className="flex justify-end text-arrow-icon items-center">
-                <ArrowIcon className="w-5 h-5 lg:h-7 lg:w-7" />
-              </div>
-
-              <div className="w-full flex justify-center items-center">
+              <div className="flex items-start justify-between gap-3">
                 <Image
                   src={item.icon}
-                  height={48}
-                  width={48}
-                  alt={item.title}
-                  sizes="48px"
-                  className="object-contain w-12 h-12"
+                  height={40}
+                  width={40}
+                  alt=""
+                  aria-hidden
+                  sizes="40px"
+                  className="object-contain w-10 h-10"
+                />
+                <ArrowIcon
+                  className="w-4 h-4 text-arrow-icon shrink-0 mt-1"
+                  aria-hidden
                 />
               </div>
-
-              <h2 className="text-center type-body font-medium text-body">
+              <h2 className="type-body font-medium text-body leading-snug">
                 {item.title}
               </h2>
             </div>

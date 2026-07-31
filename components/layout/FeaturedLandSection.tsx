@@ -5,7 +5,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 const FeaturedLandSection = () => {
   return (
-    <div className="page-px section-y-sm lg:space-y-4 rounded-media border-b-2 border-header-stroke">
+    <div className="page-px section-y lg:space-y-6 border-b border-header-stroke">
       <SectionHeader
         title="Featured Lands"
         description="Explore prime plots and land for investment or development."

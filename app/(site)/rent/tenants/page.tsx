@@ -57,7 +57,7 @@ const TenantListingPage = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
-          <h1 className="type-display text-primary">Find Properties for Rent</h1>
+          <h1 className="type-display text-body">Find Properties for Rent</h1>
           <p className="text-secondary-text mt-2 type-body">
             Search, filter, and explore verified properties for rent.
           </p>

@@ -23,7 +23,7 @@ const HeroSection = () => {
   }, [reduceMotion]);
 
   return (
-    <div className="relative bg-main-bg w-full overflow-hidden">
+    <section className="relative w-full -mt-16 lg:-mt-[4.5rem] border-b border-header-stroke">
       <Swiper
         modules={[Autoplay]}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
@@ -36,62 +36,63 @@ const HeroSection = () => {
             : {
                 delay: 4000,
                 disableOnInteraction: false,
-                pauseOnMouseEnter: true,
+                pauseOnMouseEnter: false,
               }
         }
-        className="w-full"
+        className="w-full overflow-hidden"
       >
         {HeroSectionSlides.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className="p-6 lg:pl-10 lg:pr-0 lg:pt-0 lg:pb-0 relative gap-8 lg:gap-4 flex flex-col lg:flex-row w-full">
-              <div className="hero-right-box relative w-full lg:w-1/2 order-1 lg:order-2 aspect-[4/3] lg:aspect-auto lg:min-h-[520px]">
+          <SwiperSlide key={index} className="!h-auto">
+            <div className="relative h-[100svh] max-h-[820px] min-h-[560px] w-full">
+              {/* Hero image — full height, right side, bleeds under transparent nav */}
+              <div className="absolute inset-x-0 top-0 h-[42%] sm:h-[46%] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:w-[56%]">
                 <Image
                   src={slide.imageOverlay}
                   fill
                   alt=""
                   aria-hidden
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="absolute top-0 left-0 h-full w-full object-cover"
+                  sizes="(max-width: 1024px) 100vw, 56vw"
+                  className="object-cover opacity-40"
                 />
                 <Image
                   src={slide.imageMain}
                   fill
                   alt={slide.heading}
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 1024px) 100vw, 56vw"
                   priority={index === 0}
-                  className="h-full w-full object-cover relative z-10"
+                  className="object-cover object-center z-[1]"
                 />
-                <div className="absolute bottom-0 left-0 lg:top-[20%] lg:left-0 lg:-translate-x-1/2 w-[72px] h-[72px] lg:w-[88px] lg:h-[88px]">
-                  <Image
-                    src="/images/Sub.png"
-                    alt=""
-                    aria-hidden
-                    fill
-                    sizes="72px, (min-width: 1024px) 88px"
-                    className="object-contain"
-                  />
-                </div>
+                <div
+                  className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-main-bg to-transparent z-[2] hidden lg:block"
+                  aria-hidden
+                />
+                <div
+                  className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-main-bg to-transparent z-[2] lg:hidden"
+                  aria-hidden
+                />
               </div>
 
-              <div className="hero-left-box xl:pt-20 xl:pb-40 flex flex-col justify-center items-start w-full lg:w-1/2 order-2 lg:order-1">
-                <div>
-                  <h2 className="text-primary type-display leading-tight">
-                    {slide.heading}
-                  </h2>
-                  <p className="text-secondary-text type-body mt-2">
-                    {slide.description}
-                  </p>
-                </div>
+              {/* Dense copy column */}
+              <div className="relative z-10 flex h-full flex-col justify-end lg:justify-center page-px pb-16 pt-[46%] sm:pt-[50%] lg:pt-28 lg:pb-12 lg:w-[48%]">
+                <p className="type-label text-primary tracking-wide">
+                  2% Company
+                </p>
+                <h1 className="type-display text-body leading-[1.15] mt-1.5 max-w-lg">
+                  {slide.heading}
+                </h1>
+                <p className="text-secondary-text type-body mt-2 max-w-md">
+                  {slide.description}
+                </p>
 
-                <div className="w-full xl:py-10 gap-4 flex flex-col lg:flex-row mt-6">
+                <div className="flex flex-col sm:flex-row gap-2.5 mt-4">
                   {slide.buttons.map((btn) => (
                     <Link
                       key={btn.id}
                       href={btn.link}
-                      className={`block rounded-control text-center ${
+                      className={`inline-flex justify-center items-center rounded-control text-center type-body font-semibold min-h-11 px-5 py-2.5 ${
                         btn.type === "primary"
-                          ? "bg-primary text-on-primary font-semibold hover:brightness-110 lg:px-6 lg:py-5 py-4 px-0"
-                          : "border border-header-stroke text-primary hover:bg-main-bg lg:px-12 lg:py-5 py-4 px-0"
+                          ? "bg-primary text-on-primary hover:brightness-110"
+                          : "border border-header-stroke text-body hover:border-primary/40 hover:bg-2nd-bg"
                       }`}
                     >
                       {btn.label}
@@ -99,29 +100,31 @@ const HeroSection = () => {
                   ))}
                 </div>
 
-                <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
-                  {slide.cards.map((card, idx) => (
-                    <div
-                      key={card.id}
-                      className={`lg:p-4 py-6 space-y-2 rounded-control bg-2nd-bg text-center lg:text-left ${
-                        idx === slide.cards.length - 1 &&
-                        slide.cards.length % 2 !== 0
-                          ? "col-span-2 sm:col-span-1"
-                          : ""
-                      }`}
-                    >
-                      <h2 className="type-subhead text-primary">{card.value}</h2>
-                      <p className="type-body text-secondary-text">{card.label}</p>
-                    </div>
-                  ))}
-                </div>
+                {slide.cards.length > 0 && (
+                  <div className="mt-5 pt-4 border-t border-header-stroke flex flex-wrap gap-x-6 gap-y-3">
+                    {slide.cards.map((card) => (
+                      <div key={card.id} className="min-w-[5.5rem]">
+                        <p className="type-card-title text-body leading-none">
+                          {card.value}
+                        </p>
+                        <p className="type-caption text-secondary-text mt-1">
+                          {card.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
-      <div className="flex justify-center gap-1 my-6" role="tablist" aria-label="Hero slides">
+      <div
+        className="absolute bottom-3 left-0 right-0 z-20 flex justify-center gap-1"
+        role="tablist"
+        aria-label="Hero slides"
+      >
         {HeroSectionSlides.map((_, index) => (
           <button
             key={index}
@@ -133,16 +136,16 @@ const HeroSection = () => {
             className="min-w-11 min-h-11 flex items-center justify-center"
           >
             <span
-              className={`block w-3 h-3 rounded-full transform transition-all duration-500 ${
+              className={`block w-2.5 h-2.5 rounded-full transition-all duration-500 ${
                 index === activeIndex
                   ? "bg-primary scale-125"
-                  : "bg-2nd-bg border border-header-stroke scale-100"
+                  : "bg-2nd-bg/80 border border-header-stroke"
               }`}
             />
           </button>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

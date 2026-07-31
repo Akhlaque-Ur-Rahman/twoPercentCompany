@@ -33,7 +33,7 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, delay: reduceMotion ? 0 : index * 0.05 }}
-      className="card flex flex-col lg:flex-row p-4 lg:p-6 gap-4 lg:gap-6 rounded-card border-2 border-header-stroke bg-2nd-bg"
+      className="card flex flex-col lg:flex-row p-4 lg:p-6 gap-4 lg:gap-6 rounded-card border border-header-stroke bg-2nd-bg"
     >
       <div className="w-full lg:w-1/3 flex justify-center">
         <Image
@@ -49,30 +49,32 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
 
       <div className="flex-1 flex flex-col justify-between gap-4">
         <div>
-          <h2 className="type-card-title text-primary">{property.title}</h2>
+          <h2 className="type-card-title text-body">{property.title}</h2>
           <p className="text-secondary-text type-body mt-1">{property.description}</p>
           {meta}
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          {property.tags.map((tag, idx) => {
-            const Icon = tag.icon;
-            return (
-              <div
-                key={`${tag.label}-${idx}`}
-                className="flex items-center gap-2 bg-primary/10 text-primary border border-primary/30 px-4 py-2 rounded-full type-caption font-medium"
-              >
-                <Icon width={20} height={20} />
-                <span className="font-semibold">{tag.label}</span>
-              </div>
-            );
-          })}
-        </div>
+        {property.tags.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            {property.tags.map((tag, idx) => {
+              const Icon = tag.icon;
+              return (
+                <div
+                  key={`${tag.label}-${idx}`}
+                  className="flex items-center gap-1.5 text-secondary-text type-caption border border-header-stroke px-3 py-1.5 rounded-control"
+                >
+                  <Icon width={14} height={14} />
+                  <span>{tag.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex flex-col gap-1.5">
-            <p className="text-secondary-text type-caption font-semibold">Price</p>
-            <p className="type-price text-primary">₹{property.price}</p>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-secondary-text type-caption">Price</p>
+            <p className="type-price text-body">₹{property.price}</p>
           </div>
           <Link
             href={href}
