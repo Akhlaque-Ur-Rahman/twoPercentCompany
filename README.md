@@ -10,7 +10,7 @@ Patna-focused real estate marketing site for browsing properties and plots, list
 |-------|--------|
 | Framework | Next.js 15 (App Router) + Turbopack |
 | UI | React 19, Tailwind CSS v4 |
-| Font | **Urbanist** (UI) + **Instrument Serif** (display) |
+| Font | **Urbanist** (`next/font`) |
 | Motion | Framer Motion (respects `prefers-reduced-motion`) |
 | Carousels | Swiper |
 | Maps | Leaflet + react-leaflet |
@@ -58,4 +58,5 @@ Key paths: `/`, `/properties`, `/plots`, `/buy`, `/sell`, `/rent`, `/rent/tenant
 - Text on primary fills: `text-on-primary` (black) — never white on gold
 - Page padding: `.page-px`
 - Prefer shared UI in `components/ui/*` and listings in `components/listing/*`
+
 

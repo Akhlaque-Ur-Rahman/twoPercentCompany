@@ -47,7 +47,7 @@ Update this file when you make a lasting decision or discover a non-obvious cons
 | 2026-07-31 | Phase 2 listing primitives + token/type/radius pass | ListingCard/Row/Grid/Detail; landlords → PropertyForm |
 | 2026-07-31 | Phase 3 mobile-first + nav a11y | Gallery/aspect heights; 44px targets; drawer focus trap/Escape; desktop click menus |
 | 2026-07-31 | Phase 4 forms/a11y + content QA | Labels/errors/focus; FilterSelect; footer mailto/tel; dead deps/data removed; sitemap tenants |
-| 2026-07-31 | Display font: Instrument Serif + Urbanist UI | Premium serif headlines; keep sans for forms/nav |
+| 2026-07-31 | Reverted to Urbanist-only typography | Removed Instrument Serif display pairing |
 
 ---
 

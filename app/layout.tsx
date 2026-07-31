@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Urbanist } from "next/font/google";
+import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { OrganizationSchema } from "@/components/StructuredData";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
   variable: "--font-urbanist",
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-display",
   display: "swap",
 });
 
@@ -80,7 +73,7 @@ export default function RootLayout({
         <OrganizationSchema />
       </head>
       <body
-        className={`${urbanist.variable} ${instrumentSerif.variable} font-urbanist antialiased`}
+        className={`${urbanist.variable} font-urbanist antialiased`}
       >
         {children}
       </body>

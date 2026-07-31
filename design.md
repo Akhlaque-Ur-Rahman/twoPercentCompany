@@ -15,8 +15,7 @@
 | Visual mode | Dark UI, gold/bronze accent |
 | Voice | Clear, professional, aspirational — short sentences |
 | Logo | `/images/2PercentCompany.png`, `/svg/logo.svg` |
-| Font (UI) | **Urbanist** — body, nav, forms, cards |
-| Font (display) | **Instrument Serif** — H1 / section titles / stats |
+| Font | **Urbanist** (Google via `next/font`) |
 
 **Never use** leftover template brand names in UI copy.
 
@@ -65,26 +64,25 @@
 
 ## 3. Typography
 
-**Pairing:** Instrument Serif (display) + Urbanist (UI) via `next/font`.
+**Family:** Urbanist via `--font-urbanist`.
 
 | Role | Family |
 |------|--------|
-| `.type-display`, `.type-section`, `.type-stat` | Instrument Serif (`--font-display`), weight 400 |
-| All other `.type-*`, body, buttons, forms | Urbanist (`--font-urbanist`) |
+| All `.type-*`, body, buttons, forms | Urbanist (`--font-urbanist`) |
 
 ### Role classes (required — no arbitrary `text-[…]`)
 
 | Class | Size | Weight | Use |
 |-------|------|--------|-----|
-| `.type-display` | clamp 24→48 | 400 serif | Page H1 / hero title |
-| `.type-section` | clamp 20→40 | 400 serif | Section H2 |
-| `.type-subhead` | clamp 20→32 | 600 sans | Subsection titles |
-| `.type-card-title` | clamp 18→24 | 600 sans | Card / block titles |
-| `.type-body` | clamp 14→16 | 400 sans | Body copy, buttons |
-| `.type-caption` | clamp 13→15 | 400 sans | Meta, chips, footer links |
-| `.type-label` | 14px | 500 sans | Form labels, footer headings |
-| `.type-price` | clamp 20→28 | 700 sans | Listing prices |
-| `.type-stat` | clamp 28→36 | 400 serif | Big counters |
+| `.type-display` | clamp 24→48 | 600 | Page H1 / hero title |
+| `.type-section` | clamp 20→40 | 600 | Section H2 |
+| `.type-subhead` | clamp 20→32 | 600 | Subsection titles |
+| `.type-card-title` | clamp 18→24 | 600 | Card / block titles |
+| `.type-body` | clamp 14→16 | 400 | Body copy, buttons |
+| `.type-caption` | clamp 13→15 | 400 | Meta, chips, footer links |
+| `.type-label` | 14px | 500 | Form labels, footer headings |
+| `.type-price` | clamp 20→28 | 700 | Listing prices |
+| `.type-stat` | clamp 28→36 | 600 | Big counters |
 
 ### Measure
 
@@ -98,7 +96,6 @@
 1. Prefer shared `SectionHeader` (uses `.type-section` + `.type-body`).
 2. Do **not** use `text-sm` / `text-xl` / `text-[14px]` / `text-[clamp…]` for typography.
 3. Icon sizing (`size-4`, `w-5 h-5`) is separate from type roles.
-4. Do **not** put Instrument Serif on buttons, nav, or form fields.
 
 ---
 

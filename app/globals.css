@@ -15,9 +15,8 @@
   --color-star: #8f7330;
   --color-body: #ffffff;
 
-  /* Fonts — UI sans + display serif */
+  /* Font */
   --font-urbanist: "Urbanist", sans-serif;
-  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
 
   /* Radius */
   --radius-control: 12px;
@@ -91,68 +90,57 @@ body {
 
 /* Typography scale — use these; avoid arbitrary text-[…] */
 .type-display {
-  font-family: var(--font-display);
   font-size: clamp(24px, 5vw, 48px);
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .type-section {
-  font-family: var(--font-display);
   font-size: clamp(20px, 2.5vw, 40px);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 .type-subhead {
-  font-family: var(--font-urbanist);
   font-size: clamp(20px, 2.5vw, 32px);
   font-weight: 600;
   line-height: 1.3;
 }
 
 .type-card-title {
-  font-family: var(--font-urbanist);
   font-size: clamp(18px, 2vw, 24px);
   font-weight: 600;
   line-height: 1.3;
 }
 
 .type-body {
-  font-family: var(--font-urbanist);
   font-size: clamp(14px, 1.6vw, 16px);
   font-weight: 400;
   line-height: 1.5;
 }
 
 .type-caption {
-  font-family: var(--font-urbanist);
   font-size: clamp(13px, 1.5vw, 15px);
   font-weight: 400;
   line-height: 1.4;
 }
 
 .type-label {
-  font-family: var(--font-urbanist);
   font-size: 0.875rem; /* 14px */
   font-weight: 500;
   line-height: 1.4;
 }
 
 .type-price {
-  font-family: var(--font-urbanist);
   font-size: clamp(20px, 2.5vw, 28px);
   font-weight: 700;
   line-height: 1.2;
 }
 
 .type-stat {
-  font-family: var(--font-display);
   font-size: clamp(28px, 4vw, 36px);
-  font-weight: 400;
-  line-height: 1.15;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 /* Leaflet overrides */
