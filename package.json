@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "tsx scripts/push-schema-on-build.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx scripts/seed-listings.ts",
+    "push:schema": "tsx scripts/push-schema.ts",
     "payload": "payload",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",

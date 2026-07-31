@@ -12,10 +12,10 @@ import { Users } from "./collections/Users";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const databaseUrl = process.env.DATABASE_URL || "file:./payload.db";
-const usePostgres =
-  databaseUrl.startsWith("postgres://") ||
-  databaseUrl.startsWith("postgresql://");
+const databaseUrl = (process.env.DATABASE_URL || "file:./payload.db")
+  .trim()
+  .replace(/^["']|["']$/g, "");
+const usePostgres = /^postgres(ql)?:\/\//i.test(databaseUrl);
 
 export default buildConfig({
   admin: {
