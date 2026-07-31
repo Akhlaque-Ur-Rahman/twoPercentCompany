@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "tsx scripts/push-schema-on-build.ts && next build",
+    "build": "tsx scripts/push-schema-on-build.ts && tsx scripts/seed-listings.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx scripts/seed-listings.ts",
@@ -18,6 +18,7 @@
     "@payloadcms/db-postgres": "^3.86.0",
     "@payloadcms/db-sqlite": "^3.86.0",
     "@payloadcms/next": "^3.86.0",
+    "@payloadcms/storage-vercel-blob": "^3.86.0",
     "framer-motion": "^12.23.12",
     "graphql": "^16.14.2",
     "leaflet": "^1.9.4",

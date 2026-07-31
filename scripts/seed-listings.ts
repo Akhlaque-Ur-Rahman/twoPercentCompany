@@ -1,16 +1,17 @@
-import "dotenv/config";
-import { getPayload } from "payload";
-import config from "../payload.config";
-import { PropertyData } from "../data/PropertyData";
+/**
+ * Seeds PropertyData into empty listings collection.
+ * Safe to run on every Vercel build (no-ops if listings already exist).
+ */
+import { config as loadDotenv } from "dotenv";
 
-function positionToLatLng(position: unknown): { lat: number; lng: number } {
-  if (Array.isArray(position) && position.length >= 2) {
-    return { lat: Number(position[0]), lng: Number(position[1]) };
-  }
-  return { lat: 25.5941, lng: 85.1376 };
-}
+// Fill missing keys only — never override Vercel / CI-injected DATABASE_URL.
+loadDotenv({ override: false });
 
 async function seed() {
+  const { getPayload } = await import("payload");
+  const config = (await import("../payload.config")).default;
+  const { PropertyData } = await import("../data/PropertyData");
+
   const payload = await getPayload({ config });
 
   const existing = await payload.find({
@@ -20,9 +21,9 @@ async function seed() {
 
   if (existing.totalDocs > 0) {
     console.log(
-      `Skip seed: ${existing.totalDocs}+ listing(s) already exist. Delete them in /admin if you want to re-seed.`
+      `[seed] Skip: ${existing.totalDocs}+ listing(s) already exist.`
     );
-    process.exit(0);
+    return;
   }
 
   for (const item of PropertyData) {
@@ -53,14 +54,22 @@ async function seed() {
       },
     });
 
-    console.log(`Seeded: ${item.type} — ${item.slug}`);
+    console.log(`[seed] ${item.type} — ${item.slug}`);
   }
 
-  console.log(`Done. Seeded ${PropertyData.length} listings.`);
-  process.exit(0);
+  console.log(`[seed] Done. Seeded ${PropertyData.length} listings.`);
 }
 
-seed().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+function positionToLatLng(position: unknown): { lat: number; lng: number } {
+  if (Array.isArray(position) && position.length >= 2) {
+    return { lat: Number(position[0]), lng: Number(position[1]) };
+  }
+  return { lat: 25.5941, lng: 85.1376 };
+}
+
+seed()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("[seed] Failed:", error);
+    process.exit(1);
+  });
