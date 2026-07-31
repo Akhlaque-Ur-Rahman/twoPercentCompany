@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+payload.db
+payload.db-*
+media
+.next
+node_modules
