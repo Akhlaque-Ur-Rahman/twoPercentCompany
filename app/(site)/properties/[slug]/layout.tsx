@@ -18,7 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = property.title;
   const description = property.longDescription || property.description;
-  const imageUrl = property.image;
+  const imageUrl = property.image.startsWith("http")
+    ? property.image
+    : `https://www.2percentcompany.in${property.image}`;
 
   return {
     title,
@@ -26,7 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: [
       property.title,
       "property for sale",
-      "real estate",
+      "real estate Patna",
+      "2% Company",
       property.address,
       ...property.tags.map((tag) => tag.label),
     ],
@@ -35,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: `https://www.2percentcompany.in/properties/${slug}`,
       type: "website",
+      siteName: "2% Company",
       images: [
         {
           url: imageUrl,
@@ -46,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: `${title} | 2% Company`,
       description,
       images: [imageUrl],
     },

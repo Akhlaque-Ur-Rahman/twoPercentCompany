@@ -16,8 +16,10 @@ export default async function PlotPage({ params }: Props) {
     <ListingDetail
       item={plot}
       ctaLabel="Enquire About Plot"
-      ctaHref="/contact"
+      ctaHref={`/contact?plot=${slug}`}
       specificationsTitle="Plot Specifications"
+      backHref="/plots"
+      backLabel="All plots"
     />
   );
 }

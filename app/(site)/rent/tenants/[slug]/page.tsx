@@ -20,6 +20,8 @@ export default async function TenantPropertyPage({ params }: Props) {
       ctaLabel="Request for Rent"
       ctaHref={`/rent/tenants/enquiry?property=${slug}`}
       specificationsTitle="Property Specifications"
+      backHref="/rent/tenants"
+      backLabel="All rentals"
     />
   );
 }

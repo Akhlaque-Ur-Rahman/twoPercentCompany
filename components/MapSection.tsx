@@ -37,8 +37,14 @@ function MapInteractionController({
 
   useMapEvents({
     click: () => onActivate(),
-    focus: () => onActivate(),
   });
+
+  useEffect(() => {
+    const container = map.getContainer();
+    const onFocusIn = () => onActivate();
+    container.addEventListener("focusin", onFocusIn);
+    return () => container.removeEventListener("focusin", onFocusIn);
+  }, [map, onActivate]);
 
   useEffect(() => {
     if (active) {

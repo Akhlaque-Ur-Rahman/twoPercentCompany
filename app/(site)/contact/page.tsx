@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import contactAnimation from "@/public/animations/contact2.json";
 import successAnimation from "@/public/animations/success.json";
@@ -17,6 +17,7 @@ type FormData = {
   purpose: string;
   budget: string;
   location: string;
+  listingSlug: string;
 };
 
 const fieldFocus =
@@ -26,6 +27,7 @@ const ContactPage: React.FC = () => {
   const [typeDropdown, setTypeDropdown] = useState(false);
   const [purposeDropdown, setPurposeDropdown] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [listingSlug, setListingSlug] = useState<string | null>(null);
 
   const propertyPurposes = ["Buy", "Sell", "Rent"];
   const plotPurposes = ["Invest", "Develop", "Resell"];
@@ -46,11 +48,30 @@ const ContactPage: React.FC = () => {
       purpose: "",
       budget: "",
       location: "",
+      listingSlug: "",
     },
   });
 
   const selectedType = watch("type");
   const selectedPurpose = watch("purpose");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const propertySlug = params.get("property")?.trim();
+    const plotSlug = params.get("plot")?.trim();
+    const slug = propertySlug || plotSlug;
+    if (!slug) return;
+
+    setListingSlug(slug);
+    setValue("listingSlug", slug);
+    if (plotSlug) {
+      setValue("type", "Plot", { shouldValidate: true });
+      setValue("purpose", "Invest", { shouldValidate: true });
+    } else {
+      setValue("type", "Property", { shouldValidate: true });
+      setValue("purpose", "Buy", { shouldValidate: true });
+    }
+  }, [setValue]);
 
   const onSubmit = () => {
     setIsSubmitted(true);
@@ -84,7 +105,15 @@ const ContactPage: React.FC = () => {
             are required.
           </p>
 
+          {listingSlug && (
+            <p className="type-caption text-body mb-4 rounded-control border border-header-stroke bg-main-bg px-4 py-3">
+              Enquiring about listing{" "}
+              <span className="font-semibold text-primary">{listingSlug}</span>
+            </p>
+          )}
+
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
+            <input type="hidden" {...register("listingSlug")} />
             <Input
               label="Name *"
               placeholder="Your full name"
