@@ -4,7 +4,6 @@ import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { LatLng } from "leaflet";
 import PropertyGallery from "@/components/PropertyGallery";
 import MapPlaceholder from "@/components/MapPlaceholder";
 import ListingDetailHero from "@/components/listing/ListingDetailHero";
@@ -12,8 +11,8 @@ import ListingFloorPlans from "@/components/listing/ListingFloorPlans";
 import ListingOverview from "@/components/listing/ListingOverview";
 import ListingVideoFacade from "@/components/listing/ListingVideoFacade";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { PropertyItem } from "@/data/PropertyData";
-import { MarkerType } from "@/types/MarkerType";
+import type { PropertyItem } from "@/data/PropertyData";
+import type { MarkerType } from "@/types/MarkerType";
 import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
 import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -36,11 +35,21 @@ export type ListingDetailProps = {
   backLabel?: string;
 };
 
+/** Avoid importing leaflet here — it touches `window` and breaks SSR/prerender. */
 function toPositionArray(position: PropertyItem["position"]): [number, number] {
-  if (position instanceof LatLng) {
-    return [position.lat, position.lng];
+  if (Array.isArray(position)) {
+    return [Number(position[0]), Number(position[1])];
   }
-  return position as [number, number];
+  if (
+    position &&
+    typeof position === "object" &&
+    "lat" in position &&
+    "lng" in position
+  ) {
+    const { lat, lng } = position as { lat: number; lng: number };
+    return [lat, lng];
+  }
+  return [0, 0];
 }
 
 const focusRing =
