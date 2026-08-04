@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import {
   quickLinks,
   servicesLinks,
@@ -12,26 +13,50 @@ import {
 import Newsletter from "./NewsLetter";
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone, ArrowUpRight } from "lucide-react";
-import { mailtoHref, telHref } from "@/lib/contact";
+import { Mail, Phone, ArrowUpRight, MapPin } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
+import { mailtoHref, telHref, whatsappHref } from "@/lib/contact";
 
 const phoneHref = telHref();
 const mailHref = mailtoHref();
+const waHref = whatsappHref(
+  "Hi 2% Company, I'd like help with a property enquiry."
+);
+
+const STICKY_BAR_HIDDEN_PREFIXES = ["/contact", "/admin"];
 
 const Footer: React.FC = () => {
   const year = new Date().getFullYear();
+  const pathname = usePathname() ?? "";
+  const stickyBarVisible = !STICKY_BAR_HIDDEN_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
 
   return (
-    <footer className="bg-2nd-bg text-body border-t border-header-stroke">
+    <footer
+      className={[
+        "bg-2nd-bg text-body border-t border-header-stroke",
+        stickyBarVisible &&
+          "pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      {/* Newsletter */}
       <div className="page-px section-y">
         <Newsletter />
       </div>
 
+      {/* Main */}
       <div className="border-t border-header-stroke">
         <div className="page-px section-y">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
-            <div className="lg:col-span-4 flex flex-col gap-5">
-              <Link href="/" className="inline-flex items-center gap-3 w-fit group">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 xl:gap-10">
+            {/* Brand */}
+            <div className="sm:col-span-2 lg:col-span-4 flex flex-col gap-5">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-3 w-fit group"
+              >
                 <span className="relative size-10 shrink-0">
                   <Image
                     src={logo}
@@ -46,10 +71,12 @@ const Footer: React.FC = () => {
                   2% Company
                 </span>
               </Link>
+
               <p className="text-secondary-text type-body prose-measure max-w-sm">
                 {footerDescription}
               </p>
-              <div className="flex flex-col gap-2 pt-1">
+
+              <div className="flex flex-col gap-1">
                 <a
                   href={mailHref}
                   className="inline-flex items-center gap-2.5 type-caption text-secondary-text hover:text-primary transition-colors min-h-11 w-fit"
@@ -64,12 +91,25 @@ const Footer: React.FC = () => {
                   <Phone className="size-4 shrink-0" aria-hidden />
                   {contactInfo.phone}
                 </a>
+                <a
+                  href={waHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 type-caption text-secondary-text hover:text-primary transition-colors min-h-11 w-fit"
+                >
+                  <FaWhatsapp className="size-4 shrink-0" aria-hidden />
+                  WhatsApp
+                </a>
               </div>
             </div>
 
-            <div className="lg:col-span-2 sm:col-start-1 lg:col-start-auto">
-              <h3 className="type-label text-body mb-4">Explore</h3>
-              <ul className="flex flex-col gap-1">
+            {/* Explore */}
+            <nav
+              aria-label="Explore"
+              className="lg:col-span-2 sm:col-span-1"
+            >
+              <h3 className="type-label text-body mb-3 sm:mb-4">Explore</h3>
+              <ul className="flex flex-col gap-0.5">
                 {quickLinks.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -81,11 +121,15 @@ const Footer: React.FC = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
 
-            <div className="lg:col-span-3">
-              <h3 className="type-label text-body mb-4">Services</h3>
-              <ul className="flex flex-col gap-1">
+            {/* Services */}
+            <nav
+              aria-label="Services"
+              className="lg:col-span-3 sm:col-span-1"
+            >
+              <h3 className="type-label text-body mb-3 sm:mb-4">Services</h3>
+              <ul className="flex flex-col gap-0.5">
                 {servicesLinks.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -102,14 +146,22 @@ const Footer: React.FC = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
 
-            <div className="lg:col-span-3">
-              <h3 className="type-label text-body mb-4">Visit</h3>
-              <p className="type-caption text-secondary-text leading-relaxed max-w-xs">
-                Serving buyers, sellers, tenants, and investors across Patna and
-                surrounding areas.
-              </p>
+            {/* Visit */}
+            <div className="sm:col-span-2 lg:col-span-3 lg:col-start-auto">
+              <h3 className="type-label text-body mb-3 sm:mb-4">Visit</h3>
+              <div className="flex gap-2.5 type-caption text-secondary-text leading-relaxed max-w-xs">
+                <MapPin
+                  className="size-4 shrink-0 mt-0.5 text-primary"
+                  aria-hidden
+                />
+                <p>
+                  Serving buyers, sellers, tenants, and investors across Patna
+                  and surrounding areas.
+                </p>
+              </div>
+
               {socialLinks.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-5">
                   {socialLinks.map((social) => {
@@ -129,9 +181,10 @@ const Footer: React.FC = () => {
                   })}
                 </div>
               )}
+
               <Link
                 href="/contact"
-                className="group mt-6 inline-flex items-center gap-2 type-body font-semibold text-primary hover:brightness-110 transition min-h-11"
+                className="group mt-5 inline-flex items-center gap-2 type-body font-semibold text-primary hover:brightness-110 transition min-h-11"
               >
                 Get in touch
                 <ArrowUpRight
@@ -145,8 +198,9 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
+      {/* Bottom bar */}
       <div className="border-t border-header-stroke">
-        <div className="page-px py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="page-px py-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="type-caption text-secondary-text">
             © {year} 2% Company. All rights reserved.
           </p>

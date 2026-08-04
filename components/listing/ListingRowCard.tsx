@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { MapPin } from "lucide-react";
 import { ListingCardItem } from "@/components/listing/ListingCard";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { iconForTagLabel } from "@/lib/tagIcons";
@@ -15,7 +16,29 @@ export type ListingRowCardProps = {
   ctaLabel?: string;
   index?: number;
   meta?: React.ReactNode;
+  /** Eager-load image for above-the-fold rows */
+  priority?: boolean;
 };
+
+const MAX_TAGS = 4;
+const MAX_THUMBS = 5;
+
+function shortLocation(address: string): string {
+  const parts = address.split(",").map((p) => p.trim()).filter(Boolean);
+  if (parts.length >= 2) return `${parts[0]}, ${parts[1]}`;
+  return parts[0] ?? address;
+}
+
+function gallerySources(property: ListingCardItem): string[] {
+  const seen = new Set<string>();
+  const urls: string[] = [];
+  for (const src of [property.image, ...(property.gallery ?? [])]) {
+    if (!src || seen.has(src)) continue;
+    seen.add(src);
+    urls.push(src);
+  }
+  return urls;
+}
 
 const ListingRowCard: React.FC<ListingRowCardProps> = ({
   property,
@@ -23,49 +46,145 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
   ctaLabel,
   index = 0,
   meta,
+  priority = false,
 }) => {
   const reduceMotion = usePrefersReducedMotion();
   const label =
     ctaLabel ??
     (property.type === "plot" ? "View Plot Details" : "View Property Details");
+  const shortCta =
+    property.type === "plot"
+      ? "View Plot"
+      : label.toLowerCase().includes("property")
+        ? "View Details"
+        : label;
+  const visibleTags = property.tags.slice(0, MAX_TAGS);
+  const location = shortLocation(property.address);
+  const staggerDelay = reduceMotion ? 0 : Math.min(index, 6) * 0.04;
+
+  const images = useMemo(() => gallerySources(property), [property]);
+  const thumbs = images.slice(0, MAX_THUMBS);
+  const extraCount = Math.max(0, images.length - MAX_THUMBS);
+  const [activeSrc, setActiveSrc] = useState(images[0] ?? property.image);
+
+  useEffect(() => {
+    setActiveSrc(images[0] ?? property.image);
+  }, [property.id, images, property.image]);
 
   return (
-    <motion.div
+    <motion.article
       initial={reduceMotion ? false : { opacity: 0, y: 20 }}
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, delay: reduceMotion ? 0 : index * 0.05 }}
-      className="card flex flex-col lg:flex-row p-4 lg:p-6 gap-4 lg:gap-6 rounded-card border border-header-stroke bg-2nd-bg"
+      transition={{ duration: 0.45, delay: staggerDelay }}
+      className="group card flex flex-col lg:flex-row p-4 lg:p-6 gap-4 lg:gap-6 rounded-card border border-header-stroke bg-2nd-bg transition-[border-color,background] duration-300 hover:border-primary/40 hover:bg-[linear-gradient(135deg,rgba(143,115,48,0.08),transparent_55%)]"
     >
-      <div className="w-full lg:w-1/3 flex justify-center">
+      <Link
+        href={href}
+        className="relative block w-full lg:w-1/3 shrink-0 overflow-hidden rounded-media aspect-[4/3] bg-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-2nd-bg"
+        aria-label={`${property.title} — ${formatPrice(property.price)}`}
+      >
         <Image
-          src={property.image}
-          height={240}
-          width={394}
-          alt={`${property.title} in ${property.address}`}
-          loading="lazy"
+          src={activeSrc}
+          alt=""
+          fill
+          priority={priority}
           sizes="(max-width: 1024px) 100vw, 33vw"
-          className="rounded-media w-full h-full object-cover aspect-[4/3] lg:aspect-auto"
+          className="object-cover transition-transform duration-500 motion-safe:group-hover:scale-[1.03]"
+          aria-hidden
         />
-      </div>
+        <span
+          className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-80"
+          aria-hidden
+        />
+      </Link>
 
-      <div className="flex-1 flex flex-col justify-between gap-4">
-        <div>
-          <h2 className="type-card-title text-body">{property.title}</h2>
-          <p className="text-secondary-text type-body mt-1">{property.description}</p>
+      <div className="flex-1 flex flex-col justify-center gap-3 min-w-0">
+        <div className="space-y-2">
+          <p className="inline-flex items-center gap-1.5 type-caption text-secondary-text max-w-full">
+            <MapPin size={14} className="shrink-0 text-primary/80" aria-hidden />
+            <span className="line-clamp-1">{location}</span>
+          </p>
+          <h2 className="type-card-title text-body text-balance leading-snug">
+            <Link
+              href={href}
+              className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:text-primary"
+            >
+              {property.title}
+            </Link>
+          </h2>
+          <p className="text-secondary-text type-body line-clamp-2 leading-relaxed">
+            {property.description}
+          </p>
           {meta}
         </div>
 
-        {property.tags.length > 0 && (
+        {thumbs.length > 1 && (
+          <ul
+            className="flex gap-2 overflow-x-auto py-0.5 custom-scrollbar"
+            aria-label={`${property.title} photo gallery`}
+          >
+            {thumbs.map((src, i) => {
+              const selected = src === activeSrc;
+              const isLast = i === thumbs.length - 1 && extraCount > 0;
+              return (
+                <li key={`${src}-${i}`} className="shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setActiveSrc(src)}
+                    aria-label={
+                      isLast
+                        ? `View photo ${i + 1}, ${extraCount} more available`
+                        : `View photo ${i + 1}`
+                    }
+                    aria-pressed={selected}
+                    className={`relative block size-14 sm:size-16 overflow-hidden rounded-control bg-black cursor-pointer transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-2nd-bg ${
+                      selected ? "opacity-100" : "opacity-50 hover:opacity-90"
+                    }`}
+                  >
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                      aria-hidden
+                    />
+                    {/* Selection drawn ON TOP of the photo — never behind it */}
+                    <span
+                      className={`pointer-events-none absolute inset-0 rounded-[inherit] border-2 ${
+                        selected ? "border-white" : "border-transparent"
+                      }`}
+                      aria-hidden
+                    />
+                    {selected && (
+                      <span
+                        className="pointer-events-none absolute bottom-1.5 left-1.5 right-1.5 h-0.5 rounded-full bg-primary"
+                        aria-hidden
+                      />
+                    )}
+                    {isLast && (
+                      <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/55 type-caption font-semibold text-white">
+                        +{extraCount}
+                      </span>
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {visibleTags.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
-            {property.tags.map((tag, idx) => {
+            {visibleTags.map((tag, idx) => {
               const Icon = tag.icon ?? iconForTagLabel(tag.label);
               return (
                 <div
                   key={`${tag.label}-${idx}`}
-                  className="flex items-center gap-1.5 text-secondary-text type-caption border border-header-stroke px-3 py-1.5 rounded-control"
+                  className="flex items-center gap-1.5 text-secondary-text type-caption bg-main-bg/70 border border-header-stroke px-2.5 py-1.5 rounded-control"
                 >
-                  <Icon width={14} height={14} />
+                  <Icon width={14} height={14} className="text-primary/70" aria-hidden />
                   <span>{tag.label}</span>
                 </div>
               );
@@ -73,22 +192,28 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex flex-col gap-0.5">
-            <p className="text-secondary-text type-caption">Price</p>
-            <p className="type-price text-body" title={formatPriceExact(property.price)}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 border-t border-header-stroke">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <p className="text-secondary-text type-caption tracking-wide uppercase">
+              Price
+            </p>
+            <p
+              className="type-price text-primary leading-none"
+              title={formatPriceExact(property.price)}
+            >
               {formatPrice(property.price)}
             </p>
           </div>
           <Link
             href={href}
-            className="px-6 py-3 inline-flex justify-center items-center rounded-control bg-primary text-on-primary font-semibold type-body text-center hover:brightness-110 transition"
+            className="w-full sm:w-auto px-5 py-2.5 inline-flex justify-center items-center rounded-control border border-primary font-semibold type-body text-center transition-colors bg-primary text-on-primary lg:bg-transparent lg:text-primary hover:bg-primary hover:text-on-primary"
           >
-            {label}
+            <span className="lg:hidden">{shortCta}</span>
+            <span className="hidden lg:inline">{label}</span>
           </Link>
         </div>
       </div>
-    </motion.div>
+    </motion.article>
   );
 };
 

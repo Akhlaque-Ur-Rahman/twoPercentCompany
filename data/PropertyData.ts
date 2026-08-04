@@ -70,7 +70,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "sai-residency-apartment",
     type: "property",
     url: "https://www.2percentcompany.in/properties/sai-residency-apartment",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/property2.webp", "/images/property3.webp", "/images/property4.webp"],
     specifications: [
   { label: "Carpet Area", value: "900 sqft" },
   { label: "Price per sqft", value: "â‚¹3,500/sqft" },
@@ -92,14 +92,13 @@ export const PropertyData: PropertyItem[] = [
       "Green Valley Housing is a serene 2BHK independent house perfect for small families. Surrounded by greenery and open spaces, it offers a peaceful retreat from the city bustle. The house includes modern fittings, ample parking space, and a small garden. It is located in a well-connected area of Patna with easy access to schools, markets, and main roads.",
     address: "Kankarbagh Main Road, Opp. Malahi Pakri, Patna, Bihar",
     position: [25.5941, 85.1426],
-    image: "/images/seasidevilla.png",
+    image: "/images/property3.webp",
     gallery: [
-      "/images/seasidevilla.png",
-      "/images/property2.webp",
       "/images/property3.webp",
       "/images/property4.webp",
       "/images/property5.webp",
       "/images/property6.webp",
+      "/images/seasidevilla.png",
     ],
     video: "/videos/property-sale.webm", // âœ… Added
     price: "85,00,000",
@@ -111,7 +110,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "green-valley-housing",
     type: "property",
     url: "https://www.2percentcompany.in/properties/green-valley-housing",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/property4.webp", "/images/property5.webp", "/images/property6.webp"],
     specifications: [
   { label: "Carpet Area", value: "2200 sqft" },
   { label: "Price per sqft", value: "â‚¹7,500/sqft" },
@@ -133,9 +132,8 @@ export const PropertyData: PropertyItem[] = [
       "Ganga View Towers features premium 4BHK apartments with stunning views of the Ganga river. The apartments are fully furnished with modern interiors and high-quality materials. Amenities include a rooftop terrace, swimming pool, and secure parking. This property is perfect for those who want luxurious living with a scenic riverside environment and easy access to Patnaâ€™s main hubs.",
     address: "Gulzarbagh, Near Ganga River, Patna, Bihar",
     position: [25.61, 85.144],
-    image: "/images/seasidevilla.png",
+    image: "/images/property2.webp",
     gallery: [
-      "/images/seasidevilla.png",
       "/images/property2.webp",
       "/images/property3.webp",
       "/images/property4.webp",
@@ -152,7 +150,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "ganga-view-towers",
     type: "property",
     url: "https://www.2percentcompany.in/properties/ganga-view-towers",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/property3.webp", "/images/property4.webp", "/images/property5.webp"],
     specifications: [
   { label: "Built-up Area", value: "1800 sqft" },
   { label: "Plot Area", value: "2000 sqft" },
@@ -174,8 +172,13 @@ export const PropertyData: PropertyItem[] = [
     description: "Modern 3BHK apartment in the city center with skyline views.",
     address: "Fraser Road, Patna, Bihar",
     position: [25.609, 85.141],
-    image: "/images/seasidevilla.png",
-    gallery: ["/images/seasidevilla.png", "/images/seasidevilla5.png"],
+    image: "/images/property4.webp",
+    gallery: [
+      "/images/property4.webp",
+      "/images/property6.webp",
+      "/images/property2.webp",
+      "/images/seasidevilla.png",
+    ],
     video: "/videos/property-sale.webm", // âœ… Added
     price: "98,00,000",
     tags: [
@@ -186,7 +189,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "urban-luxury-apartment",
     type: "property",
     url: "https://www.2percentcompany.in/properties/urban-luxury-apartment",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/property6.webp", "/images/property2.webp", "/images/seasidevilla.png"],
     specifications: [
   { label: "Carpet Area", value: "400 sqft" },
   { label: "Price per sqft", value: "â‚¹2,500/sqft" },
@@ -206,8 +209,13 @@ export const PropertyData: PropertyItem[] = [
     description: "Spacious 5BHK countryside home with parking & garden.",
     address: "Danapur Road, Patna, Bihar",
     position: [25.585, 85.12],
-    image: "/images/seasidevilla.png",
-    gallery: ["/images/seasidevilla.png", "/images/seasidevilla6.png"],
+    image: "/images/property5.webp",
+    gallery: [
+      "/images/property5.webp",
+      "/images/property6.webp",
+      "/images/property3.webp",
+      "/images/seasidevilla.png",
+    ],
     video: "/videos/property-sale.webm", // âœ… Added
     price: "1,50,00,000",
     tags: [
@@ -218,7 +226,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "countryside-family-home",
     type: "property",
     url: "https://www.2percentcompany.in/properties/countryside-family-home",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/property6.webp", "/images/property3.webp", "/images/seasidevilla.png"],
     specifications: [
   { label: "Carpet Area", value: "1500 sqft" },
   { label: "Price per sqft", value: "â‚¹6,500/sqft" },
@@ -239,8 +247,13 @@ export const PropertyData: PropertyItem[] = [
     description: "Budget-friendly 1BHK studio apartment, ideal for singles.",
     address: "Rajendra Nagar, Patna, Bihar",
     position: [25.61, 85.13],
-    image: "/images/seasidevilla.png",
-    gallery: ["/images/seasidevilla.png", "/images/seasidevilla7.png"],
+    image: "/images/property6.webp",
+    gallery: [
+      "/images/property6.webp",
+      "/images/property2.webp",
+      "/images/property3.webp",
+      "/images/property4.webp",
+    ],
     video: "/videos/property-sale.webm", // âœ… Added
     price: "32,00,000",
     tags: [
@@ -251,7 +264,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "compact-1bhk-studio",
     type: "property",
     url: "https://www.2percentcompany.in/properties/compact-1bhk-studio",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/property2.webp", "/images/property3.webp", "/images/property4.webp"],
     specifications: [
   { label: "Carpet Area", value: "900 sqft" },
   { label: "Price per sqft", value: "â‚¹3,500/sqft" },
@@ -275,7 +288,7 @@ export const PropertyData: PropertyItem[] = [
       "Shivaji Enclave Plot offers a spacious residential area ideal for building your dream home. Strategically located near Bailey Road, it has excellent connectivity and access to amenities such as schools, markets, and hospitals.",
     address: "Near Bailey Road, Patna, Bihar",
     position: [25.595, 85.12],
-    image: "/images/plainland.png",
+    image: "/images/plot2.webp",
     gallery: [
       "/images/plot2.webp",
       "/images/plot3.webp",
@@ -292,7 +305,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "shivaji-enclave-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/shivaji-enclave-plot",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/plot3.webp", "/images/plot4.webp", "/images/plot5.webp"],
     specifications: [
   { label: "Plot Area", value: "1200 sqft" },
   { label: "Price per sqft", value: "â‚¹3,750/sqft" },
@@ -312,13 +325,13 @@ export const PropertyData: PropertyItem[] = [
       "Rajdhani Nagar Plot is perfect for residential or small-scale commercial purposes. Located in Patliputra Industrial Area, it offers easy connectivity, ample space, and a prime location for investment.",
     address: "Patliputra Industrial Area, Patna, Bihar",
     position: [25.605, 85.135],
-    image: "/images/plainland.png",
+    image: "/images/plot3.webp",
     gallery: [
-      "/images/plot2.webp",
       "/images/plot3.webp",
       "/images/plot4.webp",
       "/images/plot5.webp",
       "/images/plot6.webp",
+      "/images/plainland.jpg",
     ],
     video: "/videos/property-sale2.webm", // âœ… Added
     price: "55,00,000",
@@ -329,7 +342,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "rajdhani-nagar-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/rajdhani-nagar-plot",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/plot4.webp", "/images/plot5.webp", "/images/plot6.webp"],
     specifications: [
   { label: "Plot Area", value: "2000 sqft" },
   { label: "Price per sqft", value: "â‚¹5,500/sqft" },
@@ -349,13 +362,13 @@ export const PropertyData: PropertyItem[] = [
       "Gola Road Plot provides an affordable option for building a home in a well-connected area of Patna. Close to main roads and local markets, it offers both convenience and value for money.",
     address: "Gola Road, Patna, Bihar",
     position: [25.61, 85.115],
-    image: "/images/plainland.png",
+    image: "/images/plot4.webp",
     gallery: [
-      "/images/plot2.webp",
-      "/images/plot3.webp",
       "/images/plot4.webp",
       "/images/plot5.webp",
       "/images/plot6.webp",
+      "/images/plot2.webp",
+      "/images/plainland.jpg",
     ],
     video: "/videos/property-sale2.webm", // âœ… Added
     price: "40,00,000",
@@ -366,7 +379,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "gola-road-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/gola-road-plot",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/plot5.webp", "/images/plot6.webp", "/images/plot2.webp"],
     specifications: [
   { label: "Plot Area", value: "1500 sqft" },
   { label: "Price per sqft", value: "â‚¹6,000/sqft" },
@@ -387,13 +400,13 @@ export const PropertyData: PropertyItem[] = [
       "Bailey Road Commercial Plot is perfect for setting up offices or commercial establishments. Its prime location and ample space make it ideal for businesses looking to establish a presence in Patna.",
     address: "Bailey Road, Patna, Bihar",
     position: [25.597, 85.124],
-    image: "/images/plainland.png",
+    image: "/images/plot5.webp",
     gallery: [
-      "/images/plot2.webp",
-      "/images/plot3.webp",
-      "/images/plot4.webp",
       "/images/plot5.webp",
       "/images/plot6.webp",
+      "/images/plot2.webp",
+      "/images/plot3.webp",
+      "/images/plainland.jpg",
     ],
     video: "/videos/property-sale2.webm", // âœ… Added
     price: "1,20,00,000",
@@ -404,7 +417,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "bailey-road-commercial-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/bailey-road-commercial-plot",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/plot6.webp", "/images/plot2.webp", "/images/plot3.webp"],
     specifications: [
   { label: "Plot Area", value: "600 sqft" },
   { label: "Price per sqft", value: "â‚¹3,500/sqft" },
@@ -424,13 +437,13 @@ export const PropertyData: PropertyItem[] = [
       "Patliputra Colony Plot offers a premium location for building luxury homes. With wide roads, green surroundings, and a safe neighborhood, it provides an ideal environment for residential development.",
     address: "Patliputra Colony, Patna, Bihar",
     position: [25.604, 85.132],
-    image: "/images/plainland.png",
+    image: "/images/scenary.jpg",
     gallery: [
+      "/images/scenary.jpg",
       "/images/plot2.webp",
       "/images/plot3.webp",
       "/images/plot4.webp",
       "/images/plot5.webp",
-      "/images/plot6.webp",
     ],
     video: "/videos/property-sale2.webm", // âœ… Added
     price: "95,00,000",
@@ -441,7 +454,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "patliputra-colony-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/patliputra-colony-plot",
-    floorPlans: ["/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg","/floorplans/first-floor-plan.jpg"],
+    floorPlans: ["/images/plainland.jpg", "/images/plot2.webp", "/images/plot3.webp"],
     specifications: [
   { label: "Plot Area", value: "5000 sqft" },
   { label: "Price per sqft", value: "â‚¹2,500/sqft" },

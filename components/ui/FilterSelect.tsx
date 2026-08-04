@@ -60,7 +60,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
         aria-expanded={open}
         aria-controls={listId}
         onClick={() => setOpen((v) => !v)}
-        className={`w-full flex justify-between items-center gap-2 px-4 py-3 rounded-control bg-2nd-bg border-2 border-header-stroke text-primary focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg ${buttonClassName}`}
+        className={`w-full flex justify-between items-center gap-2 px-4 py-3 rounded-control bg-2nd-bg border border-header-stroke text-body focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg ${buttonClassName}`}
       >
         <span className="truncate">{selectedLabel}</span>
         <ChevronDown
@@ -75,7 +75,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
           id={listId}
           role="listbox"
           aria-label={label}
-          className="absolute z-50 mt-1 w-full bg-2nd-bg border-2 border-header-stroke rounded-control overflow-hidden max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
+          className="absolute z-50 mt-1 w-full bg-2nd-bg border border-header-stroke rounded-control overflow-hidden max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
           data-lenis-prevent
         >
           {options.map((option) => {

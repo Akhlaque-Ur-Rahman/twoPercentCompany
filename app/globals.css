@@ -171,6 +171,41 @@ body {
   transform: scale(1.2);
 }
 
+.leaflet-control-zoom {
+  border: 1px solid var(--color-header-stroke) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+
+.leaflet-control-zoom a {
+  background: var(--color-2nd-bg) !important;
+  color: var(--color-body) !important;
+  border-bottom-color: var(--color-header-stroke) !important;
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  line-height: 2.25rem !important;
+  font-size: 1.125rem !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--color-main-bg) !important;
+  color: var(--color-primary) !important;
+}
+
+.leaflet-container {
+  background: var(--color-2nd-bg);
+  font-family: inherit;
+}
+
+.leaflet-container.map-interactive {
+  cursor: grab;
+}
+
+.leaflet-container.map-interactive:active {
+  cursor: grabbing;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
@@ -192,6 +227,50 @@ body {
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) var(--color-2nd-bg);
+}
+
+/* Testimonials — vertical marquee columns */
+@keyframes testimonial-marquee-up {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes testimonial-marquee-down {
+  from {
+    transform: translate3d(0, -50%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-testimonial-up {
+  animation: testimonial-marquee-up linear infinite;
+}
+
+.animate-testimonial-down {
+  animation: testimonial-marquee-down linear infinite;
+}
+
+.testimonial-column-mask {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
 }
 
 /* Motion: respect user preference */

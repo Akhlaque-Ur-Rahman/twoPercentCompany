@@ -1,18 +1,56 @@
 "use client";
 
-import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { PropertyIcon, PlotIcon } from "@/utils/MapIcons";
 import { MarkerType } from "@/types/MarkerType";
 import Link from "next/link";
 import Image from "next/image";
+import { MousePointerClick } from "lucide-react";
 
 interface MapSectionProps {
   markers: MarkerType[];
   center?: [number, number];
   zoom?: number;
   showLink?: boolean;
+  className?: string;
+  /** Overrides default responsive map height */
+  mapClassName?: string;
+}
+
+function MapInteractionController({
+  active,
+  onActivate,
+}: {
+  active: boolean;
+  onActivate: () => void;
+}) {
+  const map = useMap();
+
+  useMapEvents({
+    click: () => onActivate(),
+    focus: () => onActivate(),
+  });
+
+  useEffect(() => {
+    if (active) {
+      map.scrollWheelZoom.enable();
+      map.getContainer().classList.add("map-interactive");
+    } else {
+      map.scrollWheelZoom.disable();
+      map.getContainer().classList.remove("map-interactive");
+    }
+  }, [active, map]);
+
+  return null;
 }
 
 const MapSection: React.FC<MapSectionProps> = ({
@@ -20,18 +58,38 @@ const MapSection: React.FC<MapSectionProps> = ({
   center = [25.5941, 85.1376],
   zoom = 13,
   showLink = true,
+  className = "",
+  mapClassName = "",
 }) => {
+  const [active, setActive] = useState(false);
+
+  const activate = useCallback(() => setActive(true), []);
+  const deactivate = useCallback(() => setActive(false), []);
+
   if (!markers || markers.length === 0) return null;
 
   return (
-    <div className="w-full rounded-media overflow-hidden page-px" data-lenis-prevent>
+    <div
+      className={`relative w-full overflow-hidden rounded-media border border-header-stroke bg-2nd-bg ${className}`}
+      data-lenis-prevent={active ? true : undefined}
+      onMouseLeave={deactivate}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          deactivate();
+        }
+      }}
+    >
       <MapContainer
         center={center}
         zoom={zoom}
-        scrollWheelZoom
-        className="h-[240px] md:h-[400px] lg:h-[450px] w-full"
+        scrollWheelZoom={false}
+        className={`w-full ${
+          mapClassName ||
+          "h-[min(52vw,280px)] sm:h-[320px] md:h-[400px] lg:h-[460px]"
+        }`}
         attributionControl={false}
       >
+        <MapInteractionController active={active} onActivate={activate} />
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           attribution=""
@@ -82,6 +140,22 @@ const MapSection: React.FC<MapSectionProps> = ({
           </Marker>
         ))}
       </MapContainer>
+
+      {!active && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-3 sm:bottom-4 z-[500] flex justify-center px-3">
+          <p className="inline-flex items-center gap-2 rounded-control border border-header-stroke bg-main-bg/90 backdrop-blur-sm px-3 py-2 type-caption text-body shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+            <MousePointerClick
+              size={15}
+              className="text-primary shrink-0"
+              aria-hidden
+            />
+            <span className="hidden sm:inline">
+              Click map to enable scroll zoom
+            </span>
+            <span className="sm:hidden">Tap map to enable zoom</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

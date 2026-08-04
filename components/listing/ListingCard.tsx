@@ -13,7 +13,16 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export type ListingCardItem = Pick<
   PropertyItem,
-  "id" | "slug" | "title" | "description" | "address" | "price" | "image" | "tags" | "type"
+  | "id"
+  | "slug"
+  | "title"
+  | "description"
+  | "address"
+  | "price"
+  | "image"
+  | "tags"
+  | "type"
+  | "gallery"
 >;
 
 export type ListingBadge = "Featured" | "New" | "Plot" | "Home";

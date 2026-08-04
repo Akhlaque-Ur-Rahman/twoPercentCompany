@@ -241,9 +241,13 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
 
         <PropertyGallery gallery={item.gallery || [item.image]} />
 
-        <div className="w-full rounded-media overflow-hidden border border-header-stroke">
-          <MapSection markers={markers} center={positionArray} zoom={15} showLink={false} />
-        </div>
+        <MapSection
+          markers={markers}
+          center={positionArray}
+          zoom={15}
+          showLink={false}
+          mapClassName="h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px]"
+        />
       </div>
     </section>
   );

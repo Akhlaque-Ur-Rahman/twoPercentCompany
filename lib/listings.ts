@@ -35,7 +35,18 @@ function mediaUrl(value: number | string | MediaDoc | null | undefined): string 
   return value.url ?? undefined;
 }
 
+function isPublicAsset(url: string | null | undefined): url is string {
+  return Boolean(
+    url &&
+      (url.startsWith("/images/") ||
+        url.startsWith("/floorplans/") ||
+        url.startsWith("/videos/"))
+  );
+}
+
 function resolveImage(doc: ListingDoc): string {
+  // Prefer stable public paths over CMS media routes (MIME / optimizer issues).
+  if (isPublicAsset(doc.imageUrl)) return doc.imageUrl;
   return mediaUrl(doc.image) || doc.imageUrl || "/images/seasidevilla.png";
 }
 
@@ -48,6 +59,8 @@ function resolveUrlList(
       ?.map((item) => mediaUrl(item))
       .filter((url): url is string => Boolean(url)) ?? [];
   const fromUrls = urlRows?.map((row) => row.url).filter(Boolean) ?? [];
+  const publicUrls = fromUrls.filter(isPublicAsset);
+  if (publicUrls.length) return publicUrls;
   const merged = [...fromUploads, ...fromUrls];
   return merged.length ? merged : undefined;
 }
