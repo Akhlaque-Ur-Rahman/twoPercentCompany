@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+@import "lenis/dist/lenis.css";
 
 @theme {
   /* Colors */
@@ -29,7 +30,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Lenis owns smooth scrolling; CSS smooth conflicts with it */
+  scroll-behavior: auto;
 }
 
 body {

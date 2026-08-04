@@ -1,6 +1,6 @@
 import React from "react";
 import HeroSection from "@/components/layout/HeroSection";
-import HomeCTASection from "@/components/layout/HomeCTASection";
+import IntentPathSection from "@/components/layout/IntentPathSection";
 import FeaturedPropertySection from "@/components/layout/FeaturedPropertySection";
 import FeaturedLandSection from "@/components/layout/FeaturedLandSection";
 import TestimonialSection from "@/components/TestimonialSection";
@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     <div>
       <HeroSection />
-      <HomeCTASection />
+      <IntentPathSection />
       <FeaturedPropertySection />
       <FeaturedLandSection />
       <TestimonialSection />

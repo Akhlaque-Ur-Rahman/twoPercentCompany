@@ -7,6 +7,7 @@ import { PropertyItem } from "@/data/PropertyData";
 import { toast } from "react-toastify";
 import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import PageState from "@/components/ui/PageState";
+import { formatPrice } from "@/lib/formatPrice";
 
 interface FormData {
   fullName: string;
@@ -152,7 +153,7 @@ const TenantEnquiryPageContent = ({
             )}
             <div className="flex justify-between items-center border-t border-header-stroke pt-3 mt-4">
               <p className="font-medium text-secondary-text type-caption">Price</p>
-              <p className="text-body type-price">₹{property.price}</p>
+              <p className="text-body type-price">{formatPrice(property.price)}</p>
             </div>
           </div>
 

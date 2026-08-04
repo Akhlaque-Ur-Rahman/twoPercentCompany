@@ -6,16 +6,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import ListingCard, { ListingCardItem } from "@/components/listing/ListingCard";
+import ListingCard, {
+  ListingCardItem,
+  ListingBadge,
+} from "@/components/listing/ListingCard";
 
 export type ListingGridProps = {
   items: ListingCardItem[];
-  /** Base path without trailing slash, e.g. `/properties` → `/properties/{slug}` */
   hrefBase: string;
   ctaLabel?: string;
   viewAllHref?: string;
   viewAllLabel?: string;
   showAddress?: boolean;
+  layout?: "row" | "spotlight";
+  secondaryBadge?: ListingBadge;
 };
 
 const ListingGrid: React.FC<ListingGridProps> = ({
@@ -24,7 +28,9 @@ const ListingGrid: React.FC<ListingGridProps> = ({
   ctaLabel,
   viewAllHref,
   viewAllLabel = "View All",
-  showAddress = false,
+  showAddress = true,
+  layout = "spotlight",
+  secondaryBadge,
 }) => {
   const hrefFor = (item: ListingCardItem) => `${hrefBase}/${item.slug}`;
   const swiperRef = useRef<SwiperType | null>(null);
@@ -32,11 +38,17 @@ const ListingGrid: React.FC<ListingGridProps> = ({
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
-  const row1 = items.slice(0, 3);
-  const row2 = items.slice(3, 5);
+  const featured = items.slice(0, 3);
+  const [hero, ...side] = featured;
+
+  const badgeAt = (index: number): ListingBadge | undefined => {
+    if (index === 0) return "Featured";
+    return secondaryBadge;
+  };
 
   return (
     <div className="relative">
+      {/* Mobile — peek carousel */}
       <div className="block lg:hidden">
         <Swiper
           onSwiper={(swiper) => {
@@ -49,99 +61,124 @@ const ListingGrid: React.FC<ListingGridProps> = ({
             setIsBeginning(swiper.isBeginning);
             setIsEnd(swiper.isEnd);
           }}
-          spaceBetween={16}
-          className="property-land-swiper"
+          spaceBetween={14}
+          slidesPerView={1.08}
+          className="property-land-swiper !overflow-visible"
         >
-          {items.map((item) => (
-            <SwiperSlide key={item.id}>
+          {featured.map((item, index) => (
+            <SwiperSlide key={item.id} className="!h-auto">
               <ListingCard
                 property={item}
                 href={hrefFor(item)}
                 ctaLabel={ctaLabel}
                 showAddress={showAddress}
+                badge={badgeAt(index)}
+                index={index}
+                featured={index === 0}
               />
             </SwiperSlide>
           ))}
         </Swiper>
 
-        <button
-          type="button"
-          aria-label="Previous slide"
-          onClick={() => swiperRef.current?.slidePrev()}
-          className={`absolute left-2 top-1/2 -translate-y-1/2 border-2 border-header-stroke text-body p-2 rounded-full z-50 transition-all min-w-11 min-h-11 flex items-center justify-center bg-2nd-bg/80 ${
-            isBeginning ? "opacity-40 pointer-events-none" : "opacity-100"
-          }`}
-        >
-          <ChevronLeft size={28} />
-        </button>
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-1">
+            {featured.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                aria-label={`Go to slide ${index + 1}`}
+                onClick={() => swiperRef.current?.slideTo(index)}
+                className="min-w-11 min-h-11 flex items-center justify-center"
+              >
+                <span
+                  className={`block h-0.5 rounded-full transition-all ${
+                    index === activeIndex
+                      ? "w-8 bg-primary"
+                      : "w-4 bg-header-stroke"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
 
-        <button
-          type="button"
-          aria-label="Next slide"
-          onClick={() => swiperRef.current?.slideNext()}
-          className={`absolute right-2 top-1/2 -translate-y-1/2 border-2 border-header-stroke text-body p-2 rounded-full z-50 transition-all min-w-11 min-h-11 flex items-center justify-center bg-2nd-bg/80 ${
-            isEnd ? "opacity-40 pointer-events-none" : "opacity-100"
-          }`}
-        >
-          <ChevronRight size={28} />
-        </button>
-
-        <div className="flex justify-center mt-4 gap-1">
-          {items.map((item, index) => (
+          <div className="flex items-center gap-2">
             <button
-              key={item.id}
               type="button"
-              aria-label={`Go to slide ${index + 1}`}
-              onClick={() => swiperRef.current?.slideTo(index)}
-              className="min-w-11 min-h-11 flex items-center justify-center"
+              aria-label="Previous slide"
+              onClick={() => swiperRef.current?.slidePrev()}
+              disabled={isBeginning}
+              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke text-body disabled:opacity-35"
             >
-              <span
-                className={`block w-3 h-3 rounded-full transition-all ${
-                  index === activeIndex
-                    ? "bg-primary scale-110"
-                    : "border border-header-stroke bg-2nd-bg"
-                }`}
-              />
+              <ChevronLeft size={20} />
             </button>
-          ))}
+            <button
+              type="button"
+              aria-label="Next slide"
+              onClick={() => swiperRef.current?.slideNext()}
+              disabled={isEnd}
+              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke text-body disabled:opacity-35"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
         {viewAllHref && (
-          <div className="rounded-control h-fit mt-6 bg-2nd-bg border-2 border-header-stroke justify-center items-center flex lg:hidden">
-            <Link href={viewAllHref} className="px-4 py-4 type-body font-medium text-primary">
-              {viewAllLabel}
-            </Link>
-          </div>
+          <Link
+            href={viewAllHref}
+            className="mt-5 flex w-full items-center justify-center border border-header-stroke py-3.5 type-body font-medium text-primary hover:border-primary/40 transition-colors rounded-control"
+          >
+            {viewAllLabel}
+          </Link>
         )}
       </div>
 
-      <div className="hidden lg:block space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {row1.map((item) => (
+      {/* Desktop spotlight — cinema poster + twin strips */}
+      {layout === "spotlight" && hero ? (
+        <div className="hidden lg:grid grid-cols-12 gap-3 xl:gap-4 h-[560px]">
+          <div className="col-span-7 h-full">
             <ListingCard
-              key={item.id}
-              property={item}
-              href={hrefFor(item)}
+              property={hero}
+              href={hrefFor(hero)}
               ctaLabel={ctaLabel}
               showAddress={showAddress}
+              badge={badgeAt(0)}
+              index={0}
+              featured
+              className="h-full"
             />
-          ))}
-        </div>
-
-        {row2.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {row2.map((item) => (
+          </div>
+          <div className="col-span-5 grid grid-rows-2 gap-3 xl:gap-4 h-full">
+            {side.map((item, i) => (
               <ListingCard
                 key={item.id}
                 property={item}
                 href={hrefFor(item)}
                 ctaLabel={ctaLabel}
                 showAddress={showAddress}
+                badge={badgeAt(i + 1)}
+                index={i + 1}
+                compact
+                className="h-full"
               />
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="hidden lg:grid grid-cols-3 gap-4">
+          {featured.map((item, index) => (
+            <ListingCard
+              key={item.id}
+              property={item}
+              href={hrefFor(item)}
+              ctaLabel={ctaLabel}
+              showAddress={showAddress}
+              badge={badgeAt(index)}
+              index={index}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

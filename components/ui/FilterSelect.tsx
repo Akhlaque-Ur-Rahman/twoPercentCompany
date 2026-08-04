@@ -76,6 +76,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
           role="listbox"
           aria-label={label}
           className="absolute z-50 mt-1 w-full bg-2nd-bg border-2 border-header-stroke rounded-control overflow-hidden max-h-60 overflow-y-auto shadow-lg custom-scrollbar"
+          data-lenis-prevent
         >
           {options.map((option) => {
             const selected = option.value === value;

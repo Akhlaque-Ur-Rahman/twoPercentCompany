@@ -4,15 +4,18 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 const FeaturedPropertySection = () => {
   return (
-    <div className="page-px section-y lg:space-y-6 border-b border-header-stroke">
-      <SectionHeader
-        title="Featured Properties"
-        description="Explore our handpicked selection of featured properties. Each listing offers a glimpse into exceptional homes and investments available through 2% Company."
-        action={{ label: "View All Properties", href: "/properties" }}
-        actionVariant="secondary"
-      />
+    <section className="page-px section-y lg:space-y-6 border-b border-header-stroke">
+      <div className="space-y-2">
+        <p className="type-label text-primary">Homes</p>
+        <SectionHeader
+          title="Featured Properties"
+          description="Handpicked residences across Patna — apartments and houses ready for your next move."
+          action={{ label: "View All Properties", href: "/properties" }}
+          actionVariant="secondary"
+        />
+      </div>
       <PropertyGrid />
-    </div>
+    </section>
   );
 };
 

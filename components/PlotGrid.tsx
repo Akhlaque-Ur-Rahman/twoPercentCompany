@@ -12,6 +12,8 @@ const PlotGrid = async () => {
       ctaLabel="View Plot Details"
       viewAllHref="/plots"
       viewAllLabel="View All Plots"
+      layout="spotlight"
+      secondaryBadge="Plot"
     />
   );
 };

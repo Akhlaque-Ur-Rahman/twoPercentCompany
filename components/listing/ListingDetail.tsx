@@ -11,6 +11,9 @@ import MapPlaceholder from "@/components/MapPlaceholder";
 import { PropertyItem } from "@/data/PropertyData";
 import { MarkerType } from "@/types/MarkerType";
 import { iconForTagLabel } from "@/lib/tagIcons";
+import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
+import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
+import { MessageCircle } from "lucide-react";
 
 const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
@@ -65,6 +68,13 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
       type: item.type,
     },
   ];
+
+  const listingUrl =
+    item.url ??
+    `https://www.2percentcompany.in/${
+      item.type === "plot" ? "plots" : "properties"
+    }/${item.slug}`;
+  const enquireHref = whatsappHref(listingEnquiryMessage(item.title, listingUrl));
 
   return (
     <section>
@@ -142,13 +152,24 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           </div>
           <div>
             <h3 className="type-caption text-secondary-text">{priceLabel}</h3>
-            <p className="text-body type-price mt-1">₹{item.price}</p>
+            <p className="text-body type-price mt-1" title={formatPriceExact(item.price)}>
+              {formatPrice(item.price)}
+            </p>
             <Link
               href={ctaHref}
               className="mt-4 inline-flex bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition"
             >
               {ctaLabel}
             </Link>
+            <a
+              href={enquireHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-control border border-header-stroke text-secondary-text hover:text-body hover:border-primary/40 transition-colors"
+            >
+              <MessageCircle size={16} aria-hidden />
+              Enquire on WhatsApp
+            </a>
           </div>
         </div>
 

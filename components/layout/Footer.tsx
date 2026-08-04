@@ -13,9 +13,10 @@ import Newsletter from "./NewsLetter";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone, ArrowUpRight } from "lucide-react";
+import { mailtoHref, telHref } from "@/lib/contact";
 
-const phoneHref = `tel:${contactInfo.phone.replace(/\s+/g, "")}`;
-const mailHref = `mailto:${contactInfo.email}`;
+const phoneHref = telHref();
+const mailHref = mailtoHref();
 
 const Footer: React.FC = () => {
   const year = new Date().getFullYear();

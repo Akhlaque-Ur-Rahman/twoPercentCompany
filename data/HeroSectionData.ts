@@ -4,69 +4,70 @@ export interface HeroCard {
   label: string;
 }
 
-export interface HeroButton {
+export interface HeroTrustSignal {
   id: number;
   label: string;
-  type: "primary" | "secondary";
-  link: string;
+  icon: "verified" | "experts" | "support";
 }
 
 export interface HeroSlide {
+  eyebrow: string;
   heading: string;
   description: string;
   imageMain: string;
-  imageOverlay: string;
-  buttons: HeroButton[];
-  cards: HeroCard[];
+  trustSignals: HeroTrustSignal[];
 }
 
-export const HeroSectionSlides: HeroSlide[] = [
-  {
-    heading: "Discover your dream property in Patna",
-    description:
-      "Explore verified homes and investments matched to how you want to live — and grow.",
-    imageMain: "/images/ImageMainDesktop.png",
-    imageOverlay: "/images/AbstractDesign1.png",
-    buttons: [
-      { id: 1, label: "Learn More", type: "secondary", link: "/aboutUs" },
-      { id: 2, label: "Browse Properties", type: "primary", link: "/properties" },
-    ],
-    cards: [
-      { id: 1, value: "200+", label: "Happy Customers" },
-      { id: 2, value: "10k+", label: "Properties For Clients" },
-      { id: 3, value: "16+", label: "Years of Experience" },
-    ],
-  },
-  {
-    heading: "Luxury apartments for modern living",
-    description:
-      "Sophisticated homes designed for comfort — find an apartment that fits your lifestyle.",
-    imageMain: "/images/apartment2.png",
-    imageOverlay: "/images/AbstractDesign1.png",
-    buttons: [
-      { id: 1, label: "See Apartments", type: "primary", link: "/properties" },
-      { id: 2, label: "Contact Us", type: "secondary", link: "/contact" },
-    ],
-    cards: [
-      { id: 1, value: "150+", label: "Luxury Projects" },
-      { id: 2, value: "500+", label: "Modern Homes" },
-      { id: 3, value: "20+", label: "Cities Covered" },
-    ],
-  },
-  {
-    heading: "Invest smart with premium plots",
-    description:
-      "Handpicked plots in growing corridors — built for long-term value in and around Patna.",
-    imageMain: "/images/apartment3.png",
-    imageOverlay: "/images/AbstractDesign1.png",
-    buttons: [
-      { id: 1, label: "View Plots", type: "primary", link: "/plots" },
-      { id: 2, label: "Consult Now", type: "secondary", link: "/contact" },
-    ],
-    cards: [
-      { id: 1, value: "80+", label: "Available Plots" },
-      { id: 2, value: "30%", label: "Avg ROI Growth" },
-      { id: 3, value: "100+", label: "Trusted Investors" },
-    ],
-  },
+export const HeroSectionSlide: HeroSlide = {
+  eyebrow: "BUY · SELL · RENT IN PATNA",
+  heading: "Discover your dream property in Patna",
+  description:
+    "Explore verified homes and investments matched to how you want to live — and grow.",
+  imageMain: "/images/luxury-house.png",
+  trustSignals: [
+    { id: 1, label: "Verified Listings", icon: "verified" },
+    { id: 2, label: "Local Experts", icon: "experts" },
+    { id: 3, label: "Trusted Support", icon: "support" },
+  ],
+};
+
+export const HeroStats: HeroCard[] = [
+  { id: 1, value: "200+", label: "Happy Clients" },
+  { id: 2, value: "10K+", label: "Properties Listed" },
+  { id: 3, value: "16+", label: "Years Experience" },
+];
+
+export type HeroIntent = "buy" | "rent" | "sell";
+
+export const heroLocationOptions = [
+  { label: "Patna", value: "patna" },
+  { label: "Danapur", value: "danapur" },
+  { label: "Bailey Road", value: "bailey-road" },
+  { label: "Kankarbagh", value: "kankarbagh" },
+  { label: "Boring Road", value: "boring-road" },
+];
+
+export const heroPropertyTypeOptions = [
+  { label: "All Properties", value: "all" },
+  { label: "Apartment", value: "apartment" },
+  { label: "Villa", value: "villa" },
+  { label: "Independent House", value: "independent-house" },
+  { label: "1BHK", value: "1bhk" },
+  { label: "2BHK", value: "2bhk" },
+  { label: "3BHK", value: "3bhk" },
+  { label: "Plot", value: "plot" },
+];
+
+export const heroBudgetOptions = [
+  { label: "Any Price", value: "any" },
+  { label: "Below ₹50L", value: "below-50l" },
+  { label: "₹50L – ₹1Cr", value: "50l-1cr" },
+  { label: "Above ₹1Cr", value: "above-1cr" },
+];
+
+export const heroRentOptions = [
+  { label: "Any Rent", value: "any" },
+  { label: "Below ₹20K", value: "below20" },
+  { label: "₹20K – ₹40K", value: "20to40" },
+  { label: "Above ₹40K", value: "above40" },
 ];

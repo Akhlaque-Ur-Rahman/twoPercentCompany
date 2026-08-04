@@ -24,7 +24,7 @@ const MapSection: React.FC<MapSectionProps> = ({
   if (!markers || markers.length === 0) return null;
 
   return (
-    <div className="w-full rounded-media overflow-hidden page-px">
+    <div className="w-full rounded-media overflow-hidden page-px" data-lenis-prevent>
       <MapContainer
         center={center}
         zoom={zoom}

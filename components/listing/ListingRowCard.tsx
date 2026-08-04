@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ListingCardItem } from "@/components/listing/ListingCard";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { iconForTagLabel } from "@/lib/tagIcons";
+import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
 
 export type ListingRowCardProps = {
   property: ListingCardItem;
@@ -75,7 +76,9 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex flex-col gap-0.5">
             <p className="text-secondary-text type-caption">Price</p>
-            <p className="type-price text-body">₹{property.price}</p>
+            <p className="type-price text-body" title={formatPriceExact(property.price)}>
+              {formatPrice(property.price)}
+            </p>
           </div>
           <Link
             href={href}

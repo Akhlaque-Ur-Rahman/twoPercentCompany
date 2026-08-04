@@ -1,149 +1,69 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import type { Swiper as SwiperType } from "swiper";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
-import { HeroSectionSlides } from "@/data/HeroSectionData";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { HeroSectionSlide, HeroStats } from "@/data/HeroSectionData";
+import HeroPropertySearch from "@/components/layout/HeroPropertySearch";
 
 const HeroSection = () => {
-  const swiperRef = useRef<SwiperType | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const reduceMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    const swiper = swiperRef.current;
-    if (!swiper?.autoplay) return;
-    if (reduceMotion) swiper.autoplay.stop();
-    else swiper.autoplay.start();
-  }, [reduceMotion]);
+  const slide = HeroSectionSlide;
 
   return (
-    <section className="relative w-full -mt-16 lg:-mt-[4.5rem] border-b border-header-stroke">
-      <Swiper
-        modules={[Autoplay]}
-        onSwiper={(swiper) => (swiperRef.current = swiper)}
-        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-        slidesPerView={1}
-        loop
-        autoplay={
-          reduceMotion
-            ? false
-            : {
-                delay: 4000,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: false,
-              }
-        }
-        className="w-full overflow-hidden"
-      >
-        {HeroSectionSlides.map((slide, index) => (
-          <SwiperSlide key={index} className="!h-auto">
-            <div className="relative h-[100svh] max-h-[820px] min-h-[560px] w-full">
-              {/* Hero image — full height, right side, bleeds under transparent nav */}
-              <div className="absolute inset-x-0 top-0 h-[42%] sm:h-[46%] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:w-[56%]">
-                <Image
-                  src={slide.imageOverlay}
-                  fill
-                  alt=""
-                  aria-hidden
-                  sizes="(max-width: 1024px) 100vw, 56vw"
-                  className="object-cover opacity-40"
-                />
-                <Image
-                  src={slide.imageMain}
-                  fill
-                  alt={slide.heading}
-                  sizes="(max-width: 1024px) 100vw, 56vw"
-                  priority={index === 0}
-                  className="object-cover object-center z-[1]"
-                />
-                <div
-                  className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-main-bg to-transparent z-[2] hidden lg:block"
-                  aria-hidden
-                />
-                <div
-                  className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-main-bg to-transparent z-[2] lg:hidden"
-                  aria-hidden
-                />
-              </div>
+    <section className="relative w-full overflow-x-clip -mt-16 lg:-mt-[4.5rem] border-b border-header-stroke">
+      <div className="relative h-[100svh] min-h-[680px] w-full max-w-[100vw]">
+        {/* Full-bleed luxury house */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={slide.imageMain}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
 
-              {/* Dense copy column */}
-              <div className="relative z-10 flex h-full flex-col justify-end lg:justify-center page-px pb-16 pt-[46%] sm:pt-[50%] lg:pt-28 lg:pb-12 lg:w-[48%]">
-                <p className="type-label text-primary tracking-wide">
-                  2% Company
-                </p>
-                <h1 className="type-display text-body leading-[1.15] mt-1.5 max-w-lg">
-                  {slide.heading}
-                </h1>
-                <p className="text-secondary-text type-body mt-2 max-w-md">
-                  {slide.description}
-                </p>
+        <div
+          className="absolute inset-0 z-[1] bg-gradient-to-t from-black/90 via-black/55 to-black/30"
+          aria-hidden
+        />
 
-                <div className="flex flex-col sm:flex-row gap-2.5 mt-4">
-                  {slide.buttons.map((btn) => (
-                    <Link
-                      key={btn.id}
-                      href={btn.link}
-                      className={`inline-flex justify-center items-center rounded-control text-center type-body font-semibold min-h-11 px-5 py-2.5 ${
-                        btn.type === "primary"
-                          ? "bg-primary text-on-primary hover:brightness-110"
-                          : "border border-header-stroke text-body hover:border-primary/40 hover:bg-2nd-bg"
-                      }`}
-                    >
-                      {btn.label}
-                    </Link>
-                  ))}
+        <div className="relative z-10 flex h-full w-full flex-col justify-end lg:justify-center page-px pb-10 pt-28 lg:pb-14">
+          <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+            <p className="type-label inline-block text-primary tracking-[0.14em] bg-primary/15 border border-primary/30 rounded-control px-3.5 py-1.5">
+              {slide.eyebrow}
+            </p>
+            <h1 className="type-display text-white leading-[1.12] mt-2 max-w-2xl">
+              {slide.heading}
+            </h1>
+            <p className="text-white/80 type-body mt-3 max-w-xl">
+              {slide.description}
+            </p>
+          </div>
+
+          <div className="mx-auto mt-7 w-full max-w-5xl">
+            <HeroPropertySearch trustSignals={slide.trustSignals} />
+          </div>
+
+          {/* Stats — quieter secondary signal under search */}
+          <div className="mx-auto mt-6 w-full max-w-3xl">
+            <div className="grid grid-cols-3 gap-2 sm:gap-0 sm:divide-x sm:divide-white/10">
+              {HeroStats.map((stat) => (
+                <div
+                  key={stat.id}
+                  className="flex flex-col items-center text-center px-2 sm:px-5"
+                >
+                  <p className="text-lg sm:text-xl font-semibold text-white/90 leading-none tracking-tight">
+                    {stat.value}
+                  </p>
+                  <p className="type-caption text-white/50 mt-1.5">
+                    {stat.label}
+                  </p>
                 </div>
-
-                {slide.cards.length > 0 && (
-                  <div className="mt-5 pt-4 border-t border-header-stroke flex flex-wrap gap-x-6 gap-y-3">
-                    {slide.cards.map((card) => (
-                      <div key={card.id} className="min-w-[5.5rem]">
-                        <p className="type-card-title text-body leading-none">
-                          {card.value}
-                        </p>
-                        <p className="type-caption text-secondary-text mt-1">
-                          {card.label}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              ))}
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-
-      <div
-        className="absolute bottom-3 left-0 right-0 z-20 flex justify-center gap-1"
-        role="tablist"
-        aria-label="Hero slides"
-      >
-        {HeroSectionSlides.map((_, index) => (
-          <button
-            key={index}
-            type="button"
-            role="tab"
-            aria-label={`Go to slide ${index + 1}`}
-            aria-selected={index === activeIndex}
-            onClick={() => swiperRef.current?.slideToLoop(index)}
-            className="min-w-11 min-h-11 flex items-center justify-center"
-          >
-            <span
-              className={`block w-2.5 h-2.5 rounded-full transition-all duration-500 ${
-                index === activeIndex
-                  ? "bg-primary scale-125"
-                  : "bg-2nd-bg/80 border border-header-stroke"
-              }`}
-            />
-          </button>
-        ))}
+          </div>
+        </div>
       </div>
     </section>
   );

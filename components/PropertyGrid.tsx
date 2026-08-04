@@ -12,6 +12,8 @@ const PropertyGrid = async () => {
       ctaLabel="View Property Details"
       viewAllHref="/properties"
       viewAllLabel="View All Properties"
+      layout="spotlight"
+      secondaryBadge="Home"
     />
   );
 };

@@ -340,6 +340,7 @@ const Navbar = () => {
         <nav
           className="flex-1 overflow-y-auto custom-scrollbar px-5 py-6"
           aria-label="Primary"
+          data-lenis-prevent
         >
           <ul className="flex flex-col gap-1">
             {NavbarData.map((item) => {
