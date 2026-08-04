@@ -65,7 +65,11 @@ const CTA = () => {
               className="w-full sm:w-auto min-h-12"
             >
               Contact 2% Company
-              <ArrowUpRight size={16} aria-hidden />
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-300 ease-out motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+                aria-hidden
+              />
             </Button>
             <a
               href={whatsappHref(

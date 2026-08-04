@@ -4,17 +4,21 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Play } from "lucide-react";
 
-const YOUTUBE_ID = "Ht6YuFAxICs";
-const POSTER = "/images/luxury-house.png";
+const DEFAULT_YOUTUBE_ID = "Ht6YuFAxICs";
+const DEFAULT_POSTER = "/images/luxury-house.png";
 
 type YoutubeFacadeProps = {
   title?: string;
   className?: string;
+  poster?: string;
+  youtubeId?: string;
 };
 
 export default function YoutubeFacade({
   title = "Property showcase video",
   className = "",
+  poster = DEFAULT_POSTER,
+  youtubeId = DEFAULT_YOUTUBE_ID,
 }: YoutubeFacadeProps) {
   const [playing, setPlaying] = useState(false);
 
@@ -27,7 +31,7 @@ export default function YoutubeFacade({
       {playing ? (
         <iframe
           className="absolute inset-0 h-full w-full"
-          src={`https://www.youtube.com/embed/${YOUTUBE_ID}?autoplay=1&mute=0&controls=0&modestbranding=1&rel=0&iv_load_policy=3&fs=0&disablekb=1&playsinline=1&cc_load_policy=0`}
+          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0&controls=0&modestbranding=1&rel=0&iv_load_policy=3&fs=0&disablekb=1&playsinline=1&cc_load_policy=0`}
           title={title}
           allow="autoplay; encrypted-media"
         />
@@ -39,7 +43,7 @@ export default function YoutubeFacade({
           aria-label={`Play ${title}`}
         >
           <Image
-            src={POSTER}
+            src={poster}
             alt=""
             fill
             sizes="(max-width: 1024px) 100vw, 960px"

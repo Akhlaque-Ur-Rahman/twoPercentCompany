@@ -13,6 +13,7 @@ export type NavItem = {
 export const NavbarData: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
+  { label: "Plots", href: "/plots" },
   { label: "Sell", href: "/sell" },
   {
     label: "Rent",
@@ -30,23 +31,6 @@ export const NavbarData: NavItem[] = [
       },
     ],
   },
-  {
-    label: "Services",
-    href: "/services",
-    submenu: [
-      {
-        label: "Plots & Land",
-        href: "/plots",
-        description: "Residential and commercial plots",
-      },
-      {
-        label: "Be an Investor",
-        href: "/beaninvestor",
-        description: "Curated opportunities for growth",
-      },
-    ],
-  },
-  { label: "About", href: "/aboutUs" },
 ];
 
 export const ContactBtnData = {

@@ -32,4 +32,8 @@ export const toastCopy = {
   submitError: "Something went wrong. Please try again.",
   tagEmpty: "Tag cannot be empty.",
   tagDuplicate: "That tag is already added.",
+  tagsRequired: "Select at least one property tag.",
+  mainImageRequired: "Please upload a main image.",
+  galleryMin: "Gallery needs at least 3 images. Select multiple files at once.",
+  landlordRequired: "Please enter landlord name and contact.",
 } as const;

@@ -208,7 +208,7 @@ const Navbar = () => {
                           onClick={() => setDesktopOpen(null)}
                           className="group flex items-center justify-between gap-3 rounded-control px-3 py-2.5 type-caption text-secondary-text hover:text-body hover:bg-main-bg transition-colors"
                         >
-                          All {item.label.toLowerCase()}
+                          All {item.label}
                           <ArrowUpRight
                             size={14}
                             className="transition-transform duration-300 ease-out motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
@@ -278,19 +278,24 @@ const Navbar = () => {
             <Link
               href={ContactBtnData.href}
               className={cx(
-                "hidden sm:inline-flex items-center justify-center min-h-11 px-5 rounded-control type-body font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg",
+                "group hidden sm:inline-flex items-center justify-center gap-2 min-h-11 px-5 rounded-control type-body font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg",
                 checkActive(ContactBtnData.href)
                   ? "bg-primary text-on-primary"
                   : "bg-primary text-on-primary hover:brightness-110"
               )}
             >
               {ContactBtnData.label}
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-300 ease-out motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+                aria-hidden
+              />
             </Link>
 
             <button
               ref={menuButtonRef}
               type="button"
-              className="xl:hidden text-body min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke hover:border-primary/40 transition-colors"
+              className="xl:hidden text-body min-w-11 min-h-11 inline-flex items-center justify-center rounded-control outline-none border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg transition-colors"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
               aria-controls={drawerId}
@@ -316,7 +321,7 @@ const Navbar = () => {
         onClick={closeDrawer}
       />
 
-      {/* Mobile drawer */}
+      {/* Mobile bottom drawer */}
       <div
         id={drawerId}
         ref={drawerRef}
@@ -324,29 +329,46 @@ const Navbar = () => {
         aria-modal="true"
         aria-label="Mobile navigation"
         className={cx(
-          "fixed inset-y-0 right-0 z-[70] flex w-full max-w-[22rem] sm:max-w-sm flex-col bg-2nd-bg border-l border-header-stroke transition-transform duration-300 ease-out xl:hidden",
-          isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+          "fixed inset-x-0 bottom-0 z-[70] flex max-h-[min(88dvh,40rem)] flex-col rounded-t-card border-t border-white/10 bg-2nd-bg/70 backdrop-blur-xl shadow-[0_-12px_40px_rgb(0_0_0_/0.45)] transition-transform duration-300 ease-out xl:hidden supports-[backdrop-filter]:bg-2nd-bg/55",
+          isOpen ? "translate-y-0" : "translate-y-full pointer-events-none"
         )}
         inert={!isOpen ? true : undefined}
       >
-        <div className="flex items-center justify-between gap-3 page-px h-16 border-b border-header-stroke shrink-0">
-          <p className="type-label text-body">Menu</p>
-          <button
-            type="button"
-            className="text-body min-w-11 min-h-11 inline-flex items-center justify-center rounded-control hover:bg-main-bg transition-colors"
-            aria-label="Close menu"
-            onClick={closeDrawer}
-          >
-            <X size={22} aria-hidden />
-          </button>
+        <div className="shrink-0 pt-3 pb-2 px-5">
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-white/20" aria-hidden />
+          <div className="flex items-center justify-between gap-3">
+            <Link
+              href="/"
+              onClick={closeDrawer}
+              className="shrink-0 min-h-11 inline-flex items-center"
+              aria-label="2% Company home"
+            >
+              <Image
+                src="/images/2PercentCompany.png"
+                height={40}
+                width={40}
+                alt="2% Company"
+                sizes="36px"
+                className="size-9 object-contain"
+              />
+            </Link>
+            <button
+              type="button"
+              className="text-body min-w-11 min-h-11 inline-flex items-center justify-center rounded-control hover:bg-white/10 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Close menu"
+              onClick={closeDrawer}
+            >
+              <X size={22} aria-hidden />
+            </button>
+          </div>
         </div>
 
         <nav
-          className="flex-1 overflow-y-auto custom-scrollbar px-5 py-6"
+          className="flex-1 min-h-0 overflow-y-auto custom-scrollbar px-5 py-2"
           aria-label="Primary"
           data-lenis-prevent
         >
-          <ul className="flex flex-col gap-1">
+          <ul className="flex flex-col gap-0.5 pb-2">
             {NavbarData.map((item) => {
               const active = itemActive(item);
               const hasSub = Boolean(item.submenu?.length);
@@ -362,14 +384,14 @@ const Navbar = () => {
                         setSubmenuOpen(expanded ? null : item.label)
                       }
                       className={cx(
-                        "flex w-full items-center justify-between gap-3 min-h-12 px-3 rounded-control type-subhead transition-colors",
+                        "flex w-full items-center justify-between gap-3 min-h-12 px-3 rounded-control type-body font-medium transition-colors",
                         active ? "text-body" : "text-secondary-text hover:text-body"
                       )}
                     >
                       <span className="flex items-center gap-3">
                         {active && (
                           <span
-                            className="w-1 h-5 rounded-full bg-primary shrink-0"
+                            className="w-1 h-4 rounded-full bg-primary shrink-0"
                             aria-hidden
                           />
                         )}
@@ -392,11 +414,11 @@ const Navbar = () => {
                       )}
                     >
                       <div className="overflow-hidden">
-                        <div className="pl-4 pb-3 pt-1 flex flex-col gap-1 border-l border-header-stroke ml-3">
+                        <div className="ml-3 mb-2 flex flex-col gap-0.5 rounded-control border border-white/10 bg-black/30 backdrop-blur-sm p-1.5">
                           <Link
                             href={item.href}
                             onClick={closeDrawer}
-                            className="min-h-11 px-3 inline-flex items-center type-body text-secondary-text hover:text-body transition-colors"
+                            className="min-h-11 px-3 inline-flex items-center type-body text-secondary-text hover:text-body rounded-control transition-colors"
                           >
                             Overview
                           </Link>
@@ -410,8 +432,8 @@ const Navbar = () => {
                                 className={cx(
                                   "min-h-11 px-3 py-2 flex flex-col justify-center rounded-control transition-colors",
                                   subActive
-                                    ? "bg-main-bg text-primary"
-                                    : "text-body hover:bg-main-bg"
+                                    ? "bg-2nd-bg text-primary"
+                                    : "text-body hover:bg-2nd-bg"
                                 )}
                               >
                                 <span className="type-body">{sub.label}</span>
@@ -436,7 +458,7 @@ const Navbar = () => {
                     href={item.href}
                     onClick={closeDrawer}
                     className={cx(
-                      "flex items-center gap-3 min-h-12 px-3 rounded-control type-subhead transition-colors",
+                      "flex items-center gap-3 min-h-12 px-3 rounded-control type-body font-medium transition-colors",
                       active
                         ? "text-body"
                         : "text-secondary-text hover:text-body"
@@ -444,7 +466,7 @@ const Navbar = () => {
                   >
                     {active && (
                       <span
-                        className="w-1 h-5 rounded-full bg-primary shrink-0"
+                        className="w-1 h-4 rounded-full bg-primary shrink-0"
                         aria-hidden
                       />
                     )}
@@ -456,7 +478,7 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        <div className="shrink-0 border-t border-header-stroke p-5 space-y-3">
+        <div className="shrink-0 border-t border-white/10 px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-3">
           <Link
             href={ContactBtnData.href}
             onClick={closeDrawer}

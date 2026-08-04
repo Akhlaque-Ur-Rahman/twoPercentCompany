@@ -54,7 +54,7 @@ const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPro
     } = props;
 
     const classes = cx(
-      "inline-flex items-center justify-center gap-2 font-semibold rounded-control transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg",
+      "group inline-flex items-center justify-center gap-2 font-semibold rounded-control transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg",
       variantClasses[variant],
       sizeClasses[size],
       className

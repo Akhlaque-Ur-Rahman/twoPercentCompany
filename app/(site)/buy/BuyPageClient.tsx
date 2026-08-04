@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { PropertyItem } from "@/data/PropertyData";
 import PropertyCard from "@/components/PropertyCard";
 import FilterSelect from "@/components/ui/FilterSelect";
+import SearchField from "@/components/ui/SearchField";
 
 type BuyPageClientProps = {
   listings: PropertyItem[];
@@ -78,19 +79,14 @@ export default function BuyPageClient({ listings }: BuyPageClientProps) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="w-full sm:w-[300px]">
-            <label htmlFor="buy-search" className="sr-only">
-              Search properties
-            </label>
-            <input
-              id="buy-search"
-              type="text"
-              placeholder="Search by title, area..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-4 py-3 rounded-control bg-2nd-bg border-2 border-header-stroke text-primary w-full focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary placeholder:text-secondary-text"
-            />
-          </div>
+          <SearchField
+            id="buy-search"
+            label="Search properties"
+            placeholder="Search by title, area..."
+            value={searchQuery}
+            onChange={setSearchQuery}
+            className="sm:w-[300px]"
+          />
 
           <FilterSelect
             label="Property type"

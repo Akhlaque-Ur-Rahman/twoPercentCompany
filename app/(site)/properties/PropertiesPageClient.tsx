@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { Search } from "lucide-react";
 import ListingRowCard from "@/components/listing/ListingRowCard";
 import type { ListingCardItem } from "@/components/listing/ListingCard";
 import FilterSelect from "@/components/ui/FilterSelect";
+import SearchField from "@/components/ui/SearchField";
 import YoutubeFacade from "@/components/properties/YoutubeFacade";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 
@@ -124,23 +124,17 @@ export default function PropertiesPageClient({
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 lg:items-center">
-              <div className="flex items-center gap-2 bg-2nd-bg border border-header-stroke px-4 py-3 rounded-control w-full lg:flex-1 focus-within:border-primary">
-                <Search className="text-primary shrink-0" size={20} aria-hidden />
-                <label htmlFor="property-search" className="sr-only">
-                  Search properties
-                </label>
-                <input
-                  id="property-search"
-                  type="text"
-                  placeholder="Search by title, area, or amenity..."
-                  value={searchText}
-                  onChange={(e) => {
-                    setSearchText(e.target.value);
-                    setVisibleCount(PAGE_SIZE);
-                  }}
-                  className="bg-transparent outline-none w-full text-body placeholder:text-secondary-text focus-visible:ring-0"
-                />
-              </div>
+              <SearchField
+                id="property-search"
+                label="Search properties"
+                placeholder="Search by title, area, or amenity..."
+                value={searchText}
+                onChange={(value) => {
+                  setSearchText(value);
+                  setVisibleCount(PAGE_SIZE);
+                }}
+                className="lg:flex-1"
+              />
 
               <FilterSelect
                 label="Property type"

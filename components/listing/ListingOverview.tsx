@@ -178,10 +178,14 @@ const ListingOverview: React.FC<ListingOverviewProps> = ({
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href={ctaHref}
-            className={`inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition w-full sm:w-auto ${focusRing}`}
+            className={`group inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition w-full sm:w-auto ${focusRing}`}
           >
             {ctaLabel}
-            <ArrowRight size={16} aria-hidden />
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-300 ease-out motion-safe:group-hover:translate-x-0.5"
+              aria-hidden
+            />
           </Link>
           <a
             href={enquireHref}

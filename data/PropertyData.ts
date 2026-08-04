@@ -342,7 +342,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot4.webp",
       "/images/plot5.webp",
       "/images/plot6.webp",
-      "/images/plainland.jpg",
+      "/images/plot-plain.webp",
     ],
     video: "/videos/property-sale2.webm", // âœ… Added
     price: "55,00,000",
@@ -379,7 +379,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot5.webp",
       "/images/plot6.webp",
       "/images/plot2.webp",
-      "/images/plainland.jpg",
+      "/images/plot-plain.webp",
     ],
     video: "/videos/property-sale2.webm", // âœ… Added
     price: "40,00,000",
@@ -417,7 +417,7 @@ export const PropertyData: PropertyItem[] = [
       "/images/plot6.webp",
       "/images/plot2.webp",
       "/images/plot3.webp",
-      "/images/plainland.jpg",
+      "/images/plot-plain.webp",
     ],
     video: "/videos/property-sale2.webm", // âœ… Added
     price: "1,20,00,000",
@@ -448,9 +448,9 @@ export const PropertyData: PropertyItem[] = [
       "Patliputra Colony Plot offers a premium location for building luxury homes. With wide roads, green surroundings, and a safe neighborhood, it provides an ideal environment for residential development.",
     address: "Patliputra Colony, Patna, Bihar",
     position: [25.604, 85.132],
-    image: "/images/scenary.jpg",
+    image: "/images/plot-scenery.webp",
     gallery: [
-      "/images/scenary.jpg",
+      "/images/plot-scenery.webp",
       "/images/plot2.webp",
       "/images/plot3.webp",
       "/images/plot4.webp",

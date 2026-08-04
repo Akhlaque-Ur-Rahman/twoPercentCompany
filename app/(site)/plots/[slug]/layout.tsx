@@ -18,7 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = plot.title;
   const description = plot.longDescription || plot.description;
-  const imageUrl = plot.image;
+  const imageUrl = plot.image.startsWith("http")
+    ? plot.image
+    : `https://www.2percentcompany.in${plot.image}`;
 
   return {
     title,
@@ -27,6 +29,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       plot.title,
       "plot for sale",
       "land for sale",
+      "real estate Patna",
+      "2% Company",
       plot.address,
       ...plot.tags.map((tag) => tag.label),
     ],
@@ -35,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: `https://www.2percentcompany.in/plots/${slug}`,
       type: "website",
+      siteName: "2% Company",
       images: [
         {
           url: imageUrl,
@@ -46,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: `${title} | 2% Company`,
       description,
       images: [imageUrl],
     },

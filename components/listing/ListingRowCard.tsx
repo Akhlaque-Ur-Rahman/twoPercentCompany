@@ -40,6 +40,40 @@ function gallerySources(property: ListingCardItem): string[] {
   return urls;
 }
 
+const FALLBACK_PLOT = "/images/plot2.webp";
+const FALLBACK_HOME = "/images/seasidevilla.png";
+
+function ThumbImage({
+  src,
+  fallback,
+  priority = false,
+}: {
+  src: string;
+  fallback: string;
+  priority?: boolean;
+}) {
+  const [current, setCurrent] = useState(src);
+
+  useEffect(() => {
+    setCurrent(src);
+  }, [src]);
+
+  return (
+    <Image
+      src={current}
+      alt=""
+      fill
+      priority={priority}
+      sizes="64px"
+      className="object-cover"
+      aria-hidden
+      onError={() => {
+        if (current !== fallback) setCurrent(fallback);
+      }}
+    />
+  );
+}
+
 const ListingRowCard: React.FC<ListingRowCardProps> = ({
   property,
   href,
@@ -66,6 +100,8 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
   const thumbs = images.slice(0, MAX_THUMBS);
   const extraCount = Math.max(0, images.length - MAX_THUMBS);
   const [activeSrc, setActiveSrc] = useState(images[0] ?? property.image);
+  const imageFallback =
+    property.type === "plot" ? FALLBACK_PLOT : FALLBACK_HOME;
 
   useEffect(() => {
     setActiveSrc(images[0] ?? property.image);
@@ -92,6 +128,9 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
           sizes="(max-width: 1024px) 100vw, 33vw"
           className="object-cover transition-transform duration-500 motion-safe:group-hover:scale-[1.03]"
           aria-hidden
+          onError={() => {
+            if (activeSrc !== imageFallback) setActiveSrc(imageFallback);
+          }}
         />
         <span
           className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-80"
@@ -142,13 +181,9 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
                       selected ? "opacity-100" : "opacity-50 hover:opacity-90"
                     }`}
                   >
-                    <Image
+                    <ThumbImage
                       src={src}
-                      alt=""
-                      fill
-                      sizes="64px"
-                      className="object-cover"
-                      aria-hidden
+                      fallback={imageFallback}
                     />
                     {/* Selection drawn ON TOP of the photo — never behind it */}
                     <span

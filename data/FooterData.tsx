@@ -12,6 +12,7 @@ export interface SocialLink {
 export const quickLinks: FooterLink[] = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
+  { label: "Plots", href: "/plots" },
   { label: "About Us", href: "/aboutUs" },
   { label: "Services", href: "/services" },
   { label: "Contact", href: "/contact" },
@@ -19,6 +20,7 @@ export const quickLinks: FooterLink[] = [
 
 export const servicesLinks: FooterLink[] = [
   { label: "Sell", href: "/sell" },
+  { label: "Plots & Land", href: "/plots" },
   { label: "Be A Tenant", href: "/rent/tenants" },
   { label: "Be A Landlord", href: "/rent/landlords" },
   { label: "Be An Investor", href: "/beaninvestor" },

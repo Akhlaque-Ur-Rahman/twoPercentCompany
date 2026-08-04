@@ -13,6 +13,38 @@ interface PropertyGalleryProps {
   gallery: string[];
 }
 
+const FALLBACK_IMAGE = "/images/plot2.webp";
+
+function GallerySlideImage({
+  src,
+  alt,
+  priority,
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+}) {
+  const [current, setCurrent] = useState(src);
+
+  useEffect(() => {
+    setCurrent(src);
+  }, [src]);
+
+  return (
+    <Image
+      src={current}
+      alt={alt}
+      fill
+      sizes="(max-width: 640px) 88vw, (max-width: 1024px) 68vw, 42vw"
+      className="object-cover rounded-media"
+      priority={priority}
+      onError={() => {
+        if (current !== FALLBACK_IMAGE) setCurrent(FALLBACK_IMAGE);
+      }}
+    />
+  );
+}
+
 /**
  * Swiper's native `loop` clones DOM nodes — Next/Image slides become blank.
  * Triple the slides in React and silently recenter onto the middle copy instead.
@@ -129,12 +161,9 @@ const PropertyGallery: React.FC<PropertyGalleryProps> = ({ gallery }) => {
                     : "scale-95 opacity-70 motion-reduce:scale-100"
                 }`}
               >
-                <Image
+                <GallerySlideImage
                   src={img}
                   alt={`Property image ${normalizeIndex(index) + 1}`}
-                  fill
-                  sizes="(max-width: 640px) 88vw, (max-width: 1024px) 68vw, 42vw"
-                  className="object-cover rounded-media"
                   priority={index >= middleStart && index < middleStart + 2}
                 />
               </div>

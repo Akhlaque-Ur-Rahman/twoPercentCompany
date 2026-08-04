@@ -2,11 +2,19 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Learn about 2% Company - transforming industries with innovative real estate solutions and measurable impact. Discover our journey, values, and commitment to excellence in property services.',
-  keywords: ['about 2% company', 'real estate company', 'property services', 'our story', 'company values'],
+  description:
+    'Learn about 2% Company — a Patna real-estate partner for buying, selling, renting, and investing, with clear guidance from enquiry to closing.',
+  keywords: [
+    'about 2% company',
+    'Patna real estate',
+    'property services Patna',
+    'our story',
+    'company values',
+  ],
   openGraph: {
-    title: 'About 2% Company - Our Story & Values',
-    description: 'Learn about 2% Company - transforming industries with innovative real estate solutions and measurable impact.',
+    title: 'About 2% Company — Our Story & Values',
+    description:
+      'A Patna real-estate partner for buying, selling, renting, and investing — with clear guidance at every step.',
     url: 'https://www.2percentcompany.in/aboutUs',
     type: 'website',
   },

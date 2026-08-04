@@ -44,10 +44,26 @@ function isPublicAsset(url: string | null | undefined): url is string {
   );
 }
 
+/** Remap legacy / broken public assets to stable WebP plot images. */
+const PUBLIC_ASSET_ALIASES: Record<string, string> = {
+  "/images/plainland.jpg": "/images/plot-plain.webp",
+  "/images/plainland.png": "/images/plot-plain.webp",
+  "/images/scenary.jpg": "/images/plot-scenery.webp",
+  "/images/scenary.png": "/images/plot-scenery.webp",
+};
+
+function canonicalizePublicAsset(url: string): string {
+  return PUBLIC_ASSET_ALIASES[url] ?? url;
+}
+
 function resolveImage(doc: ListingDoc): string {
   // Prefer stable public paths over CMS media routes (MIME / optimizer issues).
-  if (isPublicAsset(doc.imageUrl)) return doc.imageUrl;
-  return mediaUrl(doc.image) || doc.imageUrl || "/images/seasidevilla.png";
+  if (isPublicAsset(doc.imageUrl)) return canonicalizePublicAsset(doc.imageUrl);
+  return (
+    mediaUrl(doc.image) ||
+    (doc.imageUrl ? canonicalizePublicAsset(doc.imageUrl) : undefined) ||
+    "/images/seasidevilla.png"
+  );
 }
 
 function resolveUrlList(
@@ -58,7 +74,11 @@ function resolveUrlList(
     uploads
       ?.map((item) => mediaUrl(item))
       .filter((url): url is string => Boolean(url)) ?? [];
-  const fromUrls = urlRows?.map((row) => row.url).filter(Boolean) ?? [];
+  const fromUrls =
+    urlRows
+      ?.map((row) => row.url)
+      .filter(Boolean)
+      .map(canonicalizePublicAsset) ?? [];
   const publicUrls = fromUrls.filter(isPublicAsset);
   if (publicUrls.length) return publicUrls;
   const merged = [...fromUploads, ...fromUrls];
@@ -112,6 +132,8 @@ function toClientListing(item: PropertyItem): PropertyItem {
   const normalized = withCanonicalFloorPlans(item);
   return {
     ...normalized,
+    image: canonicalizePublicAsset(normalized.image),
+    gallery: normalized.gallery?.map(canonicalizePublicAsset),
     tags: normalized.tags.map(({ label }) => ({ label })),
   };
 }

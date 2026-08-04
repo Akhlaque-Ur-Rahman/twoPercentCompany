@@ -7,6 +7,14 @@ import { toast } from "react-toastify";
 import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import { motion, AnimatePresence } from "framer-motion";
 
+const inputClass =
+  "mb-0 p-3 min-h-11 text-base rounded-control bg-main-bg border border-header-stroke w-full min-w-0 placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg";
+
+const textareaClass = `${inputClass} resize-y min-h-[6.5rem]`;
+
+const fileFieldClass =
+  "block w-full max-w-full min-w-0 text-sm text-secondary-text file:mr-3 file:rounded-control file:border-0 file:bg-primary file:text-on-primary file:px-3 file:py-2 file:text-sm file:font-semibold file:cursor-pointer";
+
 interface PropertyFormProps {
   type: "sell" | "rent";
 }
@@ -23,6 +31,8 @@ const allTags: PropertyTag[] = [
   { icon: Landmark, label: "Landmark" },
   { icon: Sofa, label: "Furnished" },
 ];
+
+const GALLERY_MIN = 3;
 
 const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
   const [formData, setFormData] = useState({
@@ -47,77 +57,113 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Calculate progress
+  // Progress tracks required fields only (gallery counts only at min 3)
   useEffect(() => {
     let completed = 0;
+    const required =
+      5 + // step 1 text fields
+      1 + // tags
+      1 + // main image
+      1 + // gallery (min 3)
+      (type === "rent" ? 2 : 0);
 
-    if (formData.title) completed++;
-    if (formData.description) completed++;
-    if (formData.longDescription) completed++;
-    if (formData.address) completed++;
-    if (formData.price) completed++;
-    if (formData.tags.length) completed++;
-    if (formData.images.length) completed++;
-    if (formData.gallery.length) completed++;
-    if (formData.floorPlans.length) completed++;
-    if (formData.video) completed++;
+    if (formData.title.trim()) completed++;
+    if (formData.description.trim()) completed++;
+    if (formData.longDescription.trim()) completed++;
+    if (formData.address.trim()) completed++;
+    if (formData.price.trim()) completed++;
+    if (formData.tags.length > 0) completed++;
+    if (formData.images.length > 0) completed++;
+    if (formData.gallery.length >= GALLERY_MIN) completed++;
     if (type === "rent") {
-      if (formData.landlordName) completed++;
-      if (formData.landlordContact) completed++;
+      if (formData.landlordName.trim()) completed++;
+      if (formData.landlordContact.trim()) completed++;
     }
-    if (formData.specifications.length) completed++;
 
-    const totalFields =
-      5 + 1 + 1 + 1 + 1 + (type === "rent" ? 2 : 0) + 1; // same calculation as before
-
-    setProgress(Math.round((completed / totalFields) * 100));
+    setProgress(Math.min(100, Math.round((completed / required) * 100)));
   }, [formData, type]);
 
-  // File handler
+  const mergeUniqueFiles = (existing: File[], incoming: File[]) => {
+    const seen = new Set(existing.map((f) => `${f.name}-${f.size}-${f.lastModified}`));
+    const next = [...existing];
+    for (const file of incoming) {
+      const key = `${file.name}-${file.size}-${file.lastModified}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        next.push(file);
+      }
+    }
+    return next;
+  };
+
+  // File handler — gallery/floor plans append so users can add in batches
   const handleFileChange = (
     e: ChangeEvent<HTMLInputElement>,
     field: "images" | "gallery" | "floorPlans" | "video"
   ) => {
     const files = e.target.files;
-    if (!files) return;
+    if (!files?.length) return;
+
     if (field === "video") {
-      setFormData({ ...formData, video: files[0] });
+      setFormData((prev) => ({ ...prev, video: files[0] }));
+    } else if (field === "images") {
+      setFormData((prev) => ({ ...prev, images: [files[0]] }));
+    } else if (field === "gallery") {
+      setFormData((prev) => ({
+        ...prev,
+        gallery: mergeUniqueFiles(prev.gallery, Array.from(files)),
+      }));
     } else {
-      setFormData({ ...formData, [field]: Array.from(files) });
+      setFormData((prev) => ({
+        ...prev,
+        floorPlans: mergeUniqueFiles(prev.floorPlans, Array.from(files)),
+      }));
     }
+
+    // Allow re-selecting the same file path after clear/append
+    e.target.value = "";
+  };
+
+  const removeGalleryFile = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      gallery: prev.gallery.filter((_, i) => i !== index),
+    }));
   };
 
   // Specifications
   const addSpecification = () => {
-    setFormData({
-      ...formData,
-      specifications: [...formData.specifications, { label: "", value: "" }],
-    });
+    setFormData((prev) => ({
+      ...prev,
+      specifications: [...prev.specifications, { label: "", value: "" }],
+    }));
   };
   const updateSpecification = (
     index: number,
     key: "label" | "value",
     value: string
   ) => {
-    const specs = [...formData.specifications];
-    specs[index][key] = value;
-    setFormData({ ...formData, specifications: specs });
+    setFormData((prev) => {
+      const specs = [...prev.specifications];
+      specs[index] = { ...specs[index], [key]: value };
+      return { ...prev, specifications: specs };
+    });
   };
   const removeSpecification = (index: number) => {
-    const specs = formData.specifications.filter((_, i) => i !== index);
-    setFormData({ ...formData, specifications: specs });
+    setFormData((prev) => ({
+      ...prev,
+      specifications: prev.specifications.filter((_, i) => i !== index),
+    }));
   };
 
   // Tags
   const toggleTag = (label: string) => {
-    if (formData.tags.includes(label)) {
-      setFormData({
-        ...formData,
-        tags: formData.tags.filter((t) => t !== label),
-      });
-    } else {
-      setFormData({ ...formData, tags: [...formData.tags, label] });
-    }
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.includes(label)
+        ? prev.tags.filter((t) => t !== label)
+        : [...prev.tags, label],
+    }));
   };
 
   const addCustomTag = () => {
@@ -130,41 +176,49 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
       toast.error(toastCopy.tagDuplicate);
       return;
     }
-    setFormData({
-      ...formData,
-      tags: [...formData.tags, newTag],
+    setFormData((prev) => ({
+      ...prev,
+      tags: [...prev.tags, newTag],
       newTag: "",
-    });
+    }));
   };
 
-  // Validation
-  const validateStep = (currentStep: number) => {
+  const stepErrorMessage = (currentStep: number): string | null => {
     if (currentStep === 1) {
-      return (
-        formData.title.trim() &&
-        formData.description.trim() &&
-        formData.longDescription.trim() &&
-        formData.address.trim() &&
-        formData.price.trim()
-      );
-    } else if (currentStep === 2) {
-      return (
-        formData.tags.length > 0 &&
-        formData.images.length > 0 &&
-        formData.gallery.length >= 3
-      );
-    } else if (currentStep === 3) {
-      if (type === "rent") {
-        return formData.landlordName.trim() && formData.landlordContact.trim();
+      if (
+        !formData.title.trim() ||
+        !formData.description.trim() ||
+        !formData.longDescription.trim() ||
+        !formData.address.trim() ||
+        !formData.price.trim()
+      ) {
+        return toastCopy.requiredStep;
       }
-      return true;
+      return null;
     }
-    return false;
+
+    if (currentStep === 2) {
+      if (formData.tags.length === 0) return toastCopy.tagsRequired;
+      if (formData.images.length === 0) return toastCopy.mainImageRequired;
+      if (formData.gallery.length < GALLERY_MIN) {
+        return `${toastCopy.galleryMin} (${formData.gallery.length}/${GALLERY_MIN} selected)`;
+      }
+      return null;
+    }
+
+    if (currentStep === 3 && type === "rent") {
+      if (!formData.landlordName.trim() || !formData.landlordContact.trim()) {
+        return toastCopy.landlordRequired;
+      }
+    }
+
+    return null;
   };
 
   const nextStep = () => {
-    if (!validateStep(step)) {
-      toast.error(toastCopy.requiredStep);
+    const error = stepErrorMessage(step);
+    if (error) {
+      toast.error(error);
       return;
     }
     setStep((prev) => Math.min(prev + 1, 3));
@@ -174,8 +228,9 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
   // Form submission with animation
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateStep(step)) {
-      toast.error(toastCopy.requiredSubmit);
+    const error = stepErrorMessage(step);
+    if (error) {
+      toast.error(error);
       return;
     }
 
@@ -200,21 +255,26 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
         {!submitted && (
           <motion.form
             onSubmit={handleSubmit}
-            className="w-full max-w-3xl mx-auto p-6 bg-2nd-bg rounded-card border border-header-stroke text-body"
+            className="w-full max-w-3xl mx-auto p-4 sm:p-6 lg:p-8 bg-2nd-bg rounded-card border border-header-stroke text-body min-w-0 overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Progress */}
-            <div className="w-full bg-header-stroke h-2 rounded-full mb-4">
+            {/* Progress + step hierarchy */}
+            <div className="flex items-end justify-between gap-3 mb-3">
+              <p className="type-label text-primary">
+                Step {step} of 3
+              </p>
+              <p className="type-caption font-medium text-secondary-text tabular-nums">
+                {progress}% completed
+              </p>
+            </div>
+            <div className="w-full bg-header-stroke h-1.5 rounded-full mb-6 overflow-hidden">
               <div
-                className="bg-primary h-2 rounded-full transition-all"
+                className="bg-primary h-1.5 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="text-right mb-4 type-caption font-medium text-secondary-text">
-              {progress}% completed
-            </p>
 
             {/* Step 1 */}
             {step === 1 && (
@@ -231,7 +291,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
                     }
-                    className="mb-2 p-3 rounded-control bg-main-bg border border-header-stroke w-full placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                    className={inputClass}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -245,7 +305,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
-                    className="mb-2 p-3 rounded-control bg-main-bg border border-header-stroke w-full placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg resize-none"
+                    className={textareaClass}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -259,7 +319,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                     onChange={(e) =>
                       setFormData({ ...formData, longDescription: e.target.value })
                     }
-                    className="mb-2 p-3 rounded-control bg-main-bg border border-header-stroke w-full placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg resize-none"
+                    className={textareaClass}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -274,22 +334,25 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                     onChange={(e) =>
                       setFormData({ ...formData, address: e.target.value })
                     }
-                    className="mb-2 p-3 rounded-control bg-main-bg border border-header-stroke w-full placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                    className={inputClass}
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label htmlFor="pf-price" className="type-label text-secondary-text">
-                    Price
+                    {type === "rent" ? "Monthly rent" : "Price"}
                   </label>
                   <input
                     id="pf-price"
                     type="text"
-                    placeholder="e.g. 1,25,00,000"
+                    inputMode="decimal"
+                    placeholder={
+                      type === "rent" ? "e.g. 25,000" : "e.g. 1,25,00,000"
+                    }
                     value={formData.price}
                     onChange={(e) =>
                       setFormData({ ...formData, price: e.target.value })
                     }
-                    className="mb-2 p-3 rounded-control bg-main-bg border border-header-stroke w-full placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                    className={inputClass}
                   />
                 </div>
               </div>
@@ -297,18 +360,18 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
 
             {/* Step 2 */}
             {step === 2 && (
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <p className="type-label text-secondary-text mb-1">Select Tags</p>
-                  <div className="flex flex-wrap gap-2 mb-2">
+                  <p className="type-label text-secondary-text mb-2">Select Tags</p>
+                  <div className="flex flex-wrap gap-2 mb-3">
                     {allTags.map((tag) => (
                       <button
                         key={tag.label}
                         type="button"
                         onClick={() => toggleTag(tag.label)}
-                        className={`px-3 py-1 rounded-full border transition ${
+                        className={`min-h-10 px-3 py-2 rounded-control border border-header-stroke type-caption transition touch-manipulation ${
                           formData.tags.includes(tag.label)
-                            ? "bg-primary text-on-primary"
+                            ? "bg-primary text-on-primary border-transparent"
                             : "bg-main-bg text-secondary-text"
                         }`}
                       >
@@ -324,14 +387,14 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                           key={customTag}
                           type="button"
                           onClick={() => toggleTag(customTag)}
-                          className="px-3 py-1 rounded-full border bg-main-bg text-secondary-text transition"
+                          className="min-h-10 px-3 py-2 rounded-control border border-header-stroke bg-main-bg text-secondary-text type-caption transition touch-manipulation"
                         >
-                          {customTag} Ã—
+                          {customTag} ×
                         </button>
                       ))}
                   </div>
-                  <div className="flex gap-2 items-end">
-                    <div className="flex flex-col gap-1.5 flex-1">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:items-end">
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                       <label htmlFor="pf-custom-tag" className="type-label text-secondary-text">
                         Custom tag
                       </label>
@@ -343,7 +406,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                         onChange={(e) =>
                           setFormData({ ...formData, newTag: e.target.value })
                         }
-                        className="p-2 w-full rounded-control bg-main-bg border border-header-stroke placeholder:text-secondary-text text-body focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                        className={inputClass}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
@@ -354,7 +417,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                     </div>
                     <button
                       type="button"
-                      className="px-3 py-1 bg-primary text-on-primary rounded-control hover:brightness-110 min-h-11"
+                      className="w-full sm:w-auto shrink-0 px-4 py-2.5 bg-primary text-on-primary rounded-control hover:brightness-110 min-h-11 touch-manipulation"
                       onClick={addCustomTag}
                     >
                       Add
@@ -362,42 +425,107 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                   </div>
                 </div>
 
-                <div>
-                  <p className="type-label text-secondary-text mb-1">Main Image</p>
+                <div className="space-y-1.5 min-w-0">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="type-label text-secondary-text">Main Image</p>
+                    {formData.images[0] && (
+                      <p className="type-caption text-body truncate max-w-[60%]">
+                        {formData.images[0].name}
+                      </p>
+                    )}
+                  </div>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => handleFileChange(e, "images")}
-                    className="text-primary"
+                    className={fileFieldClass}
                   />
                 </div>
-                <div>
-                  <p className="type-label text-secondary-text mb-1">Gallery Images (Min 3)</p>
+                <div className="space-y-1.5 min-w-0">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="type-label text-secondary-text">
+                      Gallery Images{" "}
+                      <span className="text-primary">(Min {GALLERY_MIN})</span>
+                    </p>
+                    <p
+                      className={`type-caption tabular-nums shrink-0 ${
+                        formData.gallery.length >= GALLERY_MIN
+                          ? "text-primary"
+                          : "text-secondary-text"
+                      }`}
+                    >
+                      {formData.gallery.length}/{GALLERY_MIN}
+                    </p>
+                  </div>
+                  <p className="type-caption text-secondary-text">
+                    Select multiple files at once, or add more in batches.
+                  </p>
                   <input
                     type="file"
                     accept="image/*"
                     multiple
                     onChange={(e) => handleFileChange(e, "gallery")}
-                    className="text-primary"
+                    className={fileFieldClass}
                   />
+                  {formData.gallery.length > 0 && (
+                    <ul className="mt-2 space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
+                      {formData.gallery.map((file, index) => (
+                        <li
+                          key={`${file.name}-${file.size}-${file.lastModified}`}
+                          className="flex items-center justify-between gap-2 rounded-control border border-header-stroke bg-main-bg px-3 py-2"
+                        >
+                          <span className="type-caption text-body truncate min-w-0">
+                            {file.name}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => removeGalleryFile(index)}
+                            className="type-caption text-secondary-text hover:text-primary shrink-0 touch-manipulation"
+                            aria-label={`Remove ${file.name}`}
+                          >
+                            Remove
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
-                <div>
-                  <p className="type-label text-secondary-text mb-1">Floor Plans</p>
+                <div className="space-y-1.5 min-w-0">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="type-label text-secondary-text">
+                      Floor Plans <span className="text-secondary-text/70">(optional)</span>
+                    </p>
+                    {formData.floorPlans.length > 0 && (
+                      <p className="type-caption text-secondary-text tabular-nums">
+                        {formData.floorPlans.length} file
+                        {formData.floorPlans.length === 1 ? "" : "s"}
+                      </p>
+                    )}
+                  </div>
                   <input
                     type="file"
                     accept="image/*"
                     multiple
                     onChange={(e) => handleFileChange(e, "floorPlans")}
-                    className="text-primary"
+                    className={fileFieldClass}
                   />
                 </div>
-                <div>
-                  <p className="type-label text-secondary-text mb-1">Video</p>
+                <div className="space-y-1.5 min-w-0">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="type-label text-secondary-text">
+                      Video <span className="text-secondary-text/70">(optional)</span>
+                    </p>
+                    {formData.video && (
+                      <p className="type-caption text-body truncate max-w-[60%]">
+                        {formData.video.name}
+                      </p>
+                    )}
+                  </div>
                   <input
                     type="file"
                     accept="video/*"
                     onChange={(e) => handleFileChange(e, "video")}
-                    className="text-primary"
+                    className={fileFieldClass}
                   />
                 </div>
               </div>
@@ -409,7 +537,10 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                 <div>
                   <p className="type-label text-secondary-text mb-2">Specifications</p>
                   {formData.specifications.map((spec, idx) => (
-                    <div key={idx} className="flex gap-2 mb-2">
+                    <div
+                      key={idx}
+                      className="flex flex-col sm:flex-row gap-2 mb-3 min-w-0"
+                    >
                       <input
                         type="text"
                         placeholder="Label"
@@ -417,7 +548,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                         onChange={(e) =>
                           updateSpecification(idx, "label", e.target.value)
                         }
-                        className="p-2 border rounded-control flex-1 bg-main-bg text-body placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                        className={`${inputClass} sm:flex-1`}
                       />
                       <input
                         type="text"
@@ -426,28 +557,29 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                         onChange={(e) =>
                           updateSpecification(idx, "value", e.target.value)
                         }
-                        className="p-2 border rounded-control flex-1 bg-main-bg text-body placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                        className={`${inputClass} sm:flex-1`}
                       />
                       <button
                         type="button"
                         onClick={() => removeSpecification(idx)}
-                        className="bg-primary text-on-primary px-2 rounded-control"
+                        className="w-full sm:w-auto min-h-11 bg-primary text-on-primary px-4 rounded-control touch-manipulation shrink-0"
+                        aria-label={`Remove specification ${idx + 1}`}
                       >
-                        X
+                        Remove
                       </button>
                     </div>
                   ))}
                   <button
                     type="button"
                     onClick={addSpecification}
-                    className="px-3 py-1 bg-primary text-on-primary rounded-control"
+                    className="w-full sm:w-auto min-h-11 px-4 py-2 bg-primary text-on-primary rounded-control touch-manipulation"
                   >
                     Add Specification
                   </button>
                 </div>
 
                 {type === "rent" && (
-                  <div className="space-y-2">
+                  <div className="space-y-4">
                     <div className="flex flex-col gap-1.5">
                       <label htmlFor="pf-landlord-name" className="type-label text-secondary-text">
                         Landlord name
@@ -463,7 +595,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                             landlordName: e.target.value,
                           })
                         }
-                        className="mb-2 p-3 rounded-control bg-main-bg border border-header-stroke w-full placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                        className={inputClass}
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
@@ -481,7 +613,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
                             landlordContact: e.target.value,
                           })
                         }
-                        className="mb-2 p-3 rounded-control bg-main-bg border border-header-stroke w-full placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                        className={inputClass}
                       />
                     </div>
                   </div>
@@ -490,21 +622,23 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
             )}
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between mt-4">
-              {step > 1 && (
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 mt-6 pt-4 border-t border-header-stroke">
+              {step > 1 ? (
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="px-4 py-2 bg-primary text-on-primary rounded-control hover:brightness-110 transition"
+                  className="w-full sm:w-auto min-h-11 px-5 py-2.5 bg-main-bg text-body border border-header-stroke rounded-control hover:border-primary/45 transition touch-manipulation"
                 >
                   Previous
                 </button>
+              ) : (
+                <span className="hidden sm:block" aria-hidden />
               )}
               {step < 3 && (
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="px-4 py-2 bg-primary text-on-primary rounded-control hover:brightness-110 transition"
+                  className="w-full sm:w-auto min-h-11 px-5 py-2.5 bg-primary text-on-primary rounded-control hover:brightness-110 transition sm:ml-auto touch-manipulation"
                 >
                   Next
                 </button>
@@ -512,9 +646,9 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
               {step === 3 && (
                 <button
                   type="submit"
-                  className={`px-4 py-2 rounded-control transition ${
+                  className={`w-full sm:w-auto min-h-11 px-5 py-2.5 rounded-control transition sm:ml-auto touch-manipulation ${
                     submitting
-                      ? "bg-2nd-bg text-secondary-text cursor-not-allowed border border-header-stroke"
+                      ? "bg-main-bg text-secondary-text cursor-not-allowed border border-header-stroke"
                       : "bg-primary text-on-primary hover:brightness-110"
                   }`}
                   disabled={submitting}
@@ -557,27 +691,32 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
       <AnimatePresence>
         {submitted && (
           <motion.div
-            className="w-full max-w-md mx-auto mt-10 p-8 bg-primary rounded-card text-on-primary text-center flex flex-col items-center justify-center gap-4"
-            initial={{ opacity: 0, scale: 0.8 }}
+            className="w-full max-w-md mx-auto p-6 sm:p-8 bg-2nd-bg border border-header-stroke rounded-card text-body text-center flex flex-col items-center justify-center gap-3"
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            exit={{ opacity: 0, scale: 0.96 }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16 text-on-primary mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <h2 className="type-subhead">Form Submitted!</h2>
-            <p className="type-body">Thank you for submitting your property details.</p>
+            <span className="inline-flex size-14 items-center justify-center rounded-control border border-primary/40 bg-primary/15 text-primary mb-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+            <h2 className="type-subhead text-body">Listing received</h2>
+            <p className="type-body text-secondary-text">
+              Thank you — our team will review your property details shortly.
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
