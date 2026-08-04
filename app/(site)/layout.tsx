@@ -12,7 +12,7 @@ export default function SiteLayout({
     <SmoothScroll>
       <div className="min-h-screen flex flex-col bg-main-bg overflow-x-clip">
         <Navbar />
-        <div className="flex-1 flex flex-col pb-20 lg:pb-0">{children}</div>
+        <div className="flex-1 flex flex-col pb-28 lg:pb-0">{children}</div>
         <Footer />
         <StickyMobileLeadBar />
       </div>

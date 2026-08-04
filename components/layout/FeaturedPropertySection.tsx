@@ -12,6 +12,7 @@ const FeaturedPropertySection = () => {
           description="Handpicked residences across Patna — apartments and houses ready for your next move."
           action={{ label: "View All Properties", href: "/properties" }}
           actionVariant="secondary"
+          actionAlwaysVisible
         />
       </div>
       <PropertyGrid />

@@ -95,7 +95,7 @@ const Footer: React.FC = () => {
                       {link.label}
                       <ArrowUpRight
                         size={12}
-                        className="opacity-0 -translate-y-0.5 translate-x-0 group-hover:opacity-100 transition-all"
+                        className="opacity-0 translate-x-0 -translate-y-0.5 group-hover:opacity-100 transition-all duration-300 ease-out motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
                         aria-hidden
                       />
                     </Link>
@@ -131,10 +131,14 @@ const Footer: React.FC = () => {
               )}
               <Link
                 href="/contact"
-                className="mt-6 inline-flex items-center gap-2 type-body font-semibold text-primary hover:brightness-110 transition min-h-11"
+                className="group mt-6 inline-flex items-center gap-2 type-body font-semibold text-primary hover:brightness-110 transition min-h-11"
               >
                 Get in touch
-                <ArrowUpRight size={16} aria-hidden />
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-300 ease-out motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+                  aria-hidden
+                />
               </Link>
             </div>
           </div>

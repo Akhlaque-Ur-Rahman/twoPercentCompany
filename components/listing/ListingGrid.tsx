@@ -47,9 +47,9 @@ const ListingGrid: React.FC<ListingGridProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-w-0">
       {/* Mobile — peek carousel */}
-      <div className="block lg:hidden">
+      <div className="block lg:hidden min-w-0">
         <Swiper
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
@@ -64,6 +64,11 @@ const ListingGrid: React.FC<ListingGridProps> = ({
           spaceBetween={14}
           slidesPerView={1.08}
           className="property-land-swiper !overflow-visible"
+          breakpoints={{
+            0: { slidesPerView: 1.02, spaceBetween: 12 },
+            480: { slidesPerView: 1.08, spaceBetween: 14 },
+            640: { slidesPerView: 1.16, spaceBetween: 16 },
+          }}
         >
           {featured.map((item, index) => (
             <SwiperSlide key={item.id} className="!h-auto">
@@ -80,8 +85,8 @@ const ListingGrid: React.FC<ListingGridProps> = ({
           ))}
         </Swiper>
 
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-1">
+        <div className="mt-4 sm:mt-5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-0.5 sm:gap-1">
             {featured.map((item, index) => (
               <button
                 key={item.id}
@@ -101,7 +106,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               aria-label="Previous slide"
@@ -126,7 +131,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
         {viewAllHref && (
           <Link
             href={viewAllHref}
-            className="mt-5 flex w-full items-center justify-center border border-header-stroke py-3.5 type-body font-medium text-primary hover:border-primary/40 transition-colors rounded-control"
+            className="mt-4 sm:mt-5 flex w-full items-center justify-center border border-header-stroke py-3.5 type-body font-medium text-primary hover:border-primary/40 transition-colors rounded-control"
           >
             {viewAllLabel}
           </Link>
@@ -135,7 +140,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
 
       {/* Desktop spotlight — cinema poster + twin strips */}
       {layout === "spotlight" && hero ? (
-        <div className="hidden lg:grid grid-cols-12 gap-3 xl:gap-4 h-[560px]">
+        <div className="hidden lg:grid grid-cols-12 gap-3 xl:gap-4 h-[600px]">
           <div className="col-span-7 h-full">
             <ListingCard
               property={hero}

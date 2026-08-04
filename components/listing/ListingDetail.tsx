@@ -13,7 +13,7 @@ import { MarkerType } from "@/types/MarkerType";
 import { iconForTagLabel } from "@/lib/tagIcons";
 import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
 import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
-import { MessageCircle } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 
 const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
@@ -167,7 +167,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-control border border-header-stroke text-secondary-text hover:text-body hover:border-primary/40 transition-colors"
             >
-              <MessageCircle size={16} aria-hidden />
+              <FaWhatsapp size={16} aria-hidden />
               Enquire on WhatsApp
             </a>
           </div>

@@ -92,9 +92,9 @@ body {
 
 /* Typography scale — use these; avoid arbitrary text-[…] */
 .type-display {
-  font-size: clamp(24px, 5vw, 48px);
+  font-size: clamp(30px, 6.2vw, 48px);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .type-section {

@@ -206,10 +206,14 @@ const Navbar = () => {
                           href={item.href}
                           role="menuitem"
                           onClick={() => setDesktopOpen(null)}
-                          className="flex items-center justify-between gap-3 rounded-control px-3 py-2.5 type-caption text-secondary-text hover:text-body hover:bg-main-bg transition-colors"
+                          className="group flex items-center justify-between gap-3 rounded-control px-3 py-2.5 type-caption text-secondary-text hover:text-body hover:bg-main-bg transition-colors"
                         >
                           All {item.label.toLowerCase()}
-                          <ArrowUpRight size={14} aria-hidden />
+                          <ArrowUpRight
+                            size={14}
+                            className="transition-transform duration-300 ease-out motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+                            aria-hidden
+                          />
                         </Link>
                         <div className="my-1 border-t border-header-stroke" />
                         {item.submenu.map((sub) => {
@@ -456,10 +460,14 @@ const Navbar = () => {
           <Link
             href={ContactBtnData.href}
             onClick={closeDrawer}
-            className="flex w-full items-center justify-center gap-2 min-h-12 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
+            className="group flex w-full items-center justify-center gap-2 min-h-12 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
           >
             {ContactBtnData.label}
-            <ArrowUpRight size={16} aria-hidden />
+            <ArrowUpRight
+              size={16}
+              className="transition-transform duration-300 ease-out motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+              aria-hidden
+            />
           </Link>
           <p className="type-caption text-secondary-text text-center">
             Patna · Buy · Sell · Rent · Invest

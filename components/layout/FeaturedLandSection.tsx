@@ -25,6 +25,7 @@ const FeaturedLandSection = () => {
             description="Prime plots for investment or development — clear titles, strong locations."
             action={{ label: "View All Plots", href: "/plots" }}
             actionVariant="secondary"
+            actionAlwaysVisible
           />
         </div>
         <LandGrid />

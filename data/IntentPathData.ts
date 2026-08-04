@@ -1,8 +1,12 @@
+import type { LucideIcon } from "lucide-react";
+import { Home, KeyRound, LandPlot, Tag } from "lucide-react";
+
 export type IntentPathItem = {
   id: string;
   label: string;
   description: string;
   href: string;
+  icon: LucideIcon;
 };
 
 export type AreaChip = {
@@ -17,24 +21,28 @@ export const intentPathItems: IntentPathItem[] = [
     label: "Buy a home",
     description: "Verified apartments & houses across Patna",
     href: "/properties",
+    icon: Home,
   },
   {
     id: "sell",
     label: "Sell property",
     description: "List with local experts — fair, clear process",
     href: "/sell",
+    icon: Tag,
   },
   {
     id: "rent",
     label: "Rent",
     description: "Homes for tenants and landlord listing support",
     href: "/rent",
+    icon: KeyRound,
   },
   {
     id: "plots",
     label: "Plots & land",
     description: "Prime plots for investment or development",
     href: "/plots",
+    icon: LandPlot,
   },
 ];
 
