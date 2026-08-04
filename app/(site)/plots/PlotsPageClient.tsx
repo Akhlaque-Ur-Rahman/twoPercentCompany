@@ -1,14 +1,22 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { PropertyItem } from "@/data/PropertyData";
 import { Search } from "lucide-react";
 import ListingRowCard from "@/components/listing/ListingRowCard";
 import FilterSelect from "@/components/ui/FilterSelect";
+import HomeMap from "@/components/layout/HomeMap";
+import { MarkerType } from "@/types/MarkerType";
 
 type PlotsPageClientProps = {
   listings: PropertyItem[];
 };
+
+function toLatLng(position: PropertyItem["position"]): [number, number] {
+  if (Array.isArray(position)) return position as [number, number];
+  const p = position as { lat: number; lng: number };
+  return [p.lat, p.lng];
+}
 
 export default function PlotsPageClient({ listings }: PlotsPageClientProps) {
   const [SearchText, setSearchText] = useState("");
@@ -40,6 +48,21 @@ export default function PlotsPageClient({ listings }: PlotsPageClientProps) {
       plot.type.toLowerCase() === ActiveFilter.toLowerCase();
     return matchesSearch && matchesFilter;
   });
+
+  const mapMarkers: MarkerType[] = FilteredPlots.map((plot) => ({
+    id: plot.id,
+    title: plot.title,
+    slug: plot.slug,
+    position: toLatLng(plot.position),
+    image: plot.image,
+    address: plot.address,
+    type: "plot" as const,
+    url: plot.url,
+  }));
+
+  const mapCenter = mapMarkers[0]
+    ? (mapMarkers[0].position as [number, number])
+    : ([25.5941, 85.1376] as [number, number]);
 
   return (
     <section>
@@ -96,6 +119,20 @@ export default function PlotsPageClient({ listings }: PlotsPageClientProps) {
           )}
         </div>
       </div>
+
+      {mapMarkers.length > 0 && (
+        <HomeMap
+          markers={mapMarkers}
+          center={mapCenter}
+          zoom={13}
+          showLink
+          eyebrow="Land locations"
+          title="Explore plots on the map"
+          description="Browse verified residential and commercial plots across Patna. Scroll freely past the map — click it when you want to zoom."
+          action={{ label: "Enquire about land", href: "/contact" }}
+          className="page-px section-y border-t border-header-stroke"
+        />
+      )}
     </section>
   );
 }

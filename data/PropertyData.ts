@@ -1,4 +1,4 @@
-﻿import { LatLngExpression } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import {
   LucideIcon,
   BedDouble,
@@ -16,6 +16,18 @@ export interface PropertyTag {
   label: string;
 }
 
+export type FloorPlan = {
+  url: string;
+  label?: string;
+};
+
+/** Temporary shared plans for all listings until per-listing assets land. */
+export const TEMP_FLOOR_PLANS: FloorPlan[] = [
+  { url: "/floorplans/plan-a.png", label: "Layout plan A" },
+  { url: "/floorplans/plan-b.png", label: "Layout plan B" },
+  { url: "/floorplans/plan-c.png", label: "Layout plan C" },
+];
+
 // Main property/plot item type
 export interface PropertyItem {
   id: number;
@@ -26,18 +38,17 @@ export interface PropertyItem {
   position: LatLngExpression;
   image: string;
   gallery?: string[];
-  video?: string; // âœ… Added optional video field
+  video?: string;
   price: string;
   tags: PropertyTag[];
   slug: string;
   type: "property" | "plot";
   url?: string;
-  floorPlans?: string[];
+  floorPlans?: FloorPlan[];
   specifications?: {
-  label: string;
-  value: string;
-}[];
-
+    label: string;
+    value: string;
+  }[];
 }
 
 // All data (Properties + Plots)
@@ -70,7 +81,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "sai-residency-apartment",
     type: "property",
     url: "https://www.2percentcompany.in/properties/sai-residency-apartment",
-    floorPlans: ["/images/property2.webp", "/images/property3.webp", "/images/property4.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Carpet Area", value: "900 sqft" },
   { label: "Price per sqft", value: "â‚¹3,500/sqft" },
@@ -110,7 +121,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "green-valley-housing",
     type: "property",
     url: "https://www.2percentcompany.in/properties/green-valley-housing",
-    floorPlans: ["/images/property4.webp", "/images/property5.webp", "/images/property6.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Carpet Area", value: "2200 sqft" },
   { label: "Price per sqft", value: "â‚¹7,500/sqft" },
@@ -150,7 +161,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "ganga-view-towers",
     type: "property",
     url: "https://www.2percentcompany.in/properties/ganga-view-towers",
-    floorPlans: ["/images/property3.webp", "/images/property4.webp", "/images/property5.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Built-up Area", value: "1800 sqft" },
   { label: "Plot Area", value: "2000 sqft" },
@@ -189,7 +200,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "urban-luxury-apartment",
     type: "property",
     url: "https://www.2percentcompany.in/properties/urban-luxury-apartment",
-    floorPlans: ["/images/property6.webp", "/images/property2.webp", "/images/seasidevilla.png"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Carpet Area", value: "400 sqft" },
   { label: "Price per sqft", value: "â‚¹2,500/sqft" },
@@ -226,7 +237,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "countryside-family-home",
     type: "property",
     url: "https://www.2percentcompany.in/properties/countryside-family-home",
-    floorPlans: ["/images/property6.webp", "/images/property3.webp", "/images/seasidevilla.png"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Carpet Area", value: "1500 sqft" },
   { label: "Price per sqft", value: "â‚¹6,500/sqft" },
@@ -264,7 +275,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "compact-1bhk-studio",
     type: "property",
     url: "https://www.2percentcompany.in/properties/compact-1bhk-studio",
-    floorPlans: ["/images/property2.webp", "/images/property3.webp", "/images/property4.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Carpet Area", value: "900 sqft" },
   { label: "Price per sqft", value: "â‚¹3,500/sqft" },
@@ -305,7 +316,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "shivaji-enclave-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/shivaji-enclave-plot",
-    floorPlans: ["/images/plot3.webp", "/images/plot4.webp", "/images/plot5.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Plot Area", value: "1200 sqft" },
   { label: "Price per sqft", value: "â‚¹3,750/sqft" },
@@ -342,7 +353,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "rajdhani-nagar-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/rajdhani-nagar-plot",
-    floorPlans: ["/images/plot4.webp", "/images/plot5.webp", "/images/plot6.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Plot Area", value: "2000 sqft" },
   { label: "Price per sqft", value: "â‚¹5,500/sqft" },
@@ -379,7 +390,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "gola-road-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/gola-road-plot",
-    floorPlans: ["/images/plot5.webp", "/images/plot6.webp", "/images/plot2.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Plot Area", value: "1500 sqft" },
   { label: "Price per sqft", value: "â‚¹6,000/sqft" },
@@ -417,7 +428,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "bailey-road-commercial-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/bailey-road-commercial-plot",
-    floorPlans: ["/images/plot6.webp", "/images/plot2.webp", "/images/plot3.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Plot Area", value: "600 sqft" },
   { label: "Price per sqft", value: "â‚¹3,500/sqft" },
@@ -454,7 +465,7 @@ export const PropertyData: PropertyItem[] = [
     slug: "patliputra-colony-plot",
     type: "plot",
     url: "https://www.2percentcompany.in/plots/patliputra-colony-plot",
-    floorPlans: ["/images/plainland.jpg", "/images/plot2.webp", "/images/plot3.webp"],
+    floorPlans: TEMP_FLOOR_PLANS,
     specifications: [
   { label: "Plot Area", value: "5000 sqft" },
   { label: "Price per sqft", value: "â‚¹2,500/sqft" },

@@ -1,5 +1,5 @@
 import type { Where } from "payload";
-import { PropertyData, PropertyItem } from "@/data/PropertyData";
+import { FloorPlan, PropertyData, PropertyItem, TEMP_FLOOR_PLANS } from "@/data/PropertyData";
 import { getPayload } from "@/lib/payload";
 
 type MediaDoc = {
@@ -65,6 +65,15 @@ function resolveUrlList(
   return merged.length ? merged : undefined;
 }
 
+function resolveFloorPlans(
+  uploads: (number | string | MediaDoc)[] | null | undefined,
+  urlRows: { url: string }[] | null | undefined
+): FloorPlan[] | undefined {
+  const urls = resolveUrlList(uploads, urlRows);
+  if (!urls?.length) return undefined;
+  return urls.map((url) => ({ url }));
+}
+
 export function mapListingDoc(doc: ListingDoc): PropertyItem {
   const numericId =
     typeof doc.id === "number" ? doc.id : Number.parseInt(String(doc.id), 10) || 0;
@@ -78,7 +87,7 @@ export function mapListingDoc(doc: ListingDoc): PropertyItem {
     position: [doc.lat, doc.lng],
     image: resolveImage(doc),
     gallery: resolveUrlList(doc.gallery, doc.galleryUrls),
-    floorPlans: resolveUrlList(doc.floorPlans, doc.floorPlanUrls),
+    floorPlans: resolveFloorPlans(doc.floorPlans, doc.floorPlanUrls),
     video: doc.video || undefined,
     price: doc.price,
     tags: (doc.tags ?? []).map((tag) => ({
@@ -93,11 +102,17 @@ export function mapListingDoc(doc: ListingDoc): PropertyItem {
   };
 }
 
+/** Temporary: force shared plan assets on every listing. */
+function withCanonicalFloorPlans(item: PropertyItem): PropertyItem {
+  return { ...item, floorPlans: TEMP_FLOOR_PLANS };
+}
+
 /** Strip non-serializable Lucide icons before crossing the RSC boundary. */
 function toClientListing(item: PropertyItem): PropertyItem {
+  const normalized = withCanonicalFloorPlans(item);
   return {
-    ...item,
-    tags: item.tags.map(({ label }) => ({ label })),
+    ...normalized,
+    tags: normalized.tags.map(({ label }) => ({ label })),
   };
 }
 

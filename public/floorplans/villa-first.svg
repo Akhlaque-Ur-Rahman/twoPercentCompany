@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" role="img" aria-label="Villa first floor plan">
+  <rect width="900" height="650" fill="#f4f1ea"/>
+  <text x="40" y="36" font-family="Georgia, serif" font-size="22" fill="#1a1a1a">Independent Home - First Floor</text>
+  <text x="40" y="58" font-family="system-ui,sans-serif" font-size="12" fill="#666">Bedrooms + lounge - Not to scale</text>
+  <rect x="70" y="90" width="760" height="480" fill="#fff" stroke="#1a1a1a" stroke-width="6"/>
+  <rect x="76" y="96" width="300" height="280" fill="#eef2f6" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="226" y="220" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#333">MASTER SUITE</text>
+  <text x="226" y="242" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#777">15' x 13'</text>
+  <rect x="376" y="96" width="150" height="160" fill="#e8eef0" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="451" y="180" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#333">ENSUITE</text>
+  <rect x="376" y="256" width="150" height="120" fill="#f7f3ec" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="451" y="320" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#333">WALK-IN</text>
+  <rect x="526" y="96" width="298" height="180" fill="#faf8f4" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="675" y="180" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#333">FAMILY LOUNGE</text>
+  <rect x="526" y="276" width="148" height="200" fill="#eef2f6" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="600" y="370" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#333">BED 2</text>
+  <rect x="674" y="276" width="150" height="200" fill="#eef2f6" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="749" y="370" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#333">BED 3</text>
+  <rect x="76" y="376" width="200" height="188" fill="#e8eef0" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="176" y="470" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#333">BATH 2</text>
+  <rect x="276" y="376" width="250" height="188" fill="#e5efe6" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="401" y="470" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#333">TERRACE</text>
+  <rect x="526" y="476" width="298" height="88" fill="#f0ebe3" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="675" y="530" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#333">STAIR / LANDING</text>
+  <text x="450" y="610" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#888">2% Company - Indicative layout</text>
+</svg>

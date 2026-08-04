@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" role="img" aria-label="Villa ground floor plan">
+  <rect width="900" height="650" fill="#f4f1ea"/>
+  <text x="40" y="36" font-family="Georgia, serif" font-size="22" fill="#1a1a1a">Independent Home - Ground Floor</text>
+  <text x="40" y="58" font-family="system-ui,sans-serif" font-size="12" fill="#666">Living + kitchen + guest suite - Not to scale</text>
+  <rect x="70" y="90" width="760" height="480" fill="#fff" stroke="#1a1a1a" stroke-width="6"/>
+  <rect x="76" y="96" width="360" height="250" fill="#faf8f4" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="256" y="215" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#333">LIVING / FAMILY</text>
+  <text x="256" y="237" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#777">20' x 14'</text>
+  <rect x="436" y="96" width="200" height="150" fill="#f0ebe3" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="536" y="170" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#333">DINING</text>
+  <rect x="636" y="96" width="188" height="150" fill="#f3ebe0" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="730" y="170" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#333">KITCHEN</text>
+  <rect x="436" y="246" width="188" height="100" fill="#f7f3ec" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="530" y="300" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#333">STORE</text>
+  <rect x="624" y="246" width="200" height="100" fill="#e8eef0" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="724" y="300" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#333">POWDER</text>
+  <rect x="76" y="346" width="280" height="218" fill="#eef2f6" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="216" y="445" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#333">GUEST BED</text>
+  <text x="216" y="467" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#777">12' x 11'</text>
+  <rect x="356" y="346" width="140" height="218" fill="#e8eef0" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="426" y="460" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#333">BATH</text>
+  <rect x="496" y="346" width="328" height="218" fill="#e5efe6" stroke="#1a1a1a" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="660" y="450" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#333">BACKYARD / PATIO</text>
+  <text x="450" y="610" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#888">2% Company - Indicative layout</text>
+</svg>

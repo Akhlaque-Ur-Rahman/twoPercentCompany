@@ -26,11 +26,11 @@ export default function ListingVideoFacade({
   };
 
   return (
-    <div className="relative w-full overflow-hidden rounded-media border border-header-stroke bg-black aspect-video">
+    <div className="relative w-full overflow-hidden rounded-media border border-header-stroke bg-black aspect-video lg:aspect-auto lg:h-[calc(100svh-4.5rem-2.5rem)] lg:max-h-[640px]">
       {playing ? (
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-contain"
+          className="absolute inset-0 h-full w-full object-cover"
           controls
           playsInline
           poster={poster}

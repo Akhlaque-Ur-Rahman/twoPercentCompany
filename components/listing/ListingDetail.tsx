@@ -1,23 +1,24 @@
 "use client";
 
-import React, { useEffect, useId, useRef, useState } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { LatLng } from "leaflet";
-import { X } from "lucide-react";
 import PropertyGallery from "@/components/PropertyGallery";
 import MapPlaceholder from "@/components/MapPlaceholder";
 import ListingDetailHero from "@/components/listing/ListingDetailHero";
+import ListingFloorPlans from "@/components/listing/ListingFloorPlans";
+import ListingOverview from "@/components/listing/ListingOverview";
 import ListingVideoFacade from "@/components/listing/ListingVideoFacade";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { PropertyItem } from "@/data/PropertyData";
 import { MarkerType } from "@/types/MarkerType";
-import { iconForTagLabel } from "@/lib/tagIcons";
 import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
 import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { FaWhatsapp } from "react-icons/fa";
+import { MapPin } from "lucide-react";
 
 const MapSection = dynamic(() => import("@/components/MapSection"), {
   ssr: false,
@@ -55,10 +56,6 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
   backHref,
   backLabel,
 }) => {
-  const [selected, setSelected] = useState<string | null>(null);
-  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
-  const lastFocusRef = useRef<HTMLElement | null>(null);
-  const dialogTitleId = useId();
   const reducedMotion = usePrefersReducedMotion();
   const floorPlans = item.floorPlans ?? [];
   const positionArray = toPositionArray(item.position);
@@ -67,31 +64,6 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
     backHref ?? (item.type === "plot" ? "/plots" : "/properties");
   const resolvedBackLabel =
     backLabel ?? (item.type === "plot" ? "All plots" : "All homes");
-
-  useEffect(() => {
-    if (!selected) return;
-
-    lastFocusRef.current = document.activeElement as HTMLElement | null;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelected(null);
-      if (e.key !== "Tab" || !closeBtnRef.current) return;
-      // Single focusable control in the dialog — keep focus there.
-      e.preventDefault();
-      closeBtnRef.current.focus();
-    };
-
-    window.addEventListener("keydown", onKey);
-    requestAnimationFrame(() => closeBtnRef.current?.focus());
-
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-      lastFocusRef.current?.focus();
-    };
-  }, [selected]);
 
   const markers: MarkerType[] = [
     {
@@ -195,45 +167,33 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
         <motion.section
           {...sectionMotion}
           aria-labelledby="overview-heading"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 lg:items-start"
         >
-          <div>
-            <h2 id="overview-heading" className="type-subhead text-body">
-              Overview
-            </h2>
-
-            {item.tags.length > 0 && (
-              <ul className="flex flex-wrap gap-2 mt-4" aria-label="Property features">
-                {item.tags.map((tag, index) => {
-                  const Icon = tag.icon ?? iconForTagLabel(tag.label);
-                  return (
-                    <li
-                      key={`${tag.label}-${index}`}
-                      className="flex items-center gap-1.5 text-secondary-text border border-header-stroke px-3 py-1.5 rounded-control type-caption"
-                    >
-                      <Icon className="w-4 h-4" aria-hidden />
-                      <span>{tag.label}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            <p className="text-secondary-text type-body leading-relaxed mt-4">
-              {item.longDescription || item.description}
-            </p>
-          </div>
+          <ListingOverview
+            item={item}
+            ctaHref={ctaHref}
+            ctaLabel={ctaLabel}
+            enquireHref={enquireHref}
+            priceLabel={priceLabel}
+          />
 
           {item.specifications && item.specifications.length > 0 && (
-            <div>
-              <h2 className="type-subhead text-body mb-4">{specificationsTitle}</h2>
+            <div className="lg:sticky lg:top-24">
+              <h2 className="type-subhead text-body mb-1">
+                {specificationsTitle}
+              </h2>
+              <p className="type-caption text-secondary-text mb-4">
+                Facts to verify before you visit.
+              </p>
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {item.specifications.map((spec, index) => (
                   <div
                     key={`${spec.label}-${index}`}
                     className="border-b border-header-stroke py-3"
                   >
-                    <dt className="type-caption text-secondary-text">{spec.label}</dt>
+                    <dt className="type-caption text-secondary-text">
+                      {spec.label}
+                    </dt>
                     <dd className="type-body text-body font-medium mt-0.5">
                       {spec.value}
                     </dd>
@@ -245,86 +205,14 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
         </motion.section>
 
         {floorPlans.length > 0 && (
-          <motion.section {...sectionMotion} aria-labelledby="floorplan-heading">
-            <h2 id="floorplan-heading" className="type-section text-body mb-4">
-              Floor Plan
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {floorPlans.slice(0, 2).map((plan, index) => (
-                <button
-                  key={plan + index}
-                  type="button"
-                  className={`relative overflow-hidden rounded-control text-left group ${focusRing}`}
-                  onClick={() => setSelected(plan)}
-                  aria-label={`Open floor plan ${index + 1} larger view`}
-                >
-                  <Image
-                    src={plan}
-                    alt={`Floor plan ${index + 1} for ${item.title}`}
-                    width={800}
-                    height={600}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover transition-transform duration-300 motion-safe:group-hover:scale-105"
-                  />
-                </button>
-              ))}
-
-              {floorPlans[2] && (
-                <button
-                  type="button"
-                  className={`relative overflow-hidden rounded-control md:col-span-2 text-left group ${focusRing}`}
-                  onClick={() => setSelected(floorPlans[2])}
-                  aria-label="Open floor plan 3 larger view"
-                >
-                  <Image
-                    src={floorPlans[2]}
-                    alt={`Floor plan 3 for ${item.title}`}
-                    width={800}
-                    height={600}
-                    sizes="100vw"
-                    className="w-full h-[300px] sm:h-[400px] object-cover transition-transform duration-300 motion-safe:group-hover:scale-105"
-                  />
-                </button>
-              )}
-            </div>
-
-            <AnimatePresence>
-              {selected && (
-                <motion.div
-                  className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
-                  initial={reducedMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={reducedMotion ? undefined : { opacity: 0 }}
-                  onClick={() => setSelected(null)}
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby={dialogTitleId}
-                >
-                  <p id={dialogTitleId} className="sr-only">
-                    Floor plan preview
-                  </p>
-                  <button
-                    ref={closeBtnRef}
-                    type="button"
-                    onClick={() => setSelected(null)}
-                    className="absolute top-4 right-4 z-10 min-w-11 min-h-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white bg-black/50 hover:bg-black/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                    aria-label="Close floor plan preview"
-                  >
-                    <X size={22} aria-hidden />
-                  </button>
-                  <motion.img
-                    src={selected}
-                    alt={`Enlarged floor plan for ${item.title}`}
-                    className="max-w-full max-h-[90vh] rounded-control shadow-lg"
-                    initial={reducedMotion ? false : { scale: 0.92 }}
-                    animate={{ scale: 1 }}
-                    exit={reducedMotion ? undefined : { scale: 0.92 }}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.section>
+          <motion.div {...sectionMotion}>
+            <ListingFloorPlans
+              item={item}
+              plans={floorPlans}
+              ctaHref={ctaHref}
+              ctaLabel={ctaLabel}
+            />
+          </motion.div>
         )}
 
         {item.video && (
@@ -340,17 +228,51 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           </motion.section>
         )}
 
-        <motion.section {...sectionMotion} aria-labelledby="location-heading">
-          <h2 id="location-heading" className="type-section text-body mb-4">
-            Location
-          </h2>
-          <p className="type-body text-secondary-text mb-4">{item.address}</p>
+        <motion.section
+          {...sectionMotion}
+          aria-label="Location"
+          className="flex flex-col gap-6 lg:gap-8"
+        >
+          <div className="space-y-2">
+            <p className="type-label text-primary">Location</p>
+            <SectionHeader
+              title={
+                item.type === "plot"
+                  ? "See this plot on the map"
+                  : "See this home on the map"
+              }
+              description={`${item.address}. Scroll freely past the map — click it when you want to zoom.`}
+              action={{
+                label:
+                  item.type === "plot" ? "View all plots" : "View all homes",
+                href: resolvedBackHref,
+              }}
+              actionVariant="secondary"
+              actionAlwaysVisible
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 type-caption text-secondary-text">
+            <span className="inline-flex items-center gap-2">
+              <span
+                className={`size-2.5 rounded-full shrink-0 ${
+                  item.type === "plot" ? "bg-emerald-600" : "bg-primary"
+                }`}
+                aria-hidden
+              />
+              {item.type === "plot" ? "Plot" : "Property"} on map
+            </span>
+            <span className="inline-flex items-center gap-1.5 min-w-0">
+              <MapPin size={14} className="text-primary/80 shrink-0" aria-hidden />
+              <span className="truncate">{item.address}</span>
+            </span>
+          </div>
+
           <MapSection
             markers={markers}
             center={positionArray}
             zoom={15}
             showLink={false}
-            mapClassName="h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px]"
           />
         </motion.section>
 

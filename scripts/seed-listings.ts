@@ -44,7 +44,7 @@ async function seed() {
         lng,
         imageUrl: item.image,
         galleryUrls: item.gallery?.map((url) => ({ url })),
-        floorPlanUrls: item.floorPlans?.map((url) => ({ url })),
+        floorPlanUrls: item.floorPlans?.map((fp) => ({ url: fp.url })),
         video: item.video || undefined,
         tags: item.tags.map((tag) => ({ label: tag.label })),
         specifications: item.specifications?.map((spec) => ({

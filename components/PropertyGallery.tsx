@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
@@ -13,60 +13,129 @@ interface PropertyGalleryProps {
   gallery: string[];
 }
 
+/**
+ * Swiper's native `loop` clones DOM nodes — Next/Image slides become blank.
+ * Triple the slides in React and silently recenter onto the middle copy instead.
+ */
+function triple(images: string[]): string[] {
+  return [...images, ...images, ...images];
+}
+
 const PropertyGallery: React.FC<PropertyGalleryProps> = ({ gallery }) => {
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [swiperReady, setSwiperReady] = useState(0);
   const reducedMotion = usePrefersReducedMotion();
+  const images = (gallery ?? []).filter(Boolean);
+  const canSlide = images.length > 1;
+  const n = images.length;
+  const slides = canSlide ? triple(images) : images;
+  const middleStart = n; // first slide of the middle copy
 
-  if (!gallery || gallery.length === 0) return null;
+  const normalizeIndex = (index: number) => {
+    if (n <= 1) return 0;
+    return ((index % n) + n) % n;
+  };
+
+  const recenterIfNeeded = (swiper: SwiperType) => {
+    if (!canSlide) return;
+    const i = swiper.activeIndex;
+    if (i < n) {
+      swiper.slideTo(i + n, 0, false);
+    } else if (i >= n * 2) {
+      swiper.slideTo(i - n, 0, false);
+    }
+  };
+
+  useEffect(() => {
+    if (reducedMotion || !canSlide || !swiperReady) return;
+    const root = rootRef.current;
+    const swiper = swiperRef.current;
+    if (!root || !swiper?.autoplay) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          swiper.update();
+          swiper.autoplay.start();
+        } else {
+          swiper.autoplay.stop();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    io.observe(root);
+    return () => io.disconnect();
+  }, [reducedMotion, canSlide, swiperReady]);
+
+  if (images.length === 0) return null;
 
   return (
-    <div className="relative w-full rounded-media overflow-hidden md:overflow-visible py-2 md:py-4">
+    <div
+      ref={rootRef}
+      className="relative w-full rounded-media overflow-hidden md:overflow-visible py-2 md:py-4"
+    >
       <Swiper
         modules={[Keyboard, Autoplay]}
         keyboard={{ enabled: true, onlyInViewport: true }}
-        loop={gallery.length > 1}
+        slidesPerView="auto"
+        spaceBetween={12}
+        breakpoints={{
+          640: { spaceBetween: 20 },
+          1024: { spaceBetween: 28 },
+        }}
         centeredSlides
+        initialSlide={canSlide ? middleStart : 0}
+        loop={false}
+        observer
+        observeParents
+        watchSlidesProgress
         autoplay={
-          reducedMotion || gallery.length < 2
+          reducedMotion || !canSlide
             ? false
-            : { delay: 4000, disableOnInteraction: true, pauseOnMouseEnter: true }
+            : {
+                delay: 3500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: false,
+              }
         }
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
+          setSwiperReady((v) => v + 1);
+          requestAnimationFrame(() => {
+            swiper.update();
+            if (canSlide) swiper.slideTo(middleStart, 0, false);
+            if (!reducedMotion && canSlide) swiper.autoplay?.start();
+          });
         }}
-        onRealIndexChange={(swiper) => {
-          setActiveIndex(swiper.realIndex);
+        onSlideChange={(swiper) => {
+          setActiveIndex(normalizeIndex(swiper.activeIndex));
         }}
-        slidesPerView={1}
-        spaceBetween={12}
-        breakpoints={{
-          640: {
-            slidesPerView: 1.4,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 2.2,
-            spaceBetween: 28,
-          },
-        }}
+        onSlideChangeTransitionEnd={recenterIfNeeded}
         className="w-full"
       >
-        {gallery.map((img, index) => (
-          <SwiperSlide key={`${img}-${index}`}>
+        {slides.map((img, index) => (
+          <SwiperSlide
+            key={`${img}-${index}`}
+            className="!w-[88%] sm:!w-[68%] lg:!w-[42%]"
+          >
             {({ isActive }) => (
               <div
                 className={`relative w-full aspect-[4/3] md:aspect-[16/10] transition-all duration-500 motion-reduce:transition-none ${
-                  isActive ? "scale-100 opacity-100 z-10" : "scale-95 opacity-70 motion-reduce:scale-100"
+                  isActive
+                    ? "scale-100 opacity-100 z-10"
+                    : "scale-95 opacity-70 motion-reduce:scale-100"
                 }`}
               >
                 <Image
                   src={img}
-                  alt={`Property image ${index + 1}`}
+                  alt={`Property image ${normalizeIndex(index) + 1}`}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 45vw"
+                  sizes="(max-width: 640px) 88vw, (max-width: 1024px) 68vw, 42vw"
                   className="object-cover rounded-media"
-                  priority={index === 0}
+                  priority={index >= middleStart && index < middleStart + 2}
                 />
               </div>
             )}
@@ -75,13 +144,15 @@ const PropertyGallery: React.FC<PropertyGalleryProps> = ({ gallery }) => {
       </Swiper>
 
       <div className="flex justify-center gap-1 mt-4">
-        {gallery.map((_, index) => (
+        {images.map((_, index) => (
           <button
             key={index}
             type="button"
             aria-label={`Go to gallery image ${index + 1}`}
             aria-current={index === activeIndex}
-            onClick={() => swiperRef.current?.slideToLoop(index)}
+            onClick={() =>
+              swiperRef.current?.slideTo(middleStart + index, undefined)
+            }
             className="min-w-11 min-h-11 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg rounded-full"
           >
             <span
@@ -95,7 +166,7 @@ const PropertyGallery: React.FC<PropertyGalleryProps> = ({ gallery }) => {
         ))}
       </div>
 
-      {gallery.length > 1 && (
+      {canSlide && (
         <>
           <button
             type="button"

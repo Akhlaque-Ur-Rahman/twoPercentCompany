@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700" role="img" aria-label="Residential plot site plan">
+  <rect width="800" height="700" fill="#f4f1ea"/>
+  <text x="40" y="36" font-family="Georgia, serif" font-size="22" fill="#1a1a1a">Residential Plot - Site Plan</text>
+  <text x="40" y="58" font-family="system-ui,sans-serif" font-size="12" fill="#666">Typical 30x40 / 1200 sqft plot - Not to scale</text>
+  <rect x="40" y="600" width="720" height="50" fill="#d8d4cc" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="400" y="632" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#444">ACCESS ROAD</text>
+  <rect x="140" y="100" width="520" height="480" fill="#e8f0e4" stroke="#1a1a1a" stroke-width="5" stroke-dasharray="14 8"/>
+  <text x="400" y="130" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#555">PLOT BOUNDARY</text>
+  <rect x="180" y="160" width="440" height="360" fill="#fff" stroke="#8f7330" stroke-width="3"/>
+  <text x="400" y="320" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18" fill="#333">BUILDABLE AREA</text>
+  <text x="400" y="348" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#777">Front setback - Side margins</text>
+  <text x="400" y="90" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#333">40' FRONTAGE</text>
+  <text x="100" y="340" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#333" transform="rotate(-90 100 340)">30' DEPTH</text>
+  <rect x="200" y="480" width="120" height="28" fill="#cfe0d0" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="260" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#333">GATE</text>
+  <text x="400" y="680" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#888">2% Company - Indicative site layout</text>
+</svg>

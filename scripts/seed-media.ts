@@ -14,6 +14,7 @@ const MIME: Record<string, string> = {
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
   ".gif": "image/gif",
+  ".svg": "image/svg+xml",
 };
 
 function publicFile(urlPath: string): string | null {
@@ -39,7 +40,7 @@ async function seedMedia() {
   for (const item of PropertyData) {
     if (item.image) paths.add(item.image);
     item.gallery?.forEach((u) => paths.add(u));
-    item.floorPlans?.forEach((u) => paths.add(u));
+    item.floorPlans?.forEach((fp) => paths.add(fp.url));
   }
 
   const mediaByPath = new Map<string, number | string>();
@@ -93,7 +94,7 @@ async function seedMedia() {
       ?.map((u) => mediaByPath.get(u))
       .filter((id): id is number | string => id != null);
     const floorPlans = source.floorPlans
-      ?.map((u) => mediaByPath.get(u))
+      ?.map((fp) => mediaByPath.get(fp.url))
       .filter((id): id is number | string => id != null);
 
     if (!image && !gallery?.length && !floorPlans?.length) continue;
