@@ -5,15 +5,26 @@ import { Mail, CircleCheckBig } from "lucide-react";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { submitLead } from "@/lib/submitLead";
 
 const Newsletter: React.FC = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const reduceMotion = usePrefersReducedMotion();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+    setLoading(true);
+    setError("");
+    const result = await submitLead({ type: "newsletter", email });
+    setLoading(false);
+    if (!result.ok) {
+      setError(result.error || "Could not subscribe");
+      return;
+    }
     setSubmitted(true);
     setEmail("");
   };
@@ -41,37 +52,45 @@ const Newsletter: React.FC = () => {
 
         <div className="lg:col-span-7">
           {!submitted ? (
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col sm:flex-row gap-3 w-full"
-            >
-              <div className="relative flex items-center gap-3 flex-1 bg-2nd-bg border border-header-stroke px-4 py-3 rounded-control focus-within:border-primary transition-colors min-h-12">
-                <Mail
-                  className="text-secondary-text size-5 shrink-0"
-                  strokeWidth={1.5}
-                  aria-hidden
-                />
-                <label htmlFor="newsletter-email" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  placeholder="you@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                  className="text-body placeholder:text-secondary-text focus:outline-none w-full type-body bg-transparent min-h-11"
-                />
-              </div>
-              <Button
-                type="submit"
-                className="w-full sm:w-auto shrink-0 min-h-12"
+            <>
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col sm:flex-row gap-3 w-full"
               >
-                Subscribe
-              </Button>
-            </form>
+                <div className="relative flex items-center gap-3 flex-1 bg-2nd-bg border border-header-stroke px-4 py-3 rounded-control focus-within:border-primary transition-colors min-h-12">
+                  <Mail
+                    className="text-secondary-text size-5 shrink-0"
+                    strokeWidth={1.5}
+                    aria-hidden
+                  />
+                  <label htmlFor="newsletter-email" className="sr-only">
+                    Email address
+                  </label>
+                  <input
+                    id="newsletter-email"
+                    type="email"
+                    placeholder="you@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoComplete="email"
+                    className="text-body placeholder:text-secondary-text focus:outline-none w-full type-body bg-transparent min-h-11"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full sm:w-auto shrink-0 min-h-12"
+                  disabled={loading}
+                >
+                  {loading ? "Saving…" : "Subscribe"}
+                </Button>
+              </form>
+              {error && (
+                <p className="type-caption text-red-400 mt-2" role="alert">
+                  {error}
+                </p>
+              )}
+            </>
           ) : (
             <motion.div
               className="flex items-center gap-3 min-h-12 type-body text-body"

@@ -4,7 +4,7 @@ import {
   BreadcrumbSchema,
   PropertySchema,
 } from "@/components/StructuredData";
-import { getListingBySlug, getListingsByType } from "@/lib/listings";
+import { getListingBySlug, getListingsByType, getSimilarListings } from "@/lib/listings";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -33,6 +33,7 @@ export default async function PropertyPage({ params, searchParams }: Props) {
 
   if (!property) return notFound();
 
+  const similar = await getSimilarListings(property);
   const isTenant = mode === "tenant";
   const pageUrl = `https://www.2percentcompany.in/properties/${slug}`;
   const description = property.longDescription || property.description;
@@ -70,6 +71,7 @@ export default async function PropertyPage({ params, searchParams }: Props) {
         specificationsTitle="Property Specifications"
         backHref="/properties"
         backLabel="All homes"
+        similar={similar}
       />
     </>
   );

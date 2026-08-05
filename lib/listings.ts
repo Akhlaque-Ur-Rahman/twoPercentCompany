@@ -205,3 +205,30 @@ export async function getListingBySlug(
   );
   return fallback ? toClientListing(fallback) : undefined;
 }
+
+export async function getSimilarListings(
+  current: PropertyItem,
+  limit = 3
+): Promise<PropertyItem[]> {
+  const all = await getListings();
+  const locality = current.address.split(",")[0]?.trim().toLowerCase() ?? "";
+
+  const scored = all
+    .filter((item) => item.slug !== current.slug && item.type === current.type)
+    .map((item) => {
+      let score = 0;
+      if (locality && item.address.toLowerCase().includes(locality)) {
+        score += 2;
+      }
+      const sharedTags = item.tags.filter((t) =>
+        current.tags.some(
+          (ct) => ct.label.toLowerCase() === t.label.toLowerCase()
+        )
+      ).length;
+      score += sharedTags;
+      return { item, score };
+    })
+    .sort((a, b) => b.score - a.score || a.item.id - b.item.id);
+
+  return scored.slice(0, limit).map((s) => s.item);
+}

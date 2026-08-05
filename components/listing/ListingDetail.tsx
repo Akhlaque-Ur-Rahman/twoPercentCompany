@@ -10,10 +10,14 @@ import ListingDetailHero from "@/components/listing/ListingDetailHero";
 import ListingFloorPlans from "@/components/listing/ListingFloorPlans";
 import ListingOverview from "@/components/listing/ListingOverview";
 import ListingVideoFacade from "@/components/listing/ListingVideoFacade";
+import ScheduleVisit from "@/components/listing/ScheduleVisit";
+import ShareListing from "@/components/listing/ShareListing";
+import SimilarListings from "@/components/listing/SimilarListings";
+import EmiCalculator from "@/components/listing/EmiCalculator";
 import SectionHeader from "@/components/ui/SectionHeader";
 import type { PropertyItem } from "@/data/PropertyData";
 import type { MarkerType } from "@/types/MarkerType";
-import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
+import { formatPrice, formatPriceExact, formatPricePerSqFt } from "@/lib/formatPrice";
 import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { FaWhatsapp } from "react-icons/fa";
@@ -33,6 +37,8 @@ export type ListingDetailProps = {
   specificationsTitle?: string;
   backHref?: string;
   backLabel?: string;
+  similar?: PropertyItem[];
+  similarHrefFor?: (item: PropertyItem) => string;
 };
 
 /** Avoid importing leaflet here — it touches `window` and breaks SSR/prerender. */
@@ -64,6 +70,8 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
   specificationsTitle = "Specifications",
   backHref,
   backLabel,
+  similar = [],
+  similarHrefFor,
 }) => {
   const reducedMotion = usePrefersReducedMotion();
   const floorPlans = item.floorPlans ?? [];
@@ -92,6 +100,11 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
       item.type === "plot" ? "plots" : "properties"
     }/${item.slug}`;
   const enquireHref = whatsappHref(listingEnquiryMessage(item.title, listingUrl));
+  const pricePerSqFt = formatPricePerSqFt(item.price, item.specifications);
+
+  const defaultSimilarHref = (s: PropertyItem) =>
+    s.type === "plot" ? `/plots/${s.slug}` : `/properties/${s.slug}`;
+  const hrefForSimilar = similarHrefFor ?? defaultSimilarHref;
 
   const sectionMotion = reducedMotion
     ? {}
@@ -140,12 +153,16 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
             >
               {formatPrice(item.price)}
             </p>
+            {pricePerSqFt && (
+              <p className="type-caption text-secondary-text mt-1">{pricePerSqFt}</p>
+            )}
             <p className="type-caption text-secondary-text mt-2 max-w-xl">
               {item.description}
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0 sm:items-center">
+            <ShareListing title={item.title} url={listingUrl} />
             <Link
               href={ctaHref}
               className={`inline-flex items-center justify-center bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition w-full sm:w-auto ${focusRing}`}
@@ -221,6 +238,16 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
               ctaHref={ctaHref}
               ctaLabel={ctaLabel}
             />
+          </motion.div>
+        )}
+
+        <motion.div {...sectionMotion}>
+          <ScheduleVisit title={item.title} listingUrl={listingUrl} />
+        </motion.div>
+
+        {item.type === "property" && (
+          <motion.div {...sectionMotion}>
+            <EmiCalculator price={item.price} />
           </motion.div>
         )}
 
@@ -313,6 +340,12 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
             </a>
           </div>
         </section>
+
+        {similar.length > 0 && (
+          <motion.div {...sectionMotion} className="border-t border-header-stroke pt-10">
+            <SimilarListings items={similar} hrefFor={hrefForSimilar} />
+          </motion.div>
+        )}
       </div>
     </article>
   );

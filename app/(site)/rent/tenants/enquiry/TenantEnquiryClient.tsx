@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import PageState from "@/components/ui/PageState";
 import { formatPrice } from "@/lib/formatPrice";
+import { submitLead } from "@/lib/submitLead";
 
 interface FormData {
   fullName: string;
@@ -92,27 +93,51 @@ const TenantEnquiryPageContent = ({
   };
   const handleBack = () => setStep(step - 1);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateStep()) {
-      toast.success(toastCopy.submitSuccess);
-      setFormData({
-        fullName: "",
-        phone: "",
-        email: "",
-        currentAddress: "",
-        moveInDate: "",
-        leaseDuration: "",
-        numberOfTenants: "",
-        monthlyBudget: "",
-        occupation: "",
-        references: "",
-        message: "",
-        idProof: null,
-        agreementType: "",
-      });
-      setStep(1);
+    if (!validateStep()) return;
+
+    const result = await submitLead({
+      type: "tenant_enquiry",
+      name: formData.fullName,
+      phone: formData.phone,
+      email: formData.email,
+      message: formData.message,
+      propertySlug: property?.slug,
+      propertyTitle: property?.title,
+      currentAddress: formData.currentAddress,
+      moveInDate: formData.moveInDate,
+      leaseDuration: formData.leaseDuration,
+      numberOfTenants: formData.numberOfTenants,
+      monthlyBudget: formData.monthlyBudget,
+      occupation: formData.occupation,
+      references: formData.references,
+      agreementType: formData.agreementType,
+      hasIdProof: Boolean(formData.idProof),
+    });
+
+    if (!result.ok) {
+      toast.error(result.error || toastCopy.submitError);
+      return;
     }
+
+    toast.success(toastCopy.submitSuccess);
+    setFormData({
+      fullName: "",
+      phone: "",
+      email: "",
+      currentAddress: "",
+      moveInDate: "",
+      leaseDuration: "",
+      numberOfTenants: "",
+      monthlyBudget: "",
+      occupation: "",
+      references: "",
+      message: "",
+      idProof: null,
+      agreementType: "",
+    });
+    setStep(1);
   };
 
   if (!property) {

@@ -203,6 +203,13 @@ const HeroPropertySearch = ({ trustSignals }: HeroPropertySearchProps) => {
 
     if (intent === "buy") {
       if (budget && budget !== "any") params.set("budget", budget);
+      // Plot type from hero → plots browse (omit type=plot; all items are plots)
+      if (propertyType === "plot") {
+        params.delete("type");
+        const plotQs = params.toString();
+        router.push(plotQs ? `/plots?${plotQs}` : "/plots");
+        return;
+      }
       const qs = params.toString();
       router.push(qs ? `/properties?${qs}` : "/properties");
       return;

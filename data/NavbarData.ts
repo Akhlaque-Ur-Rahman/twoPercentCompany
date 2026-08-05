@@ -31,6 +31,28 @@ export const NavbarData: NavItem[] = [
       },
     ],
   },
+  { label: "Experts", href: "/team" },
+  {
+    label: "More",
+    href: "/aboutUs",
+    submenu: [
+      {
+        label: "About Us",
+        href: "/aboutUs",
+        description: "Our story and values",
+      },
+      {
+        label: "Blog",
+        href: "/blog",
+        description: "Patna real estate guides",
+      },
+      {
+        label: "FAQ",
+        href: "/faq",
+        description: "Common questions answered",
+      },
+    ],
+  },
 ];
 
 export const ContactBtnData = {

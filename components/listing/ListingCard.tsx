@@ -7,7 +7,11 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Check, MapPin, Share2 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { PropertyItem } from "@/data/PropertyData";
-import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
+import {
+  formatPrice,
+  formatPriceExact,
+  formatPricePerSqFt,
+} from "@/lib/formatPrice";
 import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
@@ -23,9 +27,13 @@ export type ListingCardItem = Pick<
   | "tags"
   | "type"
   | "gallery"
+  | "specifications"
+  | "position"
 >;
 
 export type ListingBadge = "Featured" | "New" | "Plot" | "Home";
+
+export type ListingStatus = "For Sale" | "For Rent";
 
 export type ListingCardProps = {
   property: ListingCardItem;
@@ -34,6 +42,7 @@ export type ListingCardProps = {
   showAddress?: boolean;
   className?: string;
   badge?: ListingBadge;
+  status?: ListingStatus;
   index?: number;
   featured?: boolean;
   compact?: boolean;
@@ -60,6 +69,15 @@ function listingPathUrl(href?: string): string | undefined {
   return `https://www.2percentcompany.in${href}`;
 }
 
+function inferStatus(
+  href: string | undefined,
+  explicit?: ListingStatus
+): ListingStatus {
+  if (explicit) return explicit;
+  if (href?.includes("/rent")) return "For Rent";
+  return "For Sale";
+}
+
 const actionBtnClass =
   "min-w-10 min-h-10 sm:min-w-11 sm:min-h-11 inline-flex items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-sm hover:bg-primary hover:text-on-primary hover:border-primary transition-colors";
 
@@ -70,6 +88,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   showAddress = true,
   className = "",
   badge,
+  status,
   index = 0,
   featured = false,
   compact = false,
@@ -87,12 +106,22 @@ const ListingCard: React.FC<ListingCardProps> = ({
         : label;
   const displayPrice = formatPrice(property.price);
   const exactPrice = formatPriceExact(property.price);
+  const pricePerSqFt = formatPricePerSqFt(
+    property.price,
+    property.specifications
+  );
   const listingUrl = listingPathUrl(href);
   const enquireHref = whatsappHref(
     listingEnquiryMessage(property.title, listingUrl)
   );
   const resolvedBadge =
-    badge ?? (property.type === "plot" ? "Plot" : undefined);
+    badge ??
+    (featured
+      ? "Featured"
+      : property.type === "plot"
+        ? "Plot"
+        : undefined);
+  const listingStatus = inferStatus(href, status);
   const location = shortLocation(property.address);
   const meta = metaLine(property.tags, property.type);
 
@@ -182,11 +211,16 @@ const ListingCard: React.FC<ListingCardProps> = ({
           />
         )}
 
-        {resolvedBadge && (
-          <span className="pointer-events-none absolute left-4 top-4 z-[2] type-caption tracking-[0.18em] uppercase text-white/90 border border-white/25 bg-black/40 backdrop-blur-sm px-3 py-1.5">
-            {resolvedBadge}
+        <div className="pointer-events-none absolute left-3 top-3 z-[2] flex flex-wrap gap-1.5 max-w-[70%]">
+          <span className="type-caption tracking-[0.12em] uppercase text-on-primary bg-primary px-2.5 py-1">
+            {listingStatus}
           </span>
-        )}
+          {resolvedBadge && (
+            <span className="type-caption tracking-[0.12em] uppercase text-white/90 border border-white/25 bg-black/50 backdrop-blur-sm px-2.5 py-1">
+              {resolvedBadge}
+            </span>
+          )}
+        </div>
 
         {/* Desktop: reveal on hover · Mobile: always visible (no hover) */}
         <div className="absolute right-3 top-3 z-[3] flex items-center gap-2 opacity-100 translate-y-0 lg:opacity-0 lg:-translate-y-1 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300">
@@ -254,12 +288,17 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 : "flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
             }`}
           >
-            <p
-              className="pointer-events-none type-price text-primary leading-none shrink-0"
-              title={exactPrice}
-            >
-              {displayPrice}
-            </p>
+            <div className="pointer-events-none shrink-0">
+              <p
+                className="type-price text-primary leading-none"
+                title={exactPrice}
+              >
+                {displayPrice}
+              </p>
+              {pricePerSqFt && (
+                <p className="type-caption text-white/55 mt-1">{pricePerSqFt}</p>
+              )}
+            </div>
 
             {href && (
               <Link

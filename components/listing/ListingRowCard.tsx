@@ -8,7 +8,7 @@ import { MapPin } from "lucide-react";
 import { ListingCardItem } from "@/components/listing/ListingCard";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { iconForTagLabel } from "@/lib/tagIcons";
-import { formatPrice, formatPriceExact } from "@/lib/formatPrice";
+import { formatPrice, formatPriceExact, formatPricePerSqFt } from "@/lib/formatPrice";
 
 export type ListingRowCardProps = {
   property: ListingCardItem;
@@ -102,6 +102,12 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
   const [activeSrc, setActiveSrc] = useState(images[0] ?? property.image);
   const imageFallback =
     property.type === "plot" ? FALLBACK_PLOT : FALLBACK_HOME;
+  const listingStatus = href.includes("/rent") ? "For Rent" : "For Sale";
+  const pricePerSqFt = formatPricePerSqFt(
+    property.price,
+    property.specifications
+  );
+  const showFeatured = index === 0;
 
   useEffect(() => {
     setActiveSrc(images[0] ?? property.image);
@@ -136,6 +142,16 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
           className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-80"
           aria-hidden
         />
+        <div className="absolute left-3 top-3 z-[1] flex flex-wrap gap-1.5">
+          <span className="type-caption tracking-[0.12em] uppercase text-on-primary bg-primary px-2.5 py-1">
+            {listingStatus}
+          </span>
+          {showFeatured && (
+            <span className="type-caption tracking-[0.12em] uppercase text-white border border-white/30 bg-black/55 px-2.5 py-1">
+              Featured
+            </span>
+          )}
+        </div>
       </Link>
 
       <div className="flex-1 flex flex-col justify-center gap-3 min-w-0">
@@ -238,6 +254,11 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
             >
               {formatPrice(property.price)}
             </p>
+            {pricePerSqFt && (
+              <p className="type-caption text-secondary-text mt-1">
+                {pricePerSqFt}
+              </p>
+            )}
           </div>
           <Link
             href={href}

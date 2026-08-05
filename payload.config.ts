@@ -6,8 +6,12 @@ import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 
+import { Faqs } from "./collections/Faqs";
+import { Leads } from "./collections/Leads";
 import { Listings } from "./collections/Listings";
 import { Media } from "./collections/Media";
+import { Posts } from "./collections/Posts";
+import { TeamMembers } from "./collections/TeamMembers";
 import { Users } from "./collections/Users";
 
 const filename = fileURLToPath(import.meta.url);
@@ -26,7 +30,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Listings],
+  collections: [Users, Media, Listings, TeamMembers, Faqs, Posts, Leads],
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),

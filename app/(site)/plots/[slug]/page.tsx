@@ -4,7 +4,7 @@ import {
   BreadcrumbSchema,
   PropertySchema,
 } from "@/components/StructuredData";
-import { getListingBySlug, getListingsByType } from "@/lib/listings";
+import { getListingBySlug, getListingsByType, getSimilarListings } from "@/lib/listings";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -31,6 +31,7 @@ export default async function PlotPage({ params }: Props) {
 
   if (!plot) return notFound();
 
+  const similar = await getSimilarListings(plot);
   const pageUrl = `https://www.2percentcompany.in/plots/${slug}`;
   const description = plot.longDescription || plot.description;
 
@@ -62,6 +63,7 @@ export default async function PlotPage({ params }: Props) {
         specificationsTitle="Plot Specifications"
         backHref="/plots"
         backLabel="All plots"
+        similar={similar}
       />
     </>
   );

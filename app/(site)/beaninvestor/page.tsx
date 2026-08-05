@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import AppToast, { toastCopy } from "@/components/ui/AppToast";
+import { submitLead } from "@/lib/submitLead";
 import Button from "@/components/ui/Button";
 import { Input, Select, Textarea } from "@/components/ui/Input";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -156,7 +157,7 @@ const BeAnInvestor: React.FC = () => {
 
   const prevStep = () => setStep((prev) => prev - 1);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (
@@ -170,21 +171,37 @@ const BeAnInvestor: React.FC = () => {
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      toast.success(toastCopy.submitSuccess);
-      setStep(1);
-      setFormData({
-        fullName: "",
-        email: "",
-        phone: "",
-        company: "",
-        investmentRange: "",
-        state: "",
-        city: "",
-        message: "",
-      });
-      setIsSubmitting(false);
-    }, 1000);
+    const result = await submitLead({
+      type: "investor",
+      name: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      company: formData.company,
+      investmentRange: formData.investmentRange,
+      state: formData.state,
+      city: formData.city,
+    });
+
+    setIsSubmitting(false);
+
+    if (!result.ok) {
+      toast.error(result.error || toastCopy.submitError);
+      return;
+    }
+
+    toast.success(toastCopy.submitSuccess);
+    setStep(1);
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+      company: "",
+      investmentRange: "",
+      state: "",
+      city: "",
+      message: "",
+    });
   };
 
   const requiredFilled = [

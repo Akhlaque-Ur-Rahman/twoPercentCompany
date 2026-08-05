@@ -1,32 +1,44 @@
-import { Metadata } from 'next'
+import { Metadata } from "next";
+import BlogTeaser from "@/components/BlogTeaser";
+import TeamStrip from "@/components/TeamStrip";
+import { getPosts } from "@/lib/posts";
+import { getTeamMembers } from "@/lib/team";
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: "About Us",
   description:
-    'Learn about 2% Company — a Patna real-estate partner for buying, selling, renting, and investing, with clear guidance from enquiry to closing.',
+    "Learn about 2% Company — a Patna real-estate partner for buying, selling, renting, and investing, with clear guidance from enquiry to closing.",
   keywords: [
-    'about 2% company',
-    'Patna real estate',
-    'property services Patna',
-    'our story',
-    'company values',
+    "about 2% company",
+    "Patna real estate",
+    "property services Patna",
+    "our story",
+    "company values",
   ],
   openGraph: {
-    title: 'About 2% Company — Our Story & Values',
+    title: "About 2% Company — Our Story & Values",
     description:
-      'A Patna real-estate partner for buying, selling, renting, and investing — with clear guidance at every step.',
-    url: 'https://www.2percentcompany.in/aboutUs',
-    type: 'website',
+      "A Patna real-estate partner for buying, selling, renting, and investing — with clear guidance at every step.",
+    url: "https://www.2percentcompany.in/aboutUs",
+    type: "website",
   },
   alternates: {
-    canonical: '/aboutUs',
+    canonical: "/aboutUs",
   },
-}
+};
 
-export default function AboutUsLayout({
+export default async function AboutUsLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return <>{children}</>
+  const [posts, members] = await Promise.all([getPosts(), getTeamMembers()]);
+
+  return (
+    <>
+      {children}
+      <TeamStrip members={members} />
+      <BlogTeaser posts={posts} />
+    </>
+  );
 }

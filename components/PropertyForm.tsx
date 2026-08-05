@@ -6,6 +6,7 @@ import { BedDouble, Bath, Building2, Trees, Car, Landmark, Sofa } from "lucide-r
 import { toast } from "react-toastify";
 import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import { motion, AnimatePresence } from "framer-motion";
+import { submitLead } from "@/lib/submitLead";
 
 const inputClass =
   "mb-0 p-3 min-h-11 text-base rounded-control bg-main-bg border border-header-stroke w-full min-w-0 placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg";
@@ -237,7 +238,26 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
     setSubmitting(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // simulate API
+      const result = await submitLead({
+        type: type === "rent" ? "rent_landlord" : "sell",
+        name: formData.landlordName || formData.title,
+        phone: formData.landlordContact || undefined,
+        message: formData.description,
+        title: formData.title,
+        address: formData.address,
+        price: formData.price,
+        longDescription: formData.longDescription,
+        tags: formData.tags,
+        imageCount: formData.images.length,
+        galleryCount: formData.gallery.length,
+        floorPlanCount: formData.floorPlans.length,
+        hasVideo: Boolean(formData.video),
+        specifications: formData.specifications,
+      });
+      if (!result.ok) {
+        toast.error(result.error || toastCopy.submitError);
+        return;
+      }
       setSubmitted(true);
       toast.success(toastCopy.submitSuccess);
     } catch {

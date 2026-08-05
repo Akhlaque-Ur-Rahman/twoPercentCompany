@@ -1,11 +1,27 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PropertyItem } from "@/data/PropertyData";
 import PropertyCard from "@/components/PropertyCard";
+import ListingToolbar from "@/components/listing/ListingToolbar";
+import ActiveFilterChips, {
+  locationChipLabel,
+  rentChipLabel,
+} from "@/components/listing/ActiveFilterChips";
 import FilterSelect from "@/components/ui/FilterSelect";
 import SearchField from "@/components/ui/SearchField";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import {
+  type ListingSortKey,
+  buildListingQuery,
+  matchesLocation,
+  matchesRent,
+  matchesTypeTag,
+  sortListings,
+  typeFilterToParam,
+  typeParamToFilter,
+} from "@/lib/listingFilters";
 
 const PAGE_SIZE = 9;
 
@@ -19,19 +35,15 @@ const FURNISHING_OPTIONS = [
 ];
 
 const PRICE_OPTIONS = [
-  { label: "All prices", value: "All", min: 0, max: Infinity },
-  { label: "Below ₹20,000", value: "below20", min: 0, max: 19999 },
-  { label: "₹20,000 – ₹40,000", value: "20to40", min: 20000, max: 40000 },
-  { label: "Above ₹40,000", value: "above40", min: 40001, max: Infinity },
+  { label: "All prices", value: "All" },
+  { label: "Below ₹20,000", value: "below20" },
+  { label: "₹20,000 – ₹40,000", value: "20to40" },
+  { label: "Above ₹40,000", value: "above40" },
 ] as const;
 
 type TenantListingClientProps = {
   listings: PropertyItem[];
 };
-
-function parseRent(price: string): number {
-  return parseInt(price.replace(/[^0-9]/g, ""), 10) || 0;
-}
 
 function hasTag(property: PropertyItem, value: string) {
   return property.tags.some(
@@ -50,23 +62,104 @@ function matchesFurnishing(property: PropertyItem, value: string) {
   );
 }
 
-export default function TenantListingClient({
-  listings,
-}: TenantListingClientProps) {
-  const [searchText, setSearchText] = useState("");
-  const [selectedBhk, setSelectedBhk] = useState<string>("All");
-  const [selectedFurnishing, setSelectedFurnishing] = useState("All");
-  const [selectedPrice, setSelectedPrice] = useState("All");
+function TenantsBrowse({ listings }: TenantListingClientProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const skipUrlWrite = useRef(false);
+
+  const [searchText, setSearchText] = useState(
+    () => searchParams.get("q") ?? ""
+  );
+  const [selectedBhk, setSelectedBhk] = useState(() => {
+    const t = searchParams.get("type");
+    if (!t) return "All";
+    const mapped = typeParamToFilter(t);
+    return /bhk/i.test(mapped) ? mapped : "All";
+  });
+  const [selectedFurnishing, setSelectedFurnishing] = useState(
+    () => searchParams.get("furnishing") ?? "All"
+  );
+  const [selectedPrice, setSelectedPrice] = useState(
+    () => searchParams.get("rent") ?? "All"
+  );
+  const [location, setLocation] = useState(
+    () => searchParams.get("location") ?? ""
+  );
+  const [sort, setSort] = useState<ListingSortKey>(() => {
+    const s = searchParams.get("sort");
+    return s === "price-asc" ||
+      s === "price-desc" ||
+      s === "newest" ||
+      s === "featured"
+      ? s
+      : "default";
+  });
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  useEffect(() => {
+    skipUrlWrite.current = true;
+    setSearchText(searchParams.get("q") ?? "");
+    setLocation(searchParams.get("location") ?? "");
+    setSelectedFurnishing(searchParams.get("furnishing") ?? "All");
+    setSelectedPrice(searchParams.get("rent") ?? "All");
+    const t = searchParams.get("type");
+    if (t) {
+      const mapped = typeParamToFilter(t);
+      setSelectedBhk(/bhk/i.test(mapped) ? mapped : "All");
+    } else {
+      setSelectedBhk("All");
+    }
+    const s = searchParams.get("sort");
+    setSort(
+      s === "price-asc" ||
+        s === "price-desc" ||
+        s === "newest" ||
+        s === "featured"
+        ? s
+        : "default"
+    );
+    setVisibleCount(PAGE_SIZE);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (skipUrlWrite.current) {
+      skipUrlWrite.current = false;
+      return;
+    }
+    const qs = buildListingQuery({
+      location: location || null,
+      type: selectedBhk !== "All" ? typeFilterToParam(selectedBhk) : null,
+      rent: selectedPrice !== "All" ? selectedPrice : null,
+      furnishing:
+        selectedFurnishing !== "All" ? selectedFurnishing : null,
+      q: searchText.trim() || null,
+      sort: sort !== "default" ? sort : null,
+    });
+    const next = `${pathname}${qs}`;
+    const current = `${pathname}${
+      searchParams.toString() ? `?${searchParams.toString()}` : ""
+    }`;
+    if (next !== current) router.replace(next, { scroll: false });
+  }, [
+    location,
+    selectedBhk,
+    selectedFurnishing,
+    selectedPrice,
+    searchText,
+    sort,
+    pathname,
+    router,
+    searchParams,
+  ]);
 
   const debouncedSearch = useDebouncedValue(searchText, 180);
 
   const filteredData = useMemo(() => {
     const searchLower = debouncedSearch.trim().toLowerCase();
-    const priceRange =
-      PRICE_OPTIONS.find((p) => p.value === selectedPrice) ?? PRICE_OPTIONS[0];
+    const typeParam = searchParams.get("type");
 
-    return listings.filter((property) => {
+    const filtered = listings.filter((property) => {
       if (property.type?.toLowerCase() === "plot") return false;
 
       const matchesSearch =
@@ -87,23 +180,34 @@ export default function TenantListingClient({
             return label.includes("4bhk") || label.includes("5bhk");
           }));
 
-      const matchesFurnished = matchesFurnishing(
-        property,
-        selectedFurnishing
+      const matchesHeroType =
+        !typeParam ||
+        selectedBhk !== "All" ||
+        matchesTypeTag(property.tags, typeParam, property.title);
+
+      return (
+        matchesSearch &&
+        matchesBhk &&
+        matchesFurnishing(property, selectedFurnishing) &&
+        matchesRent(
+          property.price,
+          selectedPrice === "All" ? null : selectedPrice
+        ) &&
+        matchesLocation(property.address, location) &&
+        matchesHeroType
       );
-
-      const rent = parseRent(property.price);
-      const matchesPrice =
-        rent >= priceRange.min && rent <= priceRange.max;
-
-      return matchesSearch && matchesBhk && matchesFurnished && matchesPrice;
     });
+
+    return sortListings(filtered, sort);
   }, [
     listings,
     debouncedSearch,
     selectedBhk,
     selectedFurnishing,
     selectedPrice,
+    location,
+    sort,
+    searchParams,
   ]);
 
   const visibleListings = filteredData.slice(0, visibleCount);
@@ -112,7 +216,8 @@ export default function TenantListingClient({
     Boolean(searchText.trim()) ||
     selectedBhk !== "All" ||
     selectedFurnishing !== "All" ||
-    selectedPrice !== "All";
+    selectedPrice !== "All" ||
+    Boolean(location);
 
   const resultLabel =
     filteredData.length === 1
@@ -124,6 +229,8 @@ export default function TenantListingClient({
     setSelectedBhk("All");
     setSelectedFurnishing("All");
     setSelectedPrice("All");
+    setLocation("");
+    setSort("default");
     setVisibleCount(PAGE_SIZE);
   };
 
@@ -141,24 +248,14 @@ export default function TenantListingClient({
         />
 
         <div className="relative space-y-8 lg:space-y-10">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="type-label text-primary font-semibold tracking-[0.14em]">
-                Browse rentals
-              </p>
-              <h1 className="type-section text-body mt-2">
-                Find a place to rent
-              </h1>
-              <p className="text-secondary-text type-body mt-2 max-w-xl">
-                Filter by layout, furnishing, and budget — then open a listing
-                for full details.
-              </p>
-            </div>
-            <p
-              className="type-caption text-secondary-text shrink-0"
-              aria-live="polite"
-            >
-              {resultLabel}
+          <div>
+            <p className="type-label text-primary font-semibold tracking-[0.14em]">
+              Browse rentals
+            </p>
+            <h1 className="type-section text-body mt-2">Find a place to rent</h1>
+            <p className="text-secondary-text type-body mt-2 max-w-xl">
+              Filter by layout, furnishing, and budget — then open a listing for
+              full details.
             </p>
           </div>
 
@@ -196,6 +293,35 @@ export default function TenantListingClient({
               />
             </div>
 
+            <ActiveFilterChips
+              chips={[
+                ...(location
+                  ? [
+                      {
+                        id: "location",
+                        label: locationChipLabel(location),
+                        onClear: () => {
+                          setLocation("");
+                          setVisibleCount(PAGE_SIZE);
+                        },
+                      },
+                    ]
+                  : []),
+                ...(selectedPrice !== "All"
+                  ? [
+                      {
+                        id: "rent",
+                        label: rentChipLabel(selectedPrice),
+                        onClear: () => {
+                          setSelectedPrice("All");
+                          setVisibleCount(PAGE_SIZE);
+                        },
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+
             <div
               className="flex flex-wrap gap-2"
               role="group"
@@ -220,6 +346,15 @@ export default function TenantListingClient({
               })}
             </div>
           </div>
+
+          <ListingToolbar
+            resultLabel={resultLabel}
+            sort={sort}
+            onSortChange={(v) => {
+              setSort(v);
+              setVisibleCount(PAGE_SIZE);
+            }}
+          />
 
           {visibleListings.length > 0 ? (
             <div className="flex flex-col gap-8">
@@ -268,5 +403,19 @@ export default function TenantListingClient({
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TenantListingClient(props: TenantListingClientProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="page-px section-y type-body text-secondary-text">
+          Loading rentals…
+        </div>
+      }
+    >
+      <TenantsBrowse {...props} />
+    </Suspense>
   );
 }

@@ -21,7 +21,10 @@ import {
   telHref,
   whatsappHref,
 } from "@/lib/contact";
+import { submitLead } from "@/lib/submitLead";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { toast } from "react-toastify";
+import AppToast, { toastCopy } from "@/components/ui/AppToast";
 
 type EnquiryType = "Property" | "Plot";
 
@@ -201,11 +204,30 @@ const ContactPage: React.FC = () => {
     }
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
+    const result = await submitLead({
+      type: data.listingSlug ? "listing_enquiry" : "contact",
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      message: data.notes,
+      enquiryType: data.type,
+      purpose: data.purpose,
+      budget: data.budget,
+      location: data.location,
+      listingSlug: data.listingSlug,
+    });
+
+    if (!result.ok) {
+      toast.error(result.error || toastCopy.submitError);
+      return;
+    }
+
     const href = whatsappHref(buildWhatsAppMessage(data));
     setWhatsAppHref(href);
     window.open(href, "_blank", "noopener,noreferrer");
     setIsSubmitted(true);
+    toast.success(toastCopy.submitSuccess);
     // Full reset — keep listing slug only if this was a listing enquiry
     reset({
       name: "",
@@ -252,6 +274,7 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="flex flex-col bg-main-bg text-body overflow-x-clip">
+      <AppToast />
       {/* Hero */}
       <section className="relative min-h-[calc(100svh-4rem)] sm:min-h-[68svh] lg:min-h-[72svh] flex flex-col justify-end overflow-hidden border-b border-header-stroke">
         <Image

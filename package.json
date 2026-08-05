@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "tsx scripts/push-schema-on-build.ts && tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && next build",
+    "build": "tsx scripts/push-schema-on-build.ts && tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && tsx scripts/seed-content.ts && next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts",
+    "seed": "tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && tsx scripts/seed-content.ts",
     "push:schema": "tsx scripts/push-schema.ts",
     "payload": "payload",
     "generate:types": "payload generate:types",
@@ -34,7 +34,8 @@
     "react-leaflet": "^5.0.0",
     "react-toastify": "^11.0.5",
     "sharp": "^0.35.3",
-    "swiper": "^11.2.10"
+    "swiper": "^11.2.10",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

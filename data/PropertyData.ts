@@ -117,6 +117,7 @@ export const PropertyData: PropertyItem[] = [
       { icon: BedDouble, label: "2BHK" },
       { icon: Trees, label: "Open Space" },
       { icon: Building2, label: "Independent House" },
+      { icon: Building2, label: "Villa" },
     ],
     slug: "green-valley-housing",
     type: "property",

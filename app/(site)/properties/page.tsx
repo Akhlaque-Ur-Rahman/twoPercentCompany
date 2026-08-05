@@ -16,6 +16,8 @@ function toListItem(item: PropertyItem): ListingCardItem {
     gallery: item.gallery?.slice(0, 6),
     tags: item.tags.map(({ label }) => ({ label })),
     type: item.type,
+    specifications: item.specifications,
+    position: item.position,
   };
 }
 

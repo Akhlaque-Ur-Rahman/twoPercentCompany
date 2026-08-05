@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import ListingDetail from "@/components/listing/ListingDetail";
-import { getListingBySlug } from "@/lib/listings";
+import { getListingBySlug, getSimilarListings } from "@/lib/listings";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -12,6 +12,8 @@ export default async function TenantPropertyPage({ params }: Props) {
 
   if (!property) return notFound();
 
+  const similar = await getSimilarListings(property);
+
   return (
     <ListingDetail
       item={property}
@@ -22,6 +24,8 @@ export default async function TenantPropertyPage({ params }: Props) {
       specificationsTitle="Property Specifications"
       backHref="/rent/tenants"
       backLabel="All rentals"
+      similar={similar}
+      similarHrefFor={(item) => `/rent/tenants/${item.slug}`}
     />
   );
 }

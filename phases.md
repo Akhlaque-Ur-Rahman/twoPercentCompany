@@ -130,14 +130,29 @@ This file is the **program roadmap**. Detailed UX checklists live in `UI_UX_IMPR
 
 | ID | Item | Acceptance | Status |
 |----|------|------------|--------|
-| 6.1 | Lead API | Contact / sell / rent / enquiry / investor / newsletter persist | [ ] |
-| 6.2 | Validation | Shared schema (Zod or equivalent) server + client | [ ] |
+| 6.1 | Lead API | Contact / sell / rent / enquiry / investor / newsletter / tour persist via `POST /api/leads` → Payload `leads` | [x] |
+| 6.2 | Validation | Shared Zod schema (`lib/leadSchema.ts`) on `POST /api/leads` | [x] |
 | 6.3 | Uploads | Secure storage for sell/landlord media | [ ] |
 | 6.4 | CMS or admin | Payload listings CMS + seed + frontend data layer | [x] |
 | 6.5 | Env-based site URL | Single `NEXT_PUBLIC_SITE_URL` for metadata/sitemap/schema | [ ] |
 | 6.6 | Wire remaining JSON-LD | Property + Breadcrumb on detail pages | [ ] |
 
 **6.4 done (2026-07-31):** Payload 3 + SQLite, `/admin`, `listings`/`media`/`users`, `lib/listings.ts` with static fallback, seed from `PropertyData`. Neon + Vercel Blob still future.
+
+**6.1 done (2026-08-05 — Houzez adapt Phase 8):** Payload `leads` collection + `app/api/leads` + wired Contact, Sell/Landlord, Tenant enquiry, Investor, Newsletter, Schedule Visit. File uploads still metadata-only (6.3 open).
+
+### Houzez adapt program (2026-08-05)
+
+| Phase | Item | Status |
+|-------|------|--------|
+| H1 | URL filter hydration + sort | [x] |
+| H2 | Explore Patna + category tiles | [x] |
+| H3 | Card status + ₹/sqft | [x] |
+| H4 | Share, Schedule Visit, Similar | [x] |
+| H5 | Team CMS + `/team` | [x] |
+| H6 | FAQ + JSON-LD | [x] |
+| H7 | Blog + About teaser | [x] |
+| H8 | Leads CMS (last) | [x] |
 
 **Depends on:** Open decisions in prd.md §10 for leads (6.1–6.3).
 

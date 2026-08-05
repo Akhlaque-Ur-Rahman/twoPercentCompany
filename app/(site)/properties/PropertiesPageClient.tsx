@@ -1,12 +1,32 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ListingRowCard from "@/components/listing/ListingRowCard";
+import ListingCard from "@/components/listing/ListingCard";
+import ListingHalfMap from "@/components/listing/ListingHalfMap";
+import ListingToolbar, {
+  type ListingLayoutMode,
+} from "@/components/listing/ListingToolbar";
+import ActiveFilterChips, {
+  budgetChipLabel,
+  locationChipLabel,
+} from "@/components/listing/ActiveFilterChips";
 import type { ListingCardItem } from "@/components/listing/ListingCard";
 import FilterSelect from "@/components/ui/FilterSelect";
 import SearchField from "@/components/ui/SearchField";
 import YoutubeFacade from "@/components/properties/YoutubeFacade";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import {
+  type ListingSortKey,
+  buildListingQuery,
+  matchesBudget,
+  matchesLocation,
+  matchesTypeTag,
+  sortListings,
+  typeFilterToParam,
+  typeParamToFilter,
+} from "@/lib/listingFilters";
 
 const PAGE_SIZE = 9;
 
@@ -33,26 +53,143 @@ type PropertiesPageClientProps = {
 };
 
 function hasTag(property: ListingCardItem, value: string) {
-  return property.tags.some(
-    (tag) => tag.label.toLowerCase() === value.toLowerCase()
-  );
+  const needle = value.toLowerCase();
+  if (property.tags.some((tag) => tag.label.toLowerCase().includes(needle))) {
+    return true;
+  }
+  // Soft aliases (hero Villa ↔ Independent House)
+  if (needle === "villa") {
+    return property.tags.some((tag) =>
+      /independent house|bungalow|villa/i.test(tag.label)
+    );
+  }
+  if (needle === "independent house") {
+    return property.tags.some((tag) => /villa|independent house/i.test(tag.label));
+  }
+  return false;
 }
 
-export default function PropertiesPageClient({
-  listings,
-}: PropertiesPageClientProps) {
-  const [searchText, setSearchText] = useState("");
-  const [selectedType, setSelectedType] = useState("All");
-  const [selectedBhk, setSelectedBhk] = useState<string>("All");
-  const [selectedAmenity, setSelectedAmenity] = useState("All");
+function PropertiesBrowse({ listings }: PropertiesPageClientProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const skipUrlWrite = useRef(false);
+
+  const [searchText, setSearchText] = useState(
+    () => searchParams.get("q") ?? ""
+  );
+  const [selectedType, setSelectedType] = useState(() => {
+    const t = searchParams.get("type");
+    if (!t) return "All";
+    const mapped = typeParamToFilter(t);
+    return /bhk/i.test(mapped) ? "All" : mapped;
+  });
+  const [selectedBhk, setSelectedBhk] = useState(() => {
+    const t = searchParams.get("type");
+    if (!t) return "All";
+    const mapped = typeParamToFilter(t);
+    return /bhk/i.test(mapped) ? mapped : "All";
+  });
+  const [selectedAmenity, setSelectedAmenity] = useState(
+    () => searchParams.get("amenity") ?? "All"
+  );
+  const [location, setLocation] = useState(
+    () => searchParams.get("location") ?? ""
+  );
+  const [budget, setBudget] = useState(
+    () => searchParams.get("budget") ?? "any"
+  );
+  const [sort, setSort] = useState<ListingSortKey>(() => {
+    const s = searchParams.get("sort");
+    return s === "price-asc" ||
+      s === "price-desc" ||
+      s === "newest" ||
+      s === "featured"
+      ? s
+      : "default";
+  });
+  const [layout, setLayout] = useState<ListingLayoutMode>("list");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  // External URL changes (hero / back button)
+  useEffect(() => {
+    skipUrlWrite.current = true;
+    setSearchText(searchParams.get("q") ?? "");
+    setLocation(searchParams.get("location") ?? "");
+    setBudget(searchParams.get("budget") ?? "any");
+    setSelectedAmenity(searchParams.get("amenity") ?? "All");
+    const t = searchParams.get("type");
+    if (t) {
+      const mapped = typeParamToFilter(t);
+      if (/bhk/i.test(mapped)) {
+        setSelectedBhk(mapped);
+        setSelectedType("All");
+      } else {
+        setSelectedType(mapped);
+        setSelectedBhk("All");
+      }
+    } else {
+      setSelectedType("All");
+      setSelectedBhk("All");
+    }
+    const s = searchParams.get("sort");
+    setSort(
+      s === "price-asc" ||
+        s === "price-desc" ||
+        s === "newest" ||
+        s === "featured"
+        ? s
+        : "default"
+    );
+    setVisibleCount(PAGE_SIZE);
+  }, [searchParams]);
+
+  // Write filters back to URL
+  useEffect(() => {
+    if (skipUrlWrite.current) {
+      skipUrlWrite.current = false;
+      return;
+    }
+    const typeParam =
+      selectedBhk !== "All"
+        ? typeFilterToParam(selectedBhk)
+        : selectedType !== "All"
+          ? typeFilterToParam(selectedType)
+          : null;
+    const qs = buildListingQuery({
+      location: location || null,
+      type: typeParam,
+      budget: budget !== "any" ? budget : null,
+      amenity: selectedAmenity !== "All" ? selectedAmenity : null,
+      q: searchText.trim() || null,
+      sort: sort !== "default" ? sort : null,
+    });
+    const next = `${pathname}${qs}`;
+    const current = `${pathname}${
+      searchParams.toString() ? `?${searchParams.toString()}` : ""
+    }`;
+    if (next !== current) {
+      router.replace(next, { scroll: false });
+    }
+  }, [
+    location,
+    selectedType,
+    selectedBhk,
+    selectedAmenity,
+    budget,
+    searchText,
+    sort,
+    pathname,
+    router,
+    searchParams,
+  ]);
 
   const debouncedSearch = useDebouncedValue(searchText, 180);
 
   const filteredProperties = useMemo(() => {
     const searchLower = debouncedSearch.trim().toLowerCase();
 
-    return listings.filter((property) => {
+    const filtered = listings.filter((property) => {
       const matchesSearch =
         !searchLower ||
         property.title.toLowerCase().includes(searchLower) ||
@@ -68,10 +205,40 @@ export default function PropertiesPageClient({
         selectedBhk === "All" || hasTag(property, selectedBhk);
       const matchesAmenity =
         selectedAmenity === "All" || hasTag(property, selectedAmenity);
+      const matchesLoc = matchesLocation(property.address ?? "", location);
+      const matchesBud = matchesBudget(property.price, budget);
 
-      return matchesSearch && matchesType && matchesBhk && matchesAmenity;
+      // Also match hero type param against tags loosely
+      const typeFromUrl = searchParams.get("type");
+      const matchesHeroType =
+        !typeFromUrl ||
+        selectedType !== "All" ||
+        selectedBhk !== "All" ||
+        matchesTypeTag(property.tags, typeFromUrl, property.title);
+
+      return (
+        matchesSearch &&
+        matchesType &&
+        matchesBhk &&
+        matchesAmenity &&
+        matchesLoc &&
+        matchesBud &&
+        matchesHeroType
+      );
     });
-  }, [listings, debouncedSearch, selectedType, selectedBhk, selectedAmenity]);
+
+    return sortListings(filtered, sort);
+  }, [
+    listings,
+    debouncedSearch,
+    selectedType,
+    selectedBhk,
+    selectedAmenity,
+    location,
+    budget,
+    sort,
+    searchParams,
+  ]);
 
   const visibleProperties = filteredProperties.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProperties.length;
@@ -85,6 +252,9 @@ export default function PropertiesPageClient({
     setSelectedType("All");
     setSelectedBhk("All");
     setSelectedAmenity("All");
+    setLocation("");
+    setBudget("any");
+    setSort("default");
     setVisibleCount(PAGE_SIZE);
   };
 
@@ -115,12 +285,9 @@ export default function PropertiesPageClient({
                 for full details.
               </p>
             </div>
-            <p className="type-caption text-secondary-text shrink-0" aria-live="polite">
-              {resultLabel}
-            </p>
           </div>
 
-          <YoutubeFacade title="Property showcase" />
+          {layout === "list" && <YoutubeFacade title="Property showcase" />}
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 lg:items-center">
@@ -153,6 +320,35 @@ export default function PropertiesPageClient({
               />
             </div>
 
+            <ActiveFilterChips
+              chips={[
+                ...(location
+                  ? [
+                      {
+                        id: "location",
+                        label: locationChipLabel(location),
+                        onClear: () => {
+                          setLocation("");
+                          setVisibleCount(PAGE_SIZE);
+                        },
+                      },
+                    ]
+                  : []),
+                ...(budget !== "any"
+                  ? [
+                      {
+                        id: "budget",
+                        label: budgetChipLabel(budget),
+                        onClear: () => {
+                          setBudget("any");
+                          setVisibleCount(PAGE_SIZE);
+                        },
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+
             <div
               className="flex flex-wrap gap-2"
               role="group"
@@ -178,33 +374,110 @@ export default function PropertiesPageClient({
             </div>
           </div>
 
+          <ListingToolbar
+            resultLabel={resultLabel}
+            sort={sort}
+            onSortChange={(v) => {
+              setSort(v);
+              setVisibleCount(PAGE_SIZE);
+            }}
+            layout={layout}
+            onLayoutChange={setLayout}
+          />
+
           <div className="flex flex-col gap-6">
             {visibleProperties.length > 0 ? (
-              <>
-                {visibleProperties.map((property, index) => (
-                  <ListingRowCard
-                    key={property.id}
-                    property={property}
-                    href={`/properties/${property.slug}`}
-                    index={index}
-                    priority={index < 2}
-                  />
-                ))}
+              layout === "list" ? (
+                <>
+                  {visibleProperties.map((property, index) => (
+                    <ListingRowCard
+                      key={property.id}
+                      property={property}
+                      href={`/properties/${property.slug}`}
+                      index={index}
+                      priority={index < 2}
+                    />
+                  ))}
 
-                {hasMore && (
-                  <div className="flex justify-center pt-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setVisibleCount((n) => n + PAGE_SIZE)
-                      }
-                      className="px-6 py-3 rounded-control border border-header-stroke bg-2nd-bg text-primary font-semibold type-body hover:border-primary/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
-                    >
-                      Load more homes
-                    </button>
+                  {hasMore && (
+                    <div className="flex justify-center pt-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setVisibleCount((n) => n + PAGE_SIZE)
+                        }
+                        className="px-6 py-3 rounded-control border border-header-stroke bg-2nd-bg text-primary font-semibold type-body hover:border-primary/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+                      >
+                        Load more homes
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="lg:hidden space-y-4">
+                    <ListingHalfMap
+                      listings={filteredProperties}
+                      hrefFor={(item) => `/properties/${item.slug}`}
+                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {visibleProperties.map((property, index) => (
+                        <ListingCard
+                          key={property.id}
+                          property={property}
+                          href={`/properties/${property.slug}`}
+                          index={index}
+                          compact
+                        />
+                      ))}
+                    </div>
+                    {hasMore && (
+                      <div className="flex justify-center pt-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setVisibleCount((n) => n + PAGE_SIZE)
+                          }
+                          className="px-6 py-3 rounded-control border border-header-stroke bg-2nd-bg text-primary font-semibold type-body"
+                        >
+                          Load more homes
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </>
+
+                  <div className="hidden lg:grid lg:grid-cols-12 gap-6 items-start">
+                    <div className="lg:col-span-5 max-h-[calc(100vh-11rem)] overflow-y-auto custom-scrollbar space-y-4 pr-1">
+                      {visibleProperties.map((property, index) => (
+                        <ListingCard
+                          key={property.id}
+                          property={property}
+                          href={`/properties/${property.slug}`}
+                          index={index}
+                          compact
+                        />
+                      ))}
+                      {hasMore && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setVisibleCount((n) => n + PAGE_SIZE)
+                          }
+                          className="w-full px-6 py-3 rounded-control border border-header-stroke bg-2nd-bg text-primary font-semibold type-body"
+                        >
+                          Load more homes
+                        </button>
+                      )}
+                    </div>
+                    <div className="lg:col-span-7 lg:sticky lg:top-24">
+                      <ListingHalfMap
+                        listings={filteredProperties}
+                        hrefFor={(item) => `/properties/${item.slug}`}
+                      />
+                    </div>
+                  </div>
+                </>
+              )
             ) : (
               <div className="flex flex-col items-center text-center gap-4 py-16 px-4 rounded-card border border-header-stroke bg-2nd-bg/60">
                 <p className="type-card-title text-body">No homes match</p>
@@ -225,5 +498,19 @@ export default function PropertiesPageClient({
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PropertiesPageClient(props: PropertiesPageClientProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="page-px section-y type-body text-secondary-text">
+          Loading listings…
+        </div>
+      }
+    >
+      <PropertiesBrowse {...props} />
+    </Suspense>
   );
 }

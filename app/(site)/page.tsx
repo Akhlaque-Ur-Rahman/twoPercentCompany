@@ -1,6 +1,8 @@
 import React from "react";
 import HeroSection from "@/components/layout/HeroSection";
 import IntentPathSection from "@/components/layout/IntentPathSection";
+import CategoryBrowseSection from "@/components/layout/CategoryBrowseSection";
+import ExploreLocalitiesSection from "@/components/layout/ExploreLocalitiesSection";
 import FeaturedPropertySection from "@/components/layout/FeaturedPropertySection";
 import FeaturedLandSection from "@/components/layout/FeaturedLandSection";
 import TestimonialSection from "@/components/TestimonialSection";
@@ -26,6 +28,8 @@ export default async function Home() {
     <div>
       <HeroSection />
       <IntentPathSection />
+      <CategoryBrowseSection listings={listings} />
+      <ExploreLocalitiesSection listings={listings} />
       <FeaturedPropertySection />
       <FeaturedLandSection />
       <TestimonialSection />
