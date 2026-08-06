@@ -29,30 +29,31 @@ function createPinIcon(color: string) {
   });
 }
 
+export const PROPERTY_PIN_COLOR = "#8f7330";
+export const PLOT_PIN_COLOR = "#2f6b3c";
+
 /** Compact price chip pin for map discovery — width scales with label length */
 export function createPriceIcon(
   priceLabel: string,
-  color = "#8f7330"
+  color = PROPERTY_PIN_COLOR
 ): L.DivIcon {
   const label = escapeHtml(priceLabel);
-  // ~7px per char + horizontal padding; clamp for hit area
-  const width = Math.min(140, Math.max(56, Math.ceil(priceLabel.length * 7.2) + 20));
-  const height = 28;
+  const width = Math.min(148, Math.max(58, Math.ceil(priceLabel.length * 7.4) + 22));
+  const chipH = 30;
+  const tipH = 8;
+  const totalH = chipH + tipH;
+
   return new L.DivIcon({
-    html: `<div class="tpc-price-pin" style="
-      display:inline-flex;align-items:center;justify-content:center;
-      min-width:${width}px;height:${height}px;padding:4px 10px;box-sizing:border-box;
-      border-radius:999px;background:${color};
-      color:#111;font:600 11px/1 Urbanist,system-ui,sans-serif;
-      white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.45);
-      border:1px solid rgba(0,0,0,.35);transform:translateY(-4px);
-    ">${label}</div>`,
+    html: `<div class="tpc-price-pin" style="--pin-color:${color};width:${width}px">
+      <span class="tpc-price-pin__chip">${label}</span>
+      <span class="tpc-price-pin__tip" aria-hidden="true"></span>
+    </div>`,
     className: "tpc-price-pin-wrap",
-    iconSize: [width, height],
-    iconAnchor: [Math.round(width / 2), height],
-    popupAnchor: [0, -height],
+    iconSize: [width, totalH],
+    iconAnchor: [Math.round(width / 2), totalH],
+    popupAnchor: [0, -(totalH - 2)],
   });
 }
 
-export const PropertyIcon = createPinIcon("#8f7330");
-export const PlotIcon = createPinIcon("green");
+export const PropertyIcon = createPinIcon(PROPERTY_PIN_COLOR);
+export const PlotIcon = createPinIcon(PLOT_PIN_COLOR);

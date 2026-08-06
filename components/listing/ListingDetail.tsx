@@ -181,71 +181,74 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           </ol>
         </nav>
 
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <div className="min-w-0 flex-1">
-            {modeNote && (
-              <p className="type-caption text-secondary-text italic mb-2">{modeNote}</p>
-            )}
-            <p className="type-caption text-secondary-text">{priceLabel}</p>
-            <p
-              className="text-body type-price mt-1"
-              title={formatPriceExact(item.price)}
-            >
-              {formatPrice(item.price)}
-            </p>
-            {pricePerSqFt && (
-              <p className="type-caption text-secondary-text mt-1">{pricePerSqFt}</p>
-            )}
-            <p className="type-caption text-secondary-text mt-2 max-w-xl">
-              {item.description}
-            </p>
-            <ListingQuickStats item={item} />
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div className="min-w-0 flex-1">
+              {modeNote && (
+                <p className="type-caption text-secondary-text italic mb-2">{modeNote}</p>
+              )}
+              <p className="type-caption text-secondary-text">{priceLabel}</p>
+              <p
+                className="text-body type-price mt-1"
+                title={formatPriceExact(item.price)}
+              >
+                {formatPrice(item.price)}
+              </p>
+              {pricePerSqFt && (
+                <p className="type-caption text-secondary-text mt-1">{pricePerSqFt}</p>
+              )}
+              <p className="type-caption text-secondary-text mt-2 max-w-xl">
+                {item.description}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0 sm:items-center sm:flex-wrap">
+              <SaveListingButton
+                id={item.id}
+                type={item.type}
+                slug={item.slug}
+                title={item.title}
+                image={item.image}
+                price={item.price}
+                href={listingPath}
+                address={item.address}
+                variant="label"
+              />
+              <CompareListingButton
+                id={item.id}
+                type={item.type}
+                slug={item.slug}
+                title={item.title}
+                image={item.image}
+                price={item.price}
+                href={listingPath}
+                address={item.address}
+                tags={item.tags}
+                specifications={item.specifications}
+                features={item.features}
+                variant="label"
+              />
+              <ShareListing title={item.title} url={listingUrl} />
+              <PrintListingButton />
+              <Link
+                href={ctaHref}
+                className={`inline-flex items-center justify-center bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition w-full sm:w-auto ${focusRing}`}
+              >
+                {ctaLabel}
+              </Link>
+              <a
+                href={enquireHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-control border border-header-stroke text-secondary-text hover:text-body hover:border-primary/40 transition-colors w-full sm:w-auto ${focusRing}`}
+              >
+                <FaWhatsapp size={16} aria-hidden />
+                Enquire on WhatsApp
+              </a>
+            </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0 sm:items-center sm:flex-wrap">
-            <SaveListingButton
-              id={item.id}
-              type={item.type}
-              slug={item.slug}
-              title={item.title}
-              image={item.image}
-              price={item.price}
-              href={listingPath}
-              address={item.address}
-              variant="label"
-            />
-            <CompareListingButton
-              id={item.id}
-              type={item.type}
-              slug={item.slug}
-              title={item.title}
-              image={item.image}
-              price={item.price}
-              href={listingPath}
-              address={item.address}
-              tags={item.tags}
-              specifications={item.specifications}
-              features={item.features}
-              variant="label"
-            />
-            <ShareListing title={item.title} url={listingUrl} />
-            <PrintListingButton />
-            <Link
-              href={ctaHref}
-              className={`inline-flex items-center justify-center bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition w-full sm:w-auto ${focusRing}`}
-            >
-              {ctaLabel}
-            </Link>
-            <a
-              href={enquireHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-control border border-header-stroke text-secondary-text hover:text-body hover:border-primary/40 transition-colors w-full sm:w-auto ${focusRing}`}
-            >
-              <FaWhatsapp size={16} aria-hidden />
-              Enquire on WhatsApp
-            </a>
-          </div>
+          <ListingQuickStats item={item} />
         </div>
       </div>
 

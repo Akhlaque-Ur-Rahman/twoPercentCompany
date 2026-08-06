@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -14,12 +14,15 @@ import {
   PropertyIcon,
   PlotIcon,
   createPriceIcon,
+  PROPERTY_PIN_COLOR,
+  PLOT_PIN_COLOR,
 } from "@/utils/MapIcons";
 import { MarkerType } from "@/types/MarkerType";
-import Link from "next/link";
 import Image from "next/image";
-import { MousePointerClick } from "lucide-react";
+import { ArrowUpRight, MousePointerClick } from "lucide-react";
 import { formatPrice } from "@/lib/formatPrice";
+import Button from "@/components/ui/Button";
+import type { Marker as LeafletMarker } from "leaflet";
 
 interface MapSectionProps {
   markers: MarkerType[];
@@ -31,6 +34,66 @@ interface MapSectionProps {
   mapClassName?: string;
   /** Use compact price chips instead of pin icons */
   pricePins?: boolean;
+}
+
+type PositionedMarker = MarkerType & {
+  displayPosition: [number, number];
+};
+
+function toLatLng(position: MarkerType["position"]): [number, number] {
+  if (Array.isArray(position)) {
+    return [Number(position[0]), Number(position[1])];
+  }
+  if (
+    position &&
+    typeof position === "object" &&
+    "lat" in position &&
+    "lng" in position
+  ) {
+    return [Number(position.lat), Number(position.lng)];
+  }
+  return [25.5941, 85.1376];
+}
+
+/** Fan out pins that share nearly the same coordinates so they stay tappable */
+function withCollisionOffsets(markers: MarkerType[]): PositionedMarker[] {
+  const groups = new Map<string, MarkerType[]>();
+
+  for (const marker of markers) {
+    const [lat, lng] = toLatLng(marker.position);
+    const key = `${lat.toFixed(4)}:${lng.toFixed(4)}`;
+    const list = groups.get(key);
+    if (list) list.push(marker);
+    else groups.set(key, [marker]);
+  }
+
+  const result: PositionedMarker[] = [];
+
+  for (const group of groups.values()) {
+    if (group.length === 1) {
+      result.push({
+        ...group[0],
+        displayPosition: toLatLng(group[0].position),
+      });
+      continue;
+    }
+
+    const [baseLat, baseLng] = toLatLng(group[0].position);
+    const radius = 0.00028 + Math.min(group.length - 1, 6) * 0.00004;
+
+    group.forEach((marker, index) => {
+      const angle = (Math.PI * 2 * index) / group.length - Math.PI / 2;
+      result.push({
+        ...marker,
+        displayPosition: [
+          baseLat + Math.cos(angle) * radius,
+          baseLng + Math.sin(angle) * radius,
+        ],
+      });
+    });
+  }
+
+  return result;
 }
 
 function MapInteractionController({
@@ -83,14 +146,24 @@ function markerHref(marker: MarkerType): string | undefined {
     : `/properties/${marker.slug}`;
 }
 
+function markerKey(marker: MarkerType) {
+  return `${marker.type ?? "x"}:${marker.id}`;
+}
+
 function markerIcon(marker: MarkerType, pricePins: boolean) {
   if (pricePins && marker.price) {
     return createPriceIcon(
       formatPrice(marker.price),
-      marker.type === "plot" ? "#3d7a4a" : "#8f7330"
+      marker.type === "plot" ? PLOT_PIN_COLOR : PROPERTY_PIN_COLOR
     );
   }
   return marker.type === "property" ? PropertyIcon : PlotIcon;
+}
+
+function setPinActive(target: LeafletMarker, active: boolean) {
+  const pin = target.getElement()?.querySelector(".tpc-price-pin");
+  if (!pin) return;
+  pin.classList.toggle("is-active", active);
 }
 
 const MapSection: React.FC<MapSectionProps> = ({
@@ -103,9 +176,21 @@ const MapSection: React.FC<MapSectionProps> = ({
   pricePins = false,
 }) => {
   const [active, setActive] = useState(false);
+  const [openMarkerId, setOpenMarkerId] = useState<string | null>(null);
 
   const activate = useCallback(() => setActive(true), []);
   const deactivate = useCallback(() => setActive(false), []);
+
+  const positioned = useMemo(
+    () =>
+      withCollisionOffsets(markers).map((marker) => ({
+        ...marker,
+        key: markerKey(marker),
+        href: markerHref(marker),
+        icon: markerIcon(marker, pricePins),
+      })),
+    [markers, pricePins]
+  );
 
   if (!markers || markers.length === 0) return null;
 
@@ -136,50 +221,105 @@ const MapSection: React.FC<MapSectionProps> = ({
           attribution=""
         />
 
-        {markers.map((marker) => {
-          const href = markerHref(marker);
+        {positioned.map((marker) => {
+          const { key, href, icon } = marker;
+          const isOpen = openMarkerId === key;
+          const typeLabel = marker.type === "plot" ? "Plot" : "Property";
+          const accent =
+            marker.type === "plot" ? "text-emerald-400" : "text-primary";
+
           return (
             <Marker
-              key={`${marker.type ?? "x"}:${marker.id}`}
-              position={marker.position as [number, number]}
-              icon={markerIcon(marker, pricePins)}
+              key={key}
+              position={marker.displayPosition}
+              icon={icon}
+              zIndexOffset={isOpen ? 1000 : 0}
+              eventHandlers={{
+                mouseover: (e) => {
+                  (e.target as LeafletMarker).setZIndexOffset(800);
+                },
+                mouseout: (e) => {
+                  if (openMarkerId !== key) {
+                    (e.target as LeafletMarker).setZIndexOffset(0);
+                  }
+                },
+                popupopen: (e) => {
+                  setOpenMarkerId(key);
+                  setPinActive(e.target as LeafletMarker, true);
+                },
+                popupclose: (e) => {
+                  setPinActive(e.target as LeafletMarker, false);
+                  setOpenMarkerId((current) =>
+                    current === key ? null : current
+                  );
+                },
+              }}
             >
-              <Popup>
-                <div className="bg-main-bg text-body rounded-control px-2 py-4 flex flex-col items-center gap-1.5 w-[200px]">
-                  {marker.image && (
-                    <div className="relative w-[180px] h-[100px] rounded-media overflow-hidden">
+              <Popup className="tpc-map-popup" maxWidth={240} minWidth={220}>
+                <article className="tpc-map-popup-card">
+                  {marker.image ? (
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-2nd-bg">
                       <Image
                         src={marker.image}
                         alt={marker.title}
                         fill
-                        sizes="180px"
+                        sizes="220px"
                         className="object-cover"
                         loading="lazy"
                       />
+                      <span
+                        className={`absolute left-2.5 bottom-2.5 rounded-md px-2 py-0.5 type-label font-semibold tracking-wide uppercase backdrop-blur-sm ${
+                          marker.type === "plot"
+                            ? "bg-emerald-900/80 text-emerald-200"
+                            : "bg-primary/90 text-on-primary"
+                        }`}
+                      >
+                        {typeLabel}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between gap-2 px-3.5 pt-3.5">
+                      <span
+                        className={`rounded-md px-2 py-0.5 type-label font-semibold tracking-wide uppercase ${
+                          marker.type === "plot"
+                            ? "bg-emerald-900/60 text-emerald-300"
+                            : "bg-primary/20 text-primary"
+                        }`}
+                      >
+                        {typeLabel}
+                      </span>
                     </div>
                   )}
-                  <h3 className="font-semibold type-caption text-body text-center">
-                    {marker.title}
-                  </h3>
-                  {marker.price && (
-                    <p className="type-caption font-semibold text-primary">
-                      {formatPrice(marker.price)}
-                    </p>
-                  )}
-                  {marker.address && (
-                    <p className="type-caption text-secondary-text text-center line-clamp-2">
-                      {marker.address}
-                    </p>
-                  )}
-                  {showLink && href && (
-                    <Link
-                      href={href}
-                      className="inline-block underline type-caption py-1 text-primary"
-                    >
-                      View Details
-                    </Link>
-                  )}
-                </div>
+
+                  <div className="flex flex-col gap-2 px-3.5 pt-3 pb-3.5">
+                    <h3 className="font-semibold type-body text-body text-center leading-snug line-clamp-2">
+                      {marker.title}
+                    </h3>
+                    {marker.price && (
+                      <p
+                        className={`type-caption font-semibold text-center ${accent}`}
+                      >
+                        {formatPrice(marker.price)}
+                      </p>
+                    )}
+                    {marker.address && (
+                      <p className="type-caption text-secondary-text text-center leading-relaxed line-clamp-2">
+                        {marker.address}
+                      </p>
+                    )}
+                    {showLink && href && (
+                      <Button
+                        href={href}
+                        variant="primary"
+                        size="sm"
+                        className="mt-1 w-full"
+                      >
+                        View Details
+                        <ArrowUpRight size={15} aria-hidden />
+                      </Button>
+                    )}
+                  </div>
+                </article>
               </Popup>
             </Marker>
           );
@@ -188,10 +328,10 @@ const MapSection: React.FC<MapSectionProps> = ({
 
       {!active && (
         <div className="pointer-events-none absolute inset-x-0 bottom-3 sm:bottom-4 z-[500] flex justify-center px-3">
-          <p className="inline-flex items-center gap-2 rounded-control border border-header-stroke bg-main-bg/90 backdrop-blur-sm px-3 py-2 type-caption text-body shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+          <p className="inline-flex items-center gap-1.5 rounded-full border border-header-stroke/80 bg-main-bg/75 backdrop-blur-md px-2.5 py-1.5 type-caption text-secondary-text shadow-[0_6px_20px_rgba(0,0,0,0.4)]">
             <MousePointerClick
-              size={15}
-              className="text-primary shrink-0"
+              size={13}
+              className="text-primary/80 shrink-0"
               aria-hidden
             />
             <span className="hidden sm:inline">

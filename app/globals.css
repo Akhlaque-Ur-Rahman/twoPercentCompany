@@ -161,6 +161,118 @@ body {
 
 .leaflet-popup-tip {
   background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.leaflet-popup.tpc-map-popup .leaflet-popup-content-wrapper,
+.leaflet-popup.tpc-map-popup .leaflet-popup-content {
+  overflow: visible;
+}
+
+.tpc-map-popup-card {
+  width: 220px;
+  overflow: hidden;
+  border-radius: var(--radius-media);
+  border: 1px solid var(--color-header-stroke);
+  background: var(--color-main-bg);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(143, 115, 48, 0.12);
+  color: var(--color-body);
+  font-family: var(--font-urbanist), system-ui, sans-serif;
+}
+
+.leaflet-popup-close-button {
+  top: 8px !important;
+  right: 8px !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px !important;
+  background: rgba(0, 0, 0, 0.62) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #fff !important;
+  font: 700 18px/1 Urbanist, system-ui, sans-serif !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  text-indent: 0 !important;
+  z-index: 20 !important;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.leaflet-popup-close-button:hover {
+  background: rgba(0, 0, 0, 0.85) !important;
+  color: var(--color-primary) !important;
+  border-color: rgba(143, 115, 48, 0.45) !important;
+}
+
+/* Price chip pins */
+.tpc-price-pin-wrap {
+  background: transparent !important;
+  border: none !important;
+}
+
+.tpc-price-pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+  transform-origin: bottom center;
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease;
+  cursor: pointer;
+}
+
+.tpc-price-pin__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  padding: 0 11px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--pin-color, #8f7330);
+  color: #0a0a0a;
+  font: 600 11px/1 Urbanist, system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.tpc-price-pin__tip {
+  width: 0;
+  height: 0;
+  margin-top: -1px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 8px solid var(--pin-color, #8f7330);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
+}
+
+.tpc-price-pin-wrap:hover .tpc-price-pin,
+.tpc-price-pin.is-active {
+  transform: translateY(-3px) scale(1.06);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55));
+  z-index: 2;
+}
+
+.tpc-price-pin.is-active .tpc-price-pin__chip {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 0 0 2px rgba(255, 255, 255, 0.35);
 }
 
 .leaflet-marker-icon .marker-icon img {
