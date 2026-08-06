@@ -4,6 +4,8 @@ export const TeamMembers: CollectionConfig = {
   slug: "team-members",
   admin: {
     useAsTitle: "name",
+    group: "Content",
+    description: "Advisors shown on the Team page",
     defaultColumns: ["name", "role", "published", "updatedAt"],
   },
   access: {

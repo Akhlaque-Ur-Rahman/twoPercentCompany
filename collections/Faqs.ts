@@ -4,6 +4,8 @@ export const Faqs: CollectionConfig = {
   slug: "faqs",
   admin: {
     useAsTitle: "question",
+    group: "Content",
+    description: "FAQ entries for marketing pages",
     defaultColumns: ["question", "category", "order", "published"],
   },
   access: {

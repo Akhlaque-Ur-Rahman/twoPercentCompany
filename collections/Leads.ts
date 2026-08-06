@@ -4,6 +4,8 @@ export const Leads: CollectionConfig = {
   slug: "leads",
   admin: {
     useAsTitle: "name",
+    group: "CRM",
+    description: "Form submissions and enquiries",
     defaultColumns: ["name", "type", "status", "createdAt"],
   },
   defaultSort: "-createdAt",

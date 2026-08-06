@@ -29,6 +29,32 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: " — 2% Company CMS",
+      description: "Manage listings, media, team, FAQs, posts, and leads.",
+      icons: [
+        {
+          rel: "icon",
+          type: "image/svg+xml",
+          url: "/svg/favicon.svg",
+        },
+      ],
+    },
+    theme: "dark",
+    avatar: "default",
+    components: {
+      graphics: {
+        Logo: "/components/admin/Logo",
+        Icon: "/components/admin/Icon",
+      },
+      beforeLogin: ["/components/admin/BeforeLogin"],
+      beforeDashboard: ["/components/admin/BeforeDashboard"],
+      afterNavLinks: ["/components/admin/NavFooterLink"],
+      actions: ["/components/admin/ProfileMenu"],
+      logout: {
+        Button: "/components/admin/LogoutButton",
+      },
+    },
   },
   collections: [Users, Media, Listings, TeamMembers, Faqs, Posts, Leads],
   secret: process.env.PAYLOAD_SECRET || "",

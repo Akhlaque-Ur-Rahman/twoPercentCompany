@@ -4,6 +4,8 @@ export const Listings: CollectionConfig = {
   slug: "listings",
   admin: {
     useAsTitle: "title",
+    group: "Content",
+    description: "Properties and plots shown on the website",
     defaultColumns: ["title", "type", "price", "published", "updatedAt"],
   },
   access: {
