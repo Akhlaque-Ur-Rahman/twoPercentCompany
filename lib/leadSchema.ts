@@ -9,6 +9,7 @@ export const leadTypeSchema = z.enum([
   "newsletter",
   "tour",
   "listing_enquiry",
+  "home_inquiry",
 ]);
 
 export const leadBodySchema = z

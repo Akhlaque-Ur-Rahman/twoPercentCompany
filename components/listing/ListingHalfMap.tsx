@@ -59,6 +59,7 @@ export default function ListingHalfMap({
           address: item.address,
           type: item.type,
           url: hrefFor(item),
+          price: item.price,
         })),
     [listings, hrefFor]
   );
@@ -80,7 +81,8 @@ export default function ListingHalfMap({
       markers={markers}
       center={center}
       zoom={12}
-      showLink={false}
+      showLink
+      pricePins
       className={className}
       mapClassName={mapClassName}
     />

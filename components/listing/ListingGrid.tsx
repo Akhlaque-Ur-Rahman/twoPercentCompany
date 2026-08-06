@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
@@ -18,7 +18,7 @@ export type ListingGridProps = {
   viewAllHref?: string;
   viewAllLabel?: string;
   showAddress?: boolean;
-  layout?: "row" | "spotlight";
+  layout?: "row" | "spotlight" | "carousel";
   secondaryBadge?: ListingBadge;
 };
 
@@ -34,17 +34,63 @@ const ListingGrid: React.FC<ListingGridProps> = ({
 }) => {
   const hrefFor = (item: ListingCardItem) => `${hrefBase}/${item.slug}`;
   const swiperRef = useRef<SwiperType | null>(null);
+  const desktopSwiperRef = useRef<SwiperType | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const [desktopBeginning, setDesktopBeginning] = useState(true);
+  const [desktopEnd, setDesktopEnd] = useState(false);
+  const [spotlightStart, setSpotlightStart] = useState(0);
 
-  const featured = items.slice(0, 3);
+  const mobileSlides = items.slice(0, Math.max(items.length, 3));
+  const featured = useMemo(() => {
+    if (items.length <= 3) return items;
+    return [
+      items[spotlightStart % items.length],
+      items[(spotlightStart + 1) % items.length],
+      items[(spotlightStart + 2) % items.length],
+    ];
+  }, [items, spotlightStart]);
   const [hero, ...side] = featured;
 
   const badgeAt = (index: number): ListingBadge | undefined => {
     if (index === 0) return "Featured";
     return secondaryBadge;
   };
+
+  const canCycle = items.length > 3;
+  const goPrevSpotlight = () =>
+    setSpotlightStart((s) => (s - 1 + items.length) % items.length);
+  const goNextSpotlight = () =>
+    setSpotlightStart((s) => (s + 1) % items.length);
+
+  const navButtons = (
+    disablePrev: boolean,
+    disableNext: boolean,
+    onPrev: () => void,
+    onNext: () => void
+  ) => (
+    <div className="flex items-center gap-1.5 sm:gap-2">
+      <button
+        type="button"
+        aria-label="Previous"
+        onClick={onPrev}
+        disabled={disablePrev}
+        className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke text-body disabled:opacity-35 hover:border-primary/40 transition-colors"
+      >
+        <ChevronLeft size={20} />
+      </button>
+      <button
+        type="button"
+        aria-label="Next"
+        onClick={onNext}
+        disabled={disableNext}
+        className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke text-body disabled:opacity-35 hover:border-primary/40 transition-colors"
+      >
+        <ChevronRight size={20} />
+      </button>
+    </div>
+  );
 
   return (
     <div className="relative min-w-0">
@@ -70,7 +116,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
             640: { slidesPerView: 1.16, spaceBetween: 16 },
           }}
         >
-          {featured.map((item, index) => (
+          {mobileSlides.map((item, index) => (
             <SwiperSlide key={item.id} className="!h-auto">
               <ListingCard
                 property={item}
@@ -87,7 +133,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
 
         <div className="mt-4 sm:mt-5 flex items-center justify-between gap-3">
           <div className="flex items-center gap-0.5 sm:gap-1">
-            {featured.map((item, index) => (
+            {mobileSlides.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
@@ -106,26 +152,12 @@ const ListingGrid: React.FC<ListingGridProps> = ({
             ))}
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <button
-              type="button"
-              aria-label="Previous slide"
-              onClick={() => swiperRef.current?.slidePrev()}
-              disabled={isBeginning}
-              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke text-body disabled:opacity-35"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              type="button"
-              aria-label="Next slide"
-              onClick={() => swiperRef.current?.slideNext()}
-              disabled={isEnd}
-              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-control border border-header-stroke text-body disabled:opacity-35"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
+          {navButtons(
+            isBeginning,
+            isEnd,
+            () => swiperRef.current?.slidePrev(),
+            () => swiperRef.current?.slideNext()
+          )}
         </div>
 
         {viewAllHref && (
@@ -138,35 +170,81 @@ const ListingGrid: React.FC<ListingGridProps> = ({
         )}
       </div>
 
-      {/* Desktop spotlight — cinema poster + twin strips */}
-      {layout === "spotlight" && hero ? (
-        <div className="hidden lg:grid grid-cols-12 gap-3 xl:gap-4 h-[600px]">
-          <div className="col-span-7 h-full">
-            <ListingCard
-              property={hero}
-              href={hrefFor(hero)}
-              ctaLabel={ctaLabel}
-              showAddress={showAddress}
-              badge={badgeAt(0)}
-              index={0}
-              featured
-              className="h-full"
-            />
+      {/* Desktop carousel */}
+      {layout === "carousel" ? (
+        <div className="hidden lg:block space-y-4">
+          <div className="flex justify-end">
+            {navButtons(
+              desktopBeginning,
+              desktopEnd,
+              () => desktopSwiperRef.current?.slidePrev(),
+              () => desktopSwiperRef.current?.slideNext()
+            )}
           </div>
-          <div className="col-span-5 grid grid-rows-2 gap-3 xl:gap-4 h-full">
-            {side.map((item, i) => (
+          <Swiper
+            onSwiper={(swiper) => {
+              desktopSwiperRef.current = swiper;
+              setDesktopBeginning(swiper.isBeginning);
+              setDesktopEnd(swiper.isEnd);
+            }}
+            onSlideChange={(swiper) => {
+              setDesktopBeginning(swiper.isBeginning);
+              setDesktopEnd(swiper.isEnd);
+            }}
+            spaceBetween={16}
+            slidesPerView={3}
+            className="!overflow-visible"
+          >
+            {items.map((item, index) => (
+              <SwiperSlide key={item.id} className="!h-auto">
+                <ListingCard
+                  property={item}
+                  href={hrefFor(item)}
+                  ctaLabel={ctaLabel}
+                  showAddress={showAddress}
+                  badge={badgeAt(index)}
+                  index={index}
+                  featured={index === 0}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      ) : layout === "spotlight" && hero ? (
+        <div className="hidden lg:block space-y-4">
+          {canCycle && (
+            <div className="flex justify-end">
+              {navButtons(false, false, goPrevSpotlight, goNextSpotlight)}
+            </div>
+          )}
+          <div className="grid grid-cols-12 gap-3 xl:gap-4 h-[600px]">
+            <div className="col-span-7 h-full">
               <ListingCard
-                key={item.id}
-                property={item}
-                href={hrefFor(item)}
+                property={hero}
+                href={hrefFor(hero)}
                 ctaLabel={ctaLabel}
                 showAddress={showAddress}
-                badge={badgeAt(i + 1)}
-                index={i + 1}
-                compact
+                badge={badgeAt(0)}
+                index={0}
+                featured
                 className="h-full"
               />
-            ))}
+            </div>
+            <div className="col-span-5 grid grid-rows-2 gap-3 xl:gap-4 h-full">
+              {side.map((item, i) => (
+                <ListingCard
+                  key={item.id}
+                  property={item}
+                  href={hrefFor(item)}
+                  ctaLabel={ctaLabel}
+                  showAddress={showAddress}
+                  badge={badgeAt(i + 1)}
+                  index={i + 1}
+                  compact
+                  className="h-full"
+                />
+              ))}
+            </div>
           </div>
         </div>
       ) : (

@@ -5,14 +5,20 @@ import CategoryBrowseSection from "@/components/layout/CategoryBrowseSection";
 import ExploreLocalitiesSection from "@/components/layout/ExploreLocalitiesSection";
 import FeaturedPropertySection from "@/components/layout/FeaturedPropertySection";
 import FeaturedLandSection from "@/components/layout/FeaturedLandSection";
+import HomeInquirySection from "@/components/layout/HomeInquirySection";
+import TeamStrip from "@/components/TeamStrip";
 import TestimonialSection from "@/components/TestimonialSection";
 import CTA from "@/components/CTA";
 import HomeMap from "@/components/layout/HomeMap";
 import { getListings } from "@/lib/listings";
+import { getTeamMembers } from "@/lib/team";
 import { MarkerType } from "@/types/MarkerType";
 
 export default async function Home() {
-  const listings = await getListings();
+  const [listings, team] = await Promise.all([
+    getListings(),
+    getTeamMembers(),
+  ]);
   const markers: MarkerType[] = listings.map((item) => ({
     id: item.id,
     title: item.title,
@@ -21,7 +27,12 @@ export default async function Home() {
     image: item.image,
     address: item.address,
     type: item.type,
-    url: item.url,
+    url:
+      item.url ??
+      (item.type === "plot"
+        ? `/plots/${item.slug}`
+        : `/properties/${item.slug}`),
+    price: item.price,
   }));
 
   return (
@@ -32,6 +43,8 @@ export default async function Home() {
       <ExploreLocalitiesSection listings={listings} />
       <FeaturedPropertySection />
       <FeaturedLandSection />
+      <TeamStrip members={team} />
+      <HomeInquirySection />
       <TestimonialSection />
       <HomeMap markers={markers} />
       <CTA />

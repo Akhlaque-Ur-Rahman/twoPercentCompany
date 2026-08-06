@@ -10,11 +10,16 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { PropertyIcon, PlotIcon } from "@/utils/MapIcons";
+import {
+  PropertyIcon,
+  PlotIcon,
+  createPriceIcon,
+} from "@/utils/MapIcons";
 import { MarkerType } from "@/types/MarkerType";
 import Link from "next/link";
 import Image from "next/image";
 import { MousePointerClick } from "lucide-react";
+import { formatPrice } from "@/lib/formatPrice";
 
 interface MapSectionProps {
   markers: MarkerType[];
@@ -24,6 +29,8 @@ interface MapSectionProps {
   className?: string;
   /** Overrides default responsive map height */
   mapClassName?: string;
+  /** Use compact price chips instead of pin icons */
+  pricePins?: boolean;
 }
 
 function MapInteractionController({
@@ -59,6 +66,33 @@ function MapInteractionController({
   return null;
 }
 
+function markerHref(marker: MarkerType): string | undefined {
+  if (marker.url) {
+    if (marker.url.startsWith("http")) {
+      try {
+        return new URL(marker.url).pathname;
+      } catch {
+        return marker.url;
+      }
+    }
+    return marker.url;
+  }
+  if (!marker.slug) return undefined;
+  return marker.type === "plot"
+    ? `/plots/${marker.slug}`
+    : `/properties/${marker.slug}`;
+}
+
+function markerIcon(marker: MarkerType, pricePins: boolean) {
+  if (pricePins && marker.price) {
+    return createPriceIcon(
+      formatPrice(marker.price),
+      marker.type === "plot" ? "#3d7a4a" : "#8f7330"
+    );
+  }
+  return marker.type === "property" ? PropertyIcon : PlotIcon;
+}
+
 const MapSection: React.FC<MapSectionProps> = ({
   markers,
   center = [25.5941, 85.1376],
@@ -66,6 +100,7 @@ const MapSection: React.FC<MapSectionProps> = ({
   showLink = true,
   className = "",
   mapClassName = "",
+  pricePins = false,
 }) => {
   const [active, setActive] = useState(false);
 
@@ -101,50 +136,54 @@ const MapSection: React.FC<MapSectionProps> = ({
           attribution=""
         />
 
-        {markers.map((marker) => (
-          <Marker
-            key={marker.id}
-            position={marker.position as [number, number]}
-            icon={marker.type === "property" ? PropertyIcon : PlotIcon}
-          >
-            <Popup>
-              <div className="bg-main-bg text-body rounded-control px-2 py-6 flex flex-col items-center gap-1 w-[200px]">
-                {marker.image && (
-                  <div className="relative w-[180px] h-[100px] rounded-media overflow-hidden">
-                    <Image
-                      src={marker.image}
-                      alt={marker.title}
-                      fill
-                      sizes="180px"
-                      className="object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-                <h3 className="font-semibold type-caption text-body">
-                  {marker.title}
-                </h3>
-                {marker.address && (
-                  <p className="type-caption text-secondary-text">
-                    {marker.address}
-                  </p>
-                )}
-                {showLink && marker.slug && (
-                  <Link
-                    href={
-                      marker.type === "property"
-                        ? `/properties/${marker.slug}`
-                        : `/plots/${marker.slug}`
-                    }
-                    className="inline-block underline type-caption py-1 text-primary"
-                  >
-                    View Details
-                  </Link>
-                )}
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        {markers.map((marker) => {
+          const href = markerHref(marker);
+          return (
+            <Marker
+              key={`${marker.type ?? "x"}:${marker.id}`}
+              position={marker.position as [number, number]}
+              icon={markerIcon(marker, pricePins)}
+            >
+              <Popup>
+                <div className="bg-main-bg text-body rounded-control px-2 py-4 flex flex-col items-center gap-1.5 w-[200px]">
+                  {marker.image && (
+                    <div className="relative w-[180px] h-[100px] rounded-media overflow-hidden">
+                      <Image
+                        src={marker.image}
+                        alt={marker.title}
+                        fill
+                        sizes="180px"
+                        className="object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <h3 className="font-semibold type-caption text-body text-center">
+                    {marker.title}
+                  </h3>
+                  {marker.price && (
+                    <p className="type-caption font-semibold text-primary">
+                      {formatPrice(marker.price)}
+                    </p>
+                  )}
+                  {marker.address && (
+                    <p className="type-caption text-secondary-text text-center line-clamp-2">
+                      {marker.address}
+                    </p>
+                  )}
+                  {showLink && href && (
+                    <Link
+                      href={href}
+                      className="inline-block underline type-caption py-1 text-primary"
+                    >
+                      View Details
+                    </Link>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
 
       {!active && (

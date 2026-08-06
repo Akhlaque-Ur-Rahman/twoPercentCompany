@@ -5,7 +5,8 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useId, useRef, useState } from "react";
 import { NavbarData, ContactBtnData, type NavItem } from "@/data/NavbarData";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowUpRight, Heart } from "lucide-react";
+import { useSavedListings } from "@/components/providers/SavedListingsProvider";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
@@ -16,6 +17,7 @@ function cx(...parts: Array<string | undefined | false>) {
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { count: savedCount, hydrated: savedHydrated } = useSavedListings();
   const [isOpen, setIsOpen] = useState(false);
   const [submenuOpen, setSubmenuOpen] = useState<string | null>(null);
   const [desktopOpen, setDesktopOpen] = useState<string | null>(null);
@@ -275,6 +277,33 @@ const Navbar = () => {
           </nav>
 
           <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/saved"
+              className={cx(
+                "relative inline-flex items-center justify-center min-w-11 min-h-11 rounded-control border border-header-stroke text-body hover:border-primary/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg",
+                checkActive("/saved") && "border-primary/50 text-primary"
+              )}
+              aria-label={
+                savedHydrated && savedCount > 0
+                  ? `Saved listings, ${savedCount}`
+                  : "Saved listings"
+              }
+            >
+              <Heart
+                size={18}
+                className={
+                  savedHydrated && savedCount > 0
+                    ? "fill-primary text-primary"
+                    : ""
+                }
+                aria-hidden
+              />
+              {savedHydrated && savedCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-primary text-on-primary type-caption font-semibold inline-flex items-center justify-center">
+                  {savedCount > 99 ? "99+" : savedCount}
+                </span>
+              )}
+            </Link>
             <Link
               href={ContactBtnData.href}
               className={cx(

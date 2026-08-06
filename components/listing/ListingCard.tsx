@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Check, MapPin, Share2 } from "lucide-react";
+import { ArrowUpRight, BedDouble, Bath, Check, MapPin, Ruler, Share2 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { PropertyItem } from "@/data/PropertyData";
 import {
@@ -14,6 +14,8 @@ import {
 } from "@/lib/formatPrice";
 import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import SaveListingButton from "@/components/listing/SaveListingButton";
+import CompareListingButton from "@/components/listing/CompareListingButton";
 
 export type ListingCardItem = Pick<
   PropertyItem,
@@ -62,6 +64,17 @@ function metaLine(
   const labels = tags.slice(0, 3).map((t) => t.label);
   if (labels.length) return labels.join(" · ");
   return type === "plot" ? "Plot" : "Residence";
+}
+
+function findSpec(
+  specs: ListingCardItem["specifications"],
+  ...needles: string[]
+): string | undefined {
+  if (!specs?.length) return undefined;
+  const lower = needles.map((n) => n.toLowerCase());
+  return specs.find((s) =>
+    lower.some((n) => s.label.toLowerCase().includes(n))
+  )?.value;
 }
 
 function listingPathUrl(href?: string): string | undefined {
@@ -124,6 +137,11 @@ const ListingCard: React.FC<ListingCardProps> = ({
   const listingStatus = inferStatus(href, status);
   const location = shortLocation(property.address);
   const meta = metaLine(property.tags, property.type);
+  const beds = findSpec(property.specifications, "bed", "bhk");
+  const baths = findSpec(property.specifications, "bath");
+  const area =
+    findSpec(property.specifications, "area", "sq", "size") ??
+    property.tags.find((t) => /sq|acre|katha|marla/i.test(t.label))?.label;
 
   const handleShare = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -224,6 +242,28 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
         {/* Desktop: reveal on hover · Mobile: always visible (no hover) */}
         <div className="absolute right-3 top-3 z-[3] flex items-center gap-2 opacity-100 translate-y-0 lg:opacity-0 lg:-translate-y-1 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300">
+          <SaveListingButton
+            id={property.id}
+            type={property.type}
+            slug={property.slug}
+            title={property.title}
+            image={property.image}
+            price={property.price}
+            href={href}
+            address={property.address}
+          />
+          <CompareListingButton
+            id={property.id}
+            type={property.type}
+            slug={property.slug}
+            title={property.title}
+            image={property.image}
+            price={property.price}
+            href={href}
+            address={property.address}
+            tags={property.tags}
+            specifications={property.specifications}
+          />
           {href && (
             <button
               type="button"
@@ -276,9 +316,32 @@ const ListingCard: React.FC<ListingCardProps> = ({
             >
               {property.title}
             </h2>
-            <p className="type-caption text-white/55 line-clamp-2 sm:line-clamp-1">
-              {meta}
-            </p>
+            {(beds || baths || area) ? (
+              <ul className="flex flex-wrap items-center gap-x-3 gap-y-1 type-caption text-white/60">
+                {beds && (
+                  <li className="inline-flex items-center gap-1">
+                    <BedDouble size={13} aria-hidden />
+                    {beds}
+                  </li>
+                )}
+                {baths && (
+                  <li className="inline-flex items-center gap-1">
+                    <Bath size={13} aria-hidden />
+                    {baths}
+                  </li>
+                )}
+                {area && (
+                  <li className="inline-flex items-center gap-1">
+                    <Ruler size={13} aria-hidden />
+                    {area}
+                  </li>
+                )}
+              </ul>
+            ) : (
+              <p className="type-caption text-white/55 line-clamp-2 sm:line-clamp-1">
+                {meta}
+              </p>
+            )}
           </div>
 
           <div

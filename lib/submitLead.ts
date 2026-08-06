@@ -6,7 +6,8 @@ export type LeadType =
   | "investor"
   | "newsletter"
   | "tour"
-  | "listing_enquiry";
+  | "listing_enquiry"
+  | "home_inquiry";
 
 export type SubmitLeadInput = {
   type: LeadType;

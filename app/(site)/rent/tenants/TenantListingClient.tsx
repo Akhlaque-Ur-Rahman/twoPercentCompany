@@ -219,10 +219,13 @@ function TenantsBrowse({ listings }: TenantListingClientProps) {
     selectedPrice !== "All" ||
     Boolean(location);
 
+  const shown = Math.min(visibleCount, filteredData.length);
   const resultLabel =
-    filteredData.length === 1
-      ? "1 rental"
-      : `${filteredData.length} rentals`;
+    filteredData.length === 0
+      ? "No rentals match"
+      : `Showing ${shown} of ${filteredData.length} rental${
+          filteredData.length === 1 ? "" : "s"
+        }`;
 
   const clearFilters = () => {
     setSearchText("");
@@ -387,17 +390,25 @@ function TenantsBrowse({ listings }: TenantListingClientProps) {
               <p className="type-card-title text-body">No rentals match</p>
               <p className="text-secondary-text type-body max-w-md">
                 Try a different search, BHK, furnishing, or budget — or clear
-                filters to see the full list.
+                filters. Need help? Ask an expert.
               </p>
-              {hasActiveFilters && (
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="px-6 py-3 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="px-6 py-3 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
+                  >
+                    Clear filters
+                  </button>
+                )}
+                <a
+                  href="/contact"
+                  className="px-6 py-3 rounded-control border border-header-stroke font-semibold type-body text-body hover:border-primary/40 transition-colors"
                 >
-                  Clear filters
-                </button>
-              )}
+                  Contact an expert
+                </a>
+              </div>
             </div>
           )}
         </div>

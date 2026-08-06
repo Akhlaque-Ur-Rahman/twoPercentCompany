@@ -12,6 +12,9 @@ import ListingOverview from "@/components/listing/ListingOverview";
 import ListingVideoFacade from "@/components/listing/ListingVideoFacade";
 import ScheduleVisit from "@/components/listing/ScheduleVisit";
 import ShareListing from "@/components/listing/ShareListing";
+import SaveListingButton from "@/components/listing/SaveListingButton";
+import CompareListingButton from "@/components/listing/CompareListingButton";
+import PrintListingButton from "@/components/listing/PrintListingButton";
 import SimilarListings from "@/components/listing/SimilarListings";
 import EmiCalculator from "@/components/listing/EmiCalculator";
 import ListingSectionNav from "@/components/listing/ListingSectionNav";
@@ -89,6 +92,18 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
   const resolvedBackLabel =
     backLabel ?? (item.type === "plot" ? "All plots" : "All homes");
 
+  const listingUrl =
+    item.url ??
+    `https://www.2percentcompany.in/${
+      item.type === "plot" ? "plots" : "properties"
+    }/${item.slug}`;
+  const defaultSimilarHref = (s: PropertyItem) =>
+    s.type === "plot" ? `/plots/${s.slug}` : `/properties/${s.slug}`;
+  const hrefForSimilar = similarHrefFor ?? defaultSimilarHref;
+  const listingPath = hrefForSimilar(item);
+  const enquireHref = whatsappHref(listingEnquiryMessage(item.title, listingUrl));
+  const pricePerSqFt = formatPricePerSqFt(item.price, item.specifications);
+
   const markers: MarkerType[] = [
     {
       id: item.id,
@@ -98,20 +113,10 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
       image: item.image,
       address: item.address,
       type: item.type,
+      url: listingPath,
+      price: item.price,
     },
   ];
-
-  const listingUrl =
-    item.url ??
-    `https://www.2percentcompany.in/${
-      item.type === "plot" ? "plots" : "properties"
-    }/${item.slug}`;
-  const enquireHref = whatsappHref(listingEnquiryMessage(item.title, listingUrl));
-  const pricePerSqFt = formatPricePerSqFt(item.price, item.specifications);
-
-  const defaultSimilarHref = (s: PropertyItem) =>
-    s.type === "plot" ? `/plots/${s.slug}` : `/properties/${s.slug}`;
-  const hrefForSimilar = similarHrefFor ?? defaultSimilarHref;
 
   const navItems = useMemo(() => {
     const items: { id: string; label: string }[] = [
@@ -197,8 +202,34 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
             <ListingQuickStats item={item} />
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0 sm:items-center">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0 sm:items-center sm:flex-wrap">
+            <SaveListingButton
+              id={item.id}
+              type={item.type}
+              slug={item.slug}
+              title={item.title}
+              image={item.image}
+              price={item.price}
+              href={listingPath}
+              address={item.address}
+              variant="label"
+            />
+            <CompareListingButton
+              id={item.id}
+              type={item.type}
+              slug={item.slug}
+              title={item.title}
+              image={item.image}
+              price={item.price}
+              href={listingPath}
+              address={item.address}
+              tags={item.tags}
+              specifications={item.specifications}
+              features={item.features}
+              variant="label"
+            />
             <ShareListing title={item.title} url={listingUrl} />
+            <PrintListingButton />
             <Link
               href={ctaHref}
               className={`inline-flex items-center justify-center bg-primary text-on-primary font-semibold px-6 py-3 rounded-control hover:brightness-110 transition w-full sm:w-auto ${focusRing}`}
@@ -396,6 +427,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
             center={positionArray}
             zoom={15}
             showLink={false}
+            pricePins
           />
         </motion.section>
 

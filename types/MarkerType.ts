@@ -3,10 +3,12 @@ import type { LatLngExpression } from "leaflet";
 export type MarkerType = {
   id: number;
   title: string;
-  slug: string; // added slug for routing
-  position: LatLngExpression; // keeps Leaflet compatibility
+  slug: string;
+  position: LatLngExpression;
   image?: string;
   address?: string;
   type?: "property" | "plot";
-  url?: string; // optional URL
+  /** Absolute or site-relative detail URL */
+  url?: string;
+  price?: string;
 };

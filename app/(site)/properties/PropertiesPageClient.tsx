@@ -242,10 +242,13 @@ function PropertiesBrowse({ listings }: PropertiesPageClientProps) {
 
   const visibleProperties = filteredProperties.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProperties.length;
+  const shown = Math.min(visibleCount, filteredProperties.length);
   const resultLabel =
-    filteredProperties.length === 1
-      ? "1 home"
-      : `${filteredProperties.length} homes`;
+    filteredProperties.length === 0
+      ? "No homes match"
+      : `Showing ${shown} of ${filteredProperties.length} home${
+          filteredProperties.length === 1 ? "" : "s"
+        }`;
 
   const clearFilters = () => {
     setSearchText("");
@@ -482,16 +485,24 @@ function PropertiesBrowse({ listings }: PropertiesPageClientProps) {
               <div className="flex flex-col items-center text-center gap-4 py-16 px-4 rounded-card border border-header-stroke bg-2nd-bg/60">
                 <p className="type-card-title text-body">No homes match</p>
                 <p className="text-secondary-text type-body max-w-md">
-                  Try a different search, BHK, or amenity — or clear filters to
-                  see the full list.
+                  Try a different search, BHK, or amenity — or clear filters.
+                  Prefer a human shortlist? WhatsApp our experts.
                 </p>
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="px-6 py-3 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
-                >
-                  Clear filters
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="px-6 py-3 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
+                  >
+                    Clear filters
+                  </button>
+                  <a
+                    href="/contact"
+                    className="px-6 py-3 rounded-control border border-header-stroke font-semibold type-body text-body hover:border-primary/40 transition-colors"
+                  >
+                    Contact an expert
+                  </a>
+                </div>
               </div>
             )}
           </div>

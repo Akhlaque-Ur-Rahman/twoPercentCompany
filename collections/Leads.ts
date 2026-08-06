@@ -28,6 +28,7 @@ export const Leads: CollectionConfig = {
         { label: "Newsletter", value: "newsletter" },
         { label: "Tour", value: "tour" },
         { label: "Listing Enquiry", value: "listing_enquiry" },
+        { label: "Home Inquiry", value: "home_inquiry" },
       ],
       admin: { position: "sidebar" },
     },

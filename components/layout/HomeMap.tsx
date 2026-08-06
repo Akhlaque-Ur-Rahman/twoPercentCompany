@@ -84,6 +84,7 @@ export default function HomeMap({
           center={center}
           zoom={zoom}
           showLink={showLink}
+          pricePins
         />
       </div>
     </section>

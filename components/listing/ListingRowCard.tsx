@@ -9,6 +9,8 @@ import { ListingCardItem } from "@/components/listing/ListingCard";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { iconForTagLabel } from "@/lib/tagIcons";
 import { formatPrice, formatPriceExact, formatPricePerSqFt } from "@/lib/formatPrice";
+import SaveListingButton from "@/components/listing/SaveListingButton";
+import CompareListingButton from "@/components/listing/CompareListingButton";
 
 export type ListingRowCardProps = {
   property: ListingCardItem;
@@ -151,6 +153,35 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
               Featured
             </span>
           )}
+          {property.type === "plot" && !showFeatured && (
+            <span className="type-caption tracking-[0.12em] uppercase text-white border border-white/30 bg-black/55 px-2.5 py-1">
+              Plot
+            </span>
+          )}
+        </div>
+        <div className="absolute right-3 top-3 z-[2] flex items-center gap-2">
+          <SaveListingButton
+            id={property.id}
+            type={property.type}
+            slug={property.slug}
+            title={property.title}
+            image={property.image}
+            price={property.price}
+            href={href}
+            address={property.address}
+          />
+          <CompareListingButton
+            id={property.id}
+            type={property.type}
+            slug={property.slug}
+            title={property.title}
+            image={property.image}
+            price={property.price}
+            href={href}
+            address={property.address}
+            tags={property.tags}
+            specifications={property.specifications}
+          />
         </div>
       </Link>
 

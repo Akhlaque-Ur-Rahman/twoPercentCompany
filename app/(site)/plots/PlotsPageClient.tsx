@@ -181,8 +181,13 @@ function PlotsBrowse({ listings }: PlotsPageClientProps) {
 
   const visiblePlots = filteredPlots.slice(0, visibleCount);
   const hasMore = visibleCount < filteredPlots.length;
+  const shown = Math.min(visibleCount, filteredPlots.length);
   const resultLabel =
-    filteredPlots.length === 1 ? "1 plot" : `${filteredPlots.length} plots`;
+    filteredPlots.length === 0
+      ? "No plots match"
+      : `Showing ${shown} of ${filteredPlots.length} plot${
+          filteredPlots.length === 1 ? "" : "s"
+        }`;
 
   const clearFilters = () => {
     setSearchText("");
@@ -412,15 +417,23 @@ function PlotsBrowse({ listings }: PlotsPageClientProps) {
                 <p className="type-card-title text-body">No plots match</p>
                 <p className="text-secondary-text type-body max-w-md">
                   Try a different search, plot type, or feature — or clear
-                  filters to see the full list.
+                  filters. Prefer a shortlist from us? Contact an expert.
                 </p>
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="px-6 py-3 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
-                >
-                  Clear filters
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="px-6 py-3 rounded-control bg-primary text-on-primary font-semibold type-body hover:brightness-110 transition"
+                  >
+                    Clear filters
+                  </button>
+                  <a
+                    href="/contact"
+                    className="px-6 py-3 rounded-control border border-header-stroke font-semibold type-body text-body hover:border-primary/40 transition-colors"
+                  >
+                    Contact an expert
+                  </a>
+                </div>
               </div>
             )}
           </div>
