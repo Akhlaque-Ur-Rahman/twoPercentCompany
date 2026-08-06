@@ -270,7 +270,7 @@ function PropertiesBrowse({ listings }: PropertiesPageClientProps) {
     <div id="browse" className="scroll-mt-24 border-b border-header-stroke">
       <div className="relative page-px section-y">
         <div
-          className="pointer-events-none absolute inset-0 opacity-90 bg-[radial-gradient(ellipse_at_top,rgba(143,115,48,0.1),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 opacity-90 glow-primary-top"
           aria-hidden
         />
 

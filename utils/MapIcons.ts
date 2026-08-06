@@ -30,7 +30,9 @@ function createPinIcon(color: string) {
   });
 }
 
-export const PROPERTY_PIN_COLOR = "#c9a227";
+/** Brand gold — keep in sync with --color-map-property / --color-primary */
+export const PROPERTY_PIN_COLOR = "#8f7330";
+/** Plot accent — keep in sync with --color-map-plot / --color-success */
 export const PLOT_PIN_COLOR = "#1f9d6a";
 
 /** Compact price chip pin for map discovery — width scales with label length */

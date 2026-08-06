@@ -121,7 +121,7 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, delay: staggerDelay }}
-      className="group card flex flex-col lg:flex-row p-4 lg:p-6 gap-4 lg:gap-6 rounded-card border border-header-stroke bg-2nd-bg transition-[border-color,background] duration-300 hover:border-primary/40 hover:bg-[linear-gradient(135deg,rgba(143,115,48,0.08),transparent_55%)]"
+      className="group card flex flex-col lg:flex-row p-4 lg:p-6 gap-4 lg:gap-6 rounded-card border border-header-stroke bg-2nd-bg transition-[border-color,background] duration-300 hover:border-primary/40 hover:bg-[linear-gradient(135deg,color-mix(in_srgb,var(--color-primary)_8%,transparent),transparent_55%)]"
     >
       <Link
         href={href}
@@ -145,16 +145,16 @@ const ListingRowCard: React.FC<ListingRowCardProps> = ({
           aria-hidden
         />
         <div className="absolute left-3 top-3 z-[1] flex flex-wrap gap-1.5">
-          <span className="type-caption tracking-[0.12em] uppercase text-on-primary bg-primary px-2.5 py-1">
+          <span className="type-caption tracking-[0.12em] uppercase text-on-primary bg-primary px-2.5 py-1 rounded-control">
             {listingStatus}
           </span>
           {showFeatured && (
-            <span className="type-caption tracking-[0.12em] uppercase text-white border border-white/30 bg-black/55 px-2.5 py-1">
+            <span className="type-caption tracking-[0.12em] uppercase text-white border border-white/30 bg-black/55 px-2.5 py-1 rounded-control">
               Featured
             </span>
           )}
           {property.type === "plot" && !showFeatured && (
-            <span className="type-caption tracking-[0.12em] uppercase text-white border border-white/30 bg-black/55 px-2.5 py-1">
+            <span className="type-caption tracking-[0.12em] uppercase text-white border border-white/30 bg-black/55 px-2.5 py-1 rounded-control">
               Plot
             </span>
           )}

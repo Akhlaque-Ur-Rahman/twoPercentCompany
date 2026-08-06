@@ -22,8 +22,8 @@ const CTA = () => {
         aria-hidden
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 70% 80% at 0% 50%, rgba(143, 115, 48, 0.18), transparent 55%),
-            radial-gradient(ellipse 50% 60% at 100% 100%, rgba(143, 115, 48, 0.08), transparent 50%),
+            radial-gradient(ellipse 70% 80% at 0% 50%, color-mix(in srgb, var(--color-primary) 18%, transparent), transparent 55%),
+            radial-gradient(ellipse 50% 60% at 100% 100%, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 50%),
             url('/images/AbstractDesign2.png')
           `,
           backgroundRepeat: "no-repeat, no-repeat, no-repeat",

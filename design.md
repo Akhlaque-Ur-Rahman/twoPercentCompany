@@ -2,6 +2,7 @@
 
 **Product:** 2% Company  
 **Token source:** `app/globals.css`  
+**Scale:** Golden ratio **φ ≈ 1.618** on Material **8px** base → `8 · 13 · 21 · 34 · 55 · 89`  
 **Related:** [prd.md](./prd.md) · [architecture.md](./architecture.md) · [phases.md](./phases.md) · [UI_UX_IMPROVEMENT_PLAN.md](./UI_UX_IMPROVEMENT_PLAN.md)
 
 ---
@@ -15,15 +16,14 @@
 | Visual mode | Dark UI, gold/bronze accent |
 | Voice | Clear, professional, aspirational — short sentences |
 | Logo | `/images/2PercentCompany.png`, `/svg/logo.svg` |
-| Font | **Urbanist** (Google via `next/font`) |
+| UI font | **Urbanist** (`--font-urbanist`) |
+| Display accent | **EB Garamond** italic (`--font-display`) — hero accent only |
 
 **Never use** leftover template brand names in UI copy.
 
 ---
 
 ## 2. Color tokens
-
-### Current (shipped)
 
 | Token | Hex / value | Tailwind | Use |
 |-------|-------------|----------|-----|
@@ -38,51 +38,43 @@
 | `--color-overlay` | `rgb(0 0 0 / 0.5)` | `bg-overlay` | Drawers, modals |
 | `--color-star` | `#8f7330` | `text-star` / `fill-star` | Ratings |
 | `--color-body` | `#ffffff` | `text-body` | Primary readable text |
-| `--radius-control` | `12px` | `rounded-control` | Buttons, inputs, nav |
-| `--radius-media` | `16px` | `rounded-media` | Images, section shells |
-| `--radius-card` | `24px` | `rounded-card` | Cards |
-| `--spacing-page` | `1.5rem` | via `.page-px` | Mobile page padding |
-| `--spacing-page-lg` | `2.5rem` | via `.page-px` @lg | Desktop page padding |
+| `--color-error` | `#c45c5c` | `text-error` / `border-error` | Form errors |
+| `--color-success` | `#1f9d6a` | `text-success` | Success states |
+| `--color-map-property` | `#8f7330` | `bg-map-property` / `text-map-property` | Map property pins |
+| `--color-map-plot` | `#1f9d6a` | `bg-map-plot` / `text-map-plot` | Map plot pins |
 
-**Helpers vs `@theme`:** Spacing and radius values live in `@theme`. Layout/type helpers (`.page-px`, `.section-y*`, `.prose-measure*`, `.type-display` … `.type-stat`) are **custom CSS classes** in `globals.css` below `@theme` — not Tailwind theme keys. Prefer these utilities over one-off clamps.
-
-### Still to add (later)
-
-| Token | Suggested | Use |
-|-------|-----------|-----|
-| `--color-error` | TBD | Form errors |
-| `--color-success` | TBD | Success states |
+**Ambient glow helpers:** `.glow-primary-bottom` · `.glow-primary-top` · `.glow-primary-tr` — use instead of raw `rgba(143,115,48,…)`.
 
 ### Rules
 
 1. **No raw brand hex in components** — use tokens.
-2. **Do not** use Tailwind `yellow-500` / `yellow-600` for brand hover.
+2. **Do not** use Tailwind `yellow-500` / `yellow-600` / `#c9a227` for brand.
 3. Overlays may use `bg-black/50` etc.; brand surfaces prefer `main-bg` / `2nd-bg`.
-4. About page and similar must not re-hardcode `#111111` / `#9e9e9e`.
+4. Map property gold **must** match `--color-primary` (`#8f7330`).
 
 ---
 
 ## 3. Typography
 
-**Family:** Urbanist via `--font-urbanist`.
-
 | Role | Family |
 |------|--------|
-| All `.type-*`, body, buttons, forms | Urbanist (`--font-urbanist`) |
+| `.type-*`, body, buttons, forms | Urbanist |
+| `.type-hero-accent` only | EB Garamond italic |
 
-### Role classes (required — no arbitrary `text-[…]`)
+### Modular scale (φ from 16px body)
 
-| Class | Size | Weight | Use |
-|-------|------|--------|-----|
-| `.type-display` | clamp 24→48 | 600 | Page H1 / hero title |
-| `.type-section` | clamp 20→40 | 600 | Section H2 |
-| `.type-subhead` | clamp 20→32 | 600 | Subsection titles |
-| `.type-card-title` | clamp 18→24 | 600 | Card / block titles |
-| `.type-body` | clamp 14→16 | 400 | Body copy, buttons |
-| `.type-caption` | clamp 13→15 | 400 | Meta, chips, footer links |
-| `.type-label` | 14px | 500 | Form labels, footer headings |
-| `.type-price` | clamp 20→28 | 700 | Listing prices |
-| `.type-stat` | clamp 28→36 | 600 | Big counters |
+| Class | Size (min→max) | Weight | Use |
+|-------|----------------|--------|-----|
+| `.type-caption` | 13→15 | 400 | Meta, chips, footer links |
+| `.type-body` | 14→16 | 400 | Body copy, buttons |
+| `.type-label` | 14 | 500 | Form labels, eyebrows |
+| `.type-card-title` | 16→26 | 600 | Card / block titles |
+| `.type-subhead` | 21→34 | 600 | Subsection titles |
+| `.type-section` | 26→42 | 600 | Section H2 |
+| `.type-display` | 34→55 | 600 | Page H1 |
+| `.type-hero` | 55→89 | 600 | Home hero H1 |
+| `.type-price` | 21→34 | 700 | Listing prices |
+| `.type-stat` | 34→55 | 600 | Big counters |
 
 ### Measure
 
@@ -99,48 +91,55 @@
 
 ---
 
-## 4. Spacing & layout
+## 4. Spacing & layout (φ scale)
 
-| Class / token | Value | Usage |
+| Token / class | Value | Usage |
 |---------------|--------|--------|
-| `.page-px` | 1.5rem → 2.5rem @lg | All page horizontal gutters |
-| `.section-y-sm` | 1.5rem vertical | Compact sections / listing bands |
-| `.section-y` | 2.5rem → 4rem @lg | Standard page sections |
-| `.section-y-lg` | 2.5rem → 3.75rem @lg | Hero / CTA bands |
+| `--spacing-phi-1` | 8px / `0.5rem` | Tight inset |
+| `--spacing-phi-2` | 13px / `0.8125rem` | Compact gap |
+| `--spacing-phi-3` | 21px / `1.3125rem` | Default gap / page gutter (mobile) |
+| `--spacing-phi-4` | 34px / `2.125rem` | Section / page gutter (lg) |
+| `--spacing-phi-5` | 55px / `3.4375rem` | Large section / hero (sm) |
+| `--spacing-phi-6` | 89px / `5.5625rem` | XL section / hero (lg) |
+| `.page-px` | φ3 → φ4 @lg | All page horizontal gutters |
+| `.section-y-sm` | φ3 | Compact bands |
+| `.section-y` | φ4 → φ5 @lg | Standard sections |
+| `.section-y-lg` | φ5 → φ6 @lg | CTA / inquiry bands |
+| `.page-hero-y` | φ4 → φ5 @sm → φ6 @lg | Marketing page heroes |
+| `.gap-stack` | φ3 → φ4 @lg | Vertical section stacks |
+| `.gap-stack-lg` | φ4 → φ5 @lg | Larger stacks |
 | Card internal | `p-4` → `lg:p-6` | Listing cards |
-| Gaps | `gap-4` / `gap-6` / `gap-8` | Prefer 4-based scale |
+| Preferred gaps | `gap-phi-*` or `gap-3`/`gap-5`/`gap-8` (≈13/21/34) | Grids |
 
-**Do not** use `px-6 lg:px-[40px]` / `lg:px-10` for page gutters — use `.page-px`.
+**Do not** use one-off `pt-10 sm:pt-14 lg:pt-20` for heroes — use `.page-hero-y`.  
+**Do not** use `px-6 lg:px-[40px]` for page gutters — use `.page-px`.
 
-**Breakpoint policy (Phase 3 — locked)**
+**Breakpoint policy**
 
 | Breakpoint | Width | Role |
 |------------|-------|------|
-| default | &lt;640px | Mobile first; drawer nav; 1-col carousels/galleries |
-| `sm` | ≥640px | 2-col HomeCTA / light refinements |
-| `md` | ≥768px | Mid layouts (testimonials 2-up, map taller) |
-| `lg` | ≥1024px | Section grids, featured desktop layout |
-| `xl` | ≥1280px | **Desktop Navbar** (hamburger/drawer below `xl`) |
+| default | &lt;640px | Mobile first; drawer nav; 1-col |
+| `sm` | ≥640px | 2-col refinements |
+| `md` | ≥768px | Mid layouts |
+| `lg` | ≥1024px | Section grids, featured desktop |
+| `xl` | ≥1280px | **Desktop Navbar** |
 
 **Rules**
-- Do not move nav to `lg` without UX review — drawer stays until `xl`.
-- Touch targets ≥ **44×44px** (`min-w-11 min-h-11`) for arrows, dots, icon buttons.
-- Prefer `aspect-*` / `min-h-*` over fixed mobile heights for hero/media.
-- Gallery: `slidesPerView: 1` on xs; contain overflow on small screens.
+- Touch targets ≥ **44×44px** (`min-w-11 min-h-11`).
+- Prefer `aspect-*` over fixed mobile heights for hero/media.
 
 ---
 
-## 5. Radius
+## 5. Radius (φ from 8px)
 
-| Element | Class |
-|---------|--------|
-| Cards | `rounded-card` (24px) |
-| Media (images, gallery, shells) | `rounded-media` (16px) |
-| Controls (buttons, inputs, nav pills) | `rounded-control` (12px) |
-| Chips / tags / dots / avatars | `rounded-full` |
-| Mobile drawer top | `rounded-t-2xl` (exception) |
+| Element | Token | Class |
+|---------|-------|--------|
+| Controls | 13px | `rounded-control` |
+| Media | 21px | `rounded-media` |
+| Cards | 34px | `rounded-card` |
+| Chips / avatars | full | `rounded-full` |
 
-Do **not** mix `rounded-lg` / `xl` / `2xl` / arbitrary `rounded-[20px]` on the same control family.
+Do **not** mix `rounded-lg` / `xl` / arbitrary `rounded-[20px]` on the same control family.
 
 ---
 
@@ -150,41 +149,34 @@ Do **not** mix `rounded-lg` / `xl` / `2xl` / arbitrary `rounded-[20px]` on the s
 
 | Variant | Background | Text | Hover | Radius |
 |---------|------------|------|-------|--------|
-| **Primary** | `bg-primary` | `text-black` / `text-main-bg` | `hover:brightness-110` | 12–16px |
-| **Secondary** | `bg-2nd-bg` + `border-header-stroke` | `text-primary` | `hover:bg-main-bg` | 12px |
-| **Ghost** | transparent | `text-primary` | subtle brightness / underline | — |
+| **Primary** | `bg-primary` | `text-on-primary` | `hover:brightness-110` | control |
+| **Secondary** | `bg-2nd-bg` + `border-header-stroke` | `text-primary` | `hover:bg-main-bg` | control |
+| **Ghost** | transparent | `text-primary` | subtle | — |
 
-**Forbidden:** `bg-primary text-white` (contrast fail on `#8f7330`), `hover:bg-yellow-600`, nested `<Link><button>`.
+**Forbidden:** `bg-primary text-white`, `hover:bg-yellow-600`, nested `<Link><button>`.
 
 ### 6.2 Inputs
 
-- Surface: `bg-main-bg` or `bg-2nd-bg` + `border-header-stroke`
-- Focus: `focus-visible:ring-2 ring-primary` (not outline-none alone)
-- Placeholder: `placeholder:text-secondary-text` (not gold)
+- Surface: `bg-main-bg` + `border border-header-stroke` (1px — match SearchField / FilterSelect)
+- Focus: `focus-visible:ring-2 ring-primary`
+- Error: `border-error` + `text-error`
 - Always pair with a visible `<label>`
 
 ### 6.3 Cards
 
-- Container: `bg-2nd-bg border-2 border-header-stroke rounded-[24px]`
+- Container: `bg-2nd-bg border border-header-stroke rounded-card`
 - Hover (optional): `hover:border-primary/40`
-- Image: `rounded-[16px] object-cover` + sensible `sizes`
+- Image: `rounded-media object-cover`
 
 ### 6.4 Section header
 
-Pattern used on Featured / Testimonials / CTA:
-
-1. Optional Stars icon  
-2. H2 (section scale) + short supporting line (`text-secondary-text`)  
-3. Optional secondary “View all” button  
-
-Extract as `SectionHeader` in Phase 1.
+Shared `SectionHeader`: optional icon → H2 (`.type-section`) → supporting `.type-body` → optional CTA.
 
 ### 6.5 Navbar / Footer
 
 - Header: `bg-2nd-bg`, outline `header-stroke`
-- Active nav: `bg-primary text-main-bg`
+- Active nav: `bg-primary text-on-primary`
 - Footer: `bg-2nd-bg`, links hover to `text-primary`
-- Touch targets ≥ 44×44 on mobile controls
 
 ---
 
@@ -192,35 +184,30 @@ Extract as `SectionHeader` in Phase 1.
 
 | Use | Guidance |
 |-----|----------|
-| Drawer open/close | Navbar mobile drawer — transform translate, ~300ms |
-| Card hover | ListingCard subtle scale; gated by `prefers-reduced-motion` |
-| Hero carousel | Swiper autoplay; **paused** when reduced motion |
-| Page sections | Framer Motion OK; use `usePrefersReducedMotion` for enter animations |
-| Global CSS | `@media (prefers-reduced-motion: reduce)` short-circuits CSS transitions |
+| Drawer | Navbar mobile — ~300ms |
+| Card hover | Subtle; gated by `prefers-reduced-motion` |
+| Hero | GSAP / Swiper; paused when reduced motion |
+| Sections | Framer Motion OK with `usePrefersReducedMotion` |
 
-Ship **2–3 intentional** motions (hero, card hover, drawer), not noise.
-
-Shared helpers: `hooks/usePrefersReducedMotion.ts`, empty/error shell `components/ui/PageState.tsx`, toasts `components/ui/AppToast.tsx`.
+Ship **2–3 intentional** motions, not noise.
 
 ---
 
 ## 8. Iconography & media
 
 - UI icons: **lucide-react**
-- Social: **react-icons** (footer)
-- Map pins: custom DivIcons in `utils/MapIcons.ts` (property gold, plot green)
-- Lottie: contact success / 404 — keep file sizes reasonable
-- Images: Next `Image`, AVIF/WebP via config; always meaningful `alt`
+- Social: **react-icons**
+- Map pins: `utils/MapIcons.ts` — property = primary gold, plot = success green
+- Images: Next `Image`, meaningful `alt`
 
 ---
 
 ## 9. Accessibility
 
 1. Contrast: dark text on primary fills; secondary text for muted only.
-2. Keyboard: nav dropdowns, filters, floor-plan lightbox, gallery controls.
+2. Keyboard: nav, filters, lightbox, gallery.
 3. Semantics: buttons for actions; links for navigation; labels for fields.
 4. Focus visible on all interactive elements.
-5. Decorative images: empty alt or marked decorative; content images descriptive.
 
 ---
 
@@ -228,28 +215,22 @@ Shared helpers: `hooks/usePrefersReducedMotion.ts`, empty/error shell `component
 
 | Do | Don’t |
 |----|-------|
-| Use theme tokens | Hardcode `#8f7330`, `#111`, `#9e9e9e` in JSX |
+| Use theme tokens + φ utilities | Hardcode `#8f7330`, `#c9a227`, `#111` |
+| `.page-px` / `.section-y*` / `.page-hero-y` | Random `pt-10 lg:pt-20` / `px-[40px]` |
+| `.type-*` roles | `text-sm` / `text-[14px]` for copy |
 | Primary CTA = gold + black text | White text on gold |
-| `px-6 lg:px-[40px]` page shell | Random `lg:px-24` / `px-[16px]` per page |
-| One card component | Copy-paste card markup 4× |
+| `border-error` / `text-error` | `red-500` / `red-400` |
 | “2% Company” | Template brand leftovers |
-| Placeholder = muted | Placeholder = primary gold |
 
 ---
 
-## 11. Implementation checklist (design debt)
+## 11. Implementation checklist
 
-Tracked in detail in [UI_UX_IMPROVEMENT_PLAN.md](./UI_UX_IMPROVEMENT_PLAN.md). Summary:
-
-- [x] Phase 0 brand/nav blockers  
-- [x] Expand `@theme` tokens  
-- [x] Button / Input / SectionHeader primitives  
-- [x] Shared `(site)` layout shell  
-- [x] CTA hover/text contract  
-- [x] Shared listing card + detail layout  
-- [x] Typography + radius pass on remaining pages  
-- [x] Mobile gallery / arrow overflow / nav a11y (Phase 3)  
-- [x] Form a11y + focus rings site-wide (Phase 4)  
-- [x] Motion / empty states / toast theme (Phase 5)  
+- [x] Phase 0–5 (see UI_UX_IMPROVEMENT_PLAN)
+- [x] Golden-ratio spacing + type scale in `@theme`
+- [x] Unified map gold with primary
+- [x] Error / success / map color tokens
+- [x] Marketing heroes → `.page-hero-y`
+- [x] Brand glow helpers
 
 When tokens change, **update this file’s tables first**, then code.

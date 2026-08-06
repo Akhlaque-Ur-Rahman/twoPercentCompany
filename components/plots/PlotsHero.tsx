@@ -23,7 +23,7 @@ export default function PlotsHero() {
           aria-hidden
         />
         <div
-          className="absolute inset-0 z-[1] opacity-80 bg-[radial-gradient(ellipse_at_top_right,rgba(143,115,48,0.22),transparent_55%)]"
+          className="absolute inset-0 z-[1] opacity-80 glow-primary-tr"
           aria-hidden
         />
 

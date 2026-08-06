@@ -217,8 +217,8 @@ const ListingGrid: React.FC<ListingGridProps> = ({
               {navButtons(false, false, goPrevSpotlight, goNextSpotlight)}
             </div>
           )}
-          <div className="grid grid-cols-12 gap-3 xl:gap-4 h-[600px]">
-            <div className="col-span-7 h-full">
+          <div className="grid grid-cols-12 gap-3 xl:gap-4 h-[420px]">
+            <div className="col-span-7 h-full min-h-0">
               <ListingCard
                 property={hero}
                 href={hrefFor(hero)}
@@ -230,7 +230,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
                 className="h-full"
               />
             </div>
-            <div className="col-span-5 grid grid-rows-2 gap-3 xl:gap-4 h-full">
+            <div className="col-span-5 grid grid-rows-2 gap-3 xl:gap-4 h-full min-h-0">
               {side.map((item, i) => (
                 <ListingCard
                   key={item.id}
@@ -241,7 +241,7 @@ const ListingGrid: React.FC<ListingGridProps> = ({
                   badge={badgeAt(i + 1)}
                   index={i + 1}
                   compact
-                  className="h-full"
+                  className="h-full min-h-0"
                 />
               ))}
             </div>

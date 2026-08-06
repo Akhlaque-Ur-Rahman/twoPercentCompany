@@ -287,17 +287,12 @@ const ContactPage: React.FC = () => {
           aria-hidden
         />
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 bg-gradient-to-t from-black/[0.96] via-black/80 to-black/55"
           aria-hidden
-          style={{
-            backgroundImage: `
-              linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.82) 40%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0.55) 100%),
-              radial-gradient(ellipse 70% 50% at 50% 100%, rgba(143, 115, 48, 0.22), transparent 55%)
-            `,
-          }}
         />
+        <div className="absolute inset-0 glow-primary-bottom" aria-hidden />
 
-        <div className="relative page-px pt-10 pb-10 sm:pt-14 sm:pb-14 lg:pt-20 lg:pb-20 w-full max-w-7xl mx-auto">
+        <div className="relative page-px page-hero-y w-full max-w-7xl mx-auto">
           <motion.div
             className="max-w-2xl w-full"
             initial={reduceMotion ? false : { opacity: 0, y: 20 }}
@@ -398,9 +393,11 @@ const ContactPage: React.FC = () => {
           className="pointer-events-none absolute inset-0"
           aria-hidden
           style={{
-            backgroundImage: `
-              radial-gradient(ellipse 45% 55% at 0% 20%, rgba(143, 115, 48, 0.1), transparent 55%)
-            `,
+            backgroundImage: `radial-gradient(
+              ellipse 45% 55% at 0% 20%,
+              color-mix(in srgb, var(--color-primary) 10%, transparent),
+              transparent 55%
+            )`,
           }}
         />
 
@@ -545,7 +542,7 @@ const ContactPage: React.FC = () => {
                         ))}
                       </div>
                       {errors.type && (
-                        <p className="type-caption text-red-500">
+                        <p className="type-caption text-error">
                           {errors.type.message || "Please select a type"}
                         </p>
                       )}
@@ -580,7 +577,7 @@ const ContactPage: React.FC = () => {
                         )}
                       </div>
                       {errors.purpose && (
-                        <p className="type-caption text-red-500">
+                        <p className="type-caption text-error">
                           {errors.purpose.message || "Please select a purpose"}
                         </p>
                       )}

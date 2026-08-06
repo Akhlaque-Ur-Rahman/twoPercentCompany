@@ -5,7 +5,7 @@ function cx(...parts: Array<string | undefined | false>) {
 }
 
 const fieldBase =
-  "w-full rounded-control bg-main-bg border-2 border-header-stroke text-body placeholder:text-secondary-text px-4 py-3 transition-colors duration-200 focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg disabled:opacity-50";
+  "w-full rounded-control bg-main-bg border border-header-stroke type-body text-body placeholder:text-secondary-text px-4 py-3 transition-colors duration-200 focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg disabled:opacity-50";
 
 type FieldProps = {
   label?: string;
@@ -34,13 +34,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           id={inputId}
           ref={ref}
-          className={cx(fieldBase, error && "border-red-500", className)}
+          className={cx(fieldBase, error && "border-error", className)}
           aria-invalid={!!error}
           aria-describedby={error && inputId ? `${inputId}-error` : undefined}
           {...props}
         />
         {error && (
-          <p id={inputId ? `${inputId}-error` : undefined} className="type-caption text-red-500">
+          <p id={inputId ? `${inputId}-error` : undefined} className="type-caption text-error">
             {error}
           </p>
         )}
@@ -68,13 +68,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           id={inputId}
           ref={ref}
-          className={cx(fieldBase, "resize-none min-h-[100px]", error && "border-red-500", className)}
+          className={cx(fieldBase, "resize-none min-h-[6.25rem]", error && "border-error", className)}
           aria-invalid={!!error}
           aria-describedby={error && inputId ? `${inputId}-error` : undefined}
           {...props}
         />
         {error && (
-          <p id={inputId ? `${inputId}-error` : undefined} className="type-caption text-red-500">
+          <p id={inputId ? `${inputId}-error` : undefined} className="type-caption text-error">
             {error}
           </p>
         )}
@@ -102,7 +102,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         <select
           id={inputId}
           ref={ref}
-          className={cx(fieldBase, error && "border-red-500", className)}
+          className={cx(fieldBase, error && "border-error", className)}
           aria-invalid={!!error}
           aria-describedby={error && inputId ? `${inputId}-error` : undefined}
           {...props}
@@ -110,7 +110,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           {children}
         </select>
         {error && (
-          <p id={inputId ? `${inputId}-error` : undefined} className="type-caption text-red-500">
+          <p id={inputId ? `${inputId}-error` : undefined} className="type-caption text-error">
             {error}
           </p>
         )}

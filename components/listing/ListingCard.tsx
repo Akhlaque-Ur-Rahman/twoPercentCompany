@@ -1,10 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, BedDouble, Bath, Check, MapPin, Ruler, Share2 } from "lucide-react";
+import {
+  ArrowUpRight,
+  BedDouble,
+  Bath,
+  Check,
+  MapPin,
+  MoreVertical,
+  Ruler,
+  Share2,
+} from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { PropertyItem } from "@/data/PropertyData";
 import {
@@ -94,6 +103,9 @@ function inferStatus(
 const actionBtnClass =
   "min-w-10 min-h-10 sm:min-w-11 sm:min-h-11 inline-flex items-center justify-center rounded-full border border-white/20 bg-black/45 text-white backdrop-blur-sm hover:bg-primary hover:text-on-primary hover:border-primary transition-colors";
 
+const menuItemClass =
+  "!w-full !justify-start !rounded-none !border-0 !bg-transparent !px-3 !py-2.5 !min-h-0 type-caption font-semibold text-white/90 hover:!bg-white/10 hover:!text-white";
+
 const ListingCard: React.FC<ListingCardProps> = ({
   property,
   href,
@@ -109,6 +121,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }) => {
   const reduceMotion = usePrefersReducedMotion();
   const [copied, setCopied] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
   const defaultCta = property.type === "plot" ? "View Plot" : "View Home";
   const label = ctaLabel ?? defaultCta;
   const shortCta =
@@ -143,6 +158,26 @@ const ListingCard: React.FC<ListingCardProps> = ({
     findSpec(property.specifications, "area", "sq", "size") ??
     property.tags.find((t) => /sq|acre|katha|marla/i.test(t.label))?.label;
 
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (!menuRef.current?.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
   const handleShare = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -163,6 +198,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
         await navigator.share(shareData);
+        setMenuOpen(false);
         return;
       }
       if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
@@ -170,6 +206,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         setCopied(true);
         window.setTimeout(() => setCopied(false), 1800);
       }
+      setMenuOpen(false);
     } catch {
       // User cancelled share sheet — ignore
     }
@@ -179,14 +216,25 @@ const ListingCard: React.FC<ListingCardProps> = ({
     "group relative overflow-hidden rounded-media border border-white/10 bg-black",
     "transition-[border-color] duration-300 hover:border-primary/45",
     featured
-      ? "min-h-[320px] sm:min-h-[380px] h-full aspect-[4/5] lg:aspect-auto"
+      ? "min-h-[240px] sm:min-h-[280px] h-full aspect-[3/4] lg:aspect-auto lg:min-h-0"
       : compact
-        ? "min-h-[210px] sm:min-h-[230px] h-full"
-        : "aspect-[4/5] sm:aspect-[3/4]",
+        ? "min-h-[160px] sm:min-h-[170px] h-full lg:min-h-0"
+        : "aspect-[3/4] sm:aspect-[4/3]",
     className,
   ]
     .filter(Boolean)
     .join(" ");
+
+  const saveCompareProps = {
+    id: property.id,
+    type: property.type,
+    slug: property.slug,
+    title: property.title,
+    image: property.image,
+    price: property.price,
+    href,
+    address: property.address,
+  } as const;
 
   return (
     <motion.article
@@ -194,7 +242,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.55, delay: reduceMotion ? 0 : index * 0.09 }}
-      className="h-full"
+      className="h-full min-h-0"
     >
       <div className={shellClass}>
         <Image
@@ -230,78 +278,148 @@ const ListingCard: React.FC<ListingCardProps> = ({
         )}
 
         <div className="pointer-events-none absolute left-3 top-3 z-[2] flex flex-wrap gap-1.5 max-w-[70%]">
-          <span className="type-caption tracking-[0.12em] uppercase text-on-primary bg-primary px-2.5 py-1">
+          <span className="type-caption tracking-[0.12em] uppercase text-on-primary bg-primary px-2.5 py-1 rounded-control">
             {listingStatus}
           </span>
           {resolvedBadge && (
-            <span className="type-caption tracking-[0.12em] uppercase text-white/90 border border-white/25 bg-black/50 backdrop-blur-sm px-2.5 py-1">
+            <span className="type-caption tracking-[0.12em] uppercase text-white/90 border border-white/25 bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-control">
               {resolvedBadge}
             </span>
           )}
         </div>
 
         {/* Desktop: reveal on hover · Mobile: always visible (no hover) */}
-        <div className="absolute right-3 top-3 z-[3] flex flex-col items-center gap-2 opacity-100 translate-y-0 lg:opacity-0 lg:-translate-y-1 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300">
-          <SaveListingButton
-            id={property.id}
-            type={property.type}
-            slug={property.slug}
-            title={property.title}
-            image={property.image}
-            price={property.price}
-            href={href}
-            address={property.address}
-          />
-          <CompareListingButton
-            id={property.id}
-            type={property.type}
-            slug={property.slug}
-            title={property.title}
-            image={property.image}
-            price={property.price}
-            href={href}
-            address={property.address}
-            tags={property.tags}
-            specifications={property.specifications}
-          />
-          {href && (
-            <button
-              type="button"
-              onClick={handleShare}
-              className={actionBtnClass}
-              aria-label={copied ? "Link copied" : `Share ${property.title}`}
-            >
-              {copied ? (
-                <Check size={16} aria-hidden />
-              ) : (
-                <Share2 size={16} aria-hidden />
-              )}
-            </button>
-          )}
+        <div
+          className={`absolute right-4 top-4 z-[3] transition-all duration-300 ${
+            menuOpen
+              ? "opacity-100 translate-y-0"
+              : "opacity-100 translate-y-0 lg:opacity-0 lg:-translate-y-1 lg:group-hover:opacity-100 lg:group-hover:translate-y-0"
+          }`}
+        >
+          {compact ? (
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                className={actionBtnClass}
+                aria-label={`More actions for ${property.title}`}
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                aria-controls={menuId}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setMenuOpen((open) => !open);
+                }}
+              >
+                <MoreVertical size={18} aria-hidden />
+              </button>
 
-          {showEnquire && (
-            <a
-              href={enquireHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={actionBtnClass}
-              aria-label={`Enquire about ${property.title} on WhatsApp`}
-            >
-              <FaWhatsapp size={18} aria-hidden />
-            </a>
+              {menuOpen && (
+                <div
+                  id={menuId}
+                  role="menu"
+                  aria-label={`Actions for ${property.title}`}
+                  className="absolute right-full top-0 mr-1.5 w-44 overflow-hidden rounded-control border border-white/15 bg-black/90 py-1 shadow-lg backdrop-blur-md"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div role="none" onClick={() => setMenuOpen(false)}>
+                    <SaveListingButton
+                      {...saveCompareProps}
+                      variant="label"
+                      className={menuItemClass}
+                    />
+                  </div>
+                  <div role="none" onClick={() => setMenuOpen(false)}>
+                    <CompareListingButton
+                      {...saveCompareProps}
+                      tags={property.tags}
+                      specifications={property.specifications}
+                      variant="label"
+                      className={menuItemClass}
+                    />
+                  </div>
+                  {href && (
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={handleShare}
+                      className={`inline-flex w-full items-center gap-2 px-3 py-2.5 type-caption font-semibold text-white/90 hover:bg-white/10 hover:text-white transition-colors ${
+                        copied ? "text-primary" : ""
+                      }`}
+                    >
+                      {copied ? (
+                        <Check size={16} aria-hidden />
+                      ) : (
+                        <Share2 size={16} aria-hidden />
+                      )}
+                      {copied ? "Copied" : "Share"}
+                    </button>
+                  )}
+                  {showEnquire && (
+                    <a
+                      href={enquireHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      role="menuitem"
+                      onClick={() => setMenuOpen(false)}
+                      className="inline-flex w-full items-center gap-2 px-3 py-2.5 type-caption font-semibold text-white/90 hover:bg-white/10 hover:text-white transition-colors"
+                    >
+                      <FaWhatsapp size={16} aria-hidden />
+                      WhatsApp
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-2">
+              <SaveListingButton {...saveCompareProps} />
+              <CompareListingButton
+                {...saveCompareProps}
+                tags={property.tags}
+                specifications={property.specifications}
+              />
+              {href && (
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className={actionBtnClass}
+                  aria-label={
+                    copied ? "Link copied" : `Share ${property.title}`
+                  }
+                >
+                  {copied ? (
+                    <Check size={16} aria-hidden />
+                  ) : (
+                    <Share2 size={16} aria-hidden />
+                  )}
+                </button>
+              )}
+              {showEnquire && (
+                <a
+                  href={enquireHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={actionBtnClass}
+                  aria-label={`Enquire about ${property.title} on WhatsApp`}
+                >
+                  <FaWhatsapp size={18} aria-hidden />
+                </a>
+              )}
+            </div>
           )}
         </div>
 
         <div
           className={`absolute inset-x-0 bottom-0 z-[2] flex flex-col ${
             compact
-              ? "p-3.5 sm:p-4 gap-2"
+              ? "px-3.5 pt-3 pb-4 gap-1.5"
               : featured
-                ? "p-4 sm:p-5 lg:p-7 gap-3"
+                ? "p-4 sm:p-5 lg:p-5 lg:pb-6 gap-2.5"
                 : "p-3.5 sm:p-4 lg:p-5 gap-2.5"
           }`}
         >
-          <div className="pointer-events-none space-y-1.5">
+          <div className={`pointer-events-none ${compact ? "space-y-0.5" : "space-y-1.5"}`}>
             {showAddress && (
               <p className="inline-flex items-center gap-1.5 type-caption text-white/65">
                 <MapPin size={14} className="shrink-0 opacity-80" aria-hidden />
@@ -310,38 +428,43 @@ const ListingCard: React.FC<ListingCardProps> = ({
             )}
 
             <h2
-              className={`text-white font-semibold leading-snug text-balance ${
-                featured ? "type-subhead" : "type-card-title"
+              className={`text-white font-semibold leading-snug text-balance line-clamp-2 ${
+                featured
+                  ? "type-subhead"
+                  : compact
+                    ? "type-body"
+                    : "type-card-title"
               }`}
             >
               {property.title}
             </h2>
-            {(beds || baths || area) ? (
-              <ul className="flex flex-wrap items-center gap-x-3 gap-y-1 type-caption text-white/60">
-                {beds && (
-                  <li className="inline-flex items-center gap-1">
-                    <BedDouble size={13} aria-hidden />
-                    {beds}
-                  </li>
-                )}
-                {baths && (
-                  <li className="inline-flex items-center gap-1">
-                    <Bath size={13} aria-hidden />
-                    {baths}
-                  </li>
-                )}
-                {area && (
-                  <li className="inline-flex items-center gap-1">
-                    <Ruler size={13} aria-hidden />
-                    {area}
-                  </li>
-                )}
-              </ul>
-            ) : (
-              <p className="type-caption text-white/55 line-clamp-2 sm:line-clamp-1">
-                {meta}
-              </p>
-            )}
+            {!compact &&
+              ((beds || baths || area) ? (
+                <ul className="flex flex-wrap items-center gap-x-3 gap-y-1 type-caption text-white/60">
+                  {beds && (
+                    <li className="inline-flex items-center gap-1">
+                      <BedDouble size={13} aria-hidden />
+                      {beds}
+                    </li>
+                  )}
+                  {baths && (
+                    <li className="inline-flex items-center gap-1">
+                      <Bath size={13} aria-hidden />
+                      {baths}
+                    </li>
+                  )}
+                  {area && (
+                    <li className="inline-flex items-center gap-1">
+                      <Ruler size={13} aria-hidden />
+                      {area}
+                    </li>
+                  )}
+                </ul>
+              ) : (
+                <p className="type-caption text-white/55 line-clamp-2 sm:line-clamp-1">
+                  {meta}
+                </p>
+              ))}
           </div>
 
           <div
@@ -351,14 +474,16 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 : "flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
             }`}
           >
-            <div className="pointer-events-none shrink-0">
+            <div className="pointer-events-none shrink-0 min-w-0">
               <p
-                className="type-price text-primary leading-none"
+                className={`text-primary leading-none ${
+                  compact ? "type-card-title font-semibold" : "type-price"
+                }`}
                 title={exactPrice}
               >
                 {displayPrice}
               </p>
-              {pricePerSqFt && (
+              {!compact && pricePerSqFt && (
                 <p className="type-caption text-white/55 mt-1">{pricePerSqFt}</p>
               )}
             </div>
@@ -368,7 +493,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 href={href}
                 className={`group/cta pointer-events-auto relative z-[3] inline-flex items-center justify-center gap-1.5 rounded-control border border-primary font-semibold type-body transition-colors duration-300 bg-primary text-on-primary lg:bg-transparent lg:text-primary hover:bg-primary hover:text-on-primary hover:border-primary ${
                   compact
-                    ? "min-h-10 px-4 shrink-0"
+                    ? "min-h-9 px-3.5 shrink-0"
                     : "min-h-11 w-full sm:w-auto px-5"
                 }`}
               >

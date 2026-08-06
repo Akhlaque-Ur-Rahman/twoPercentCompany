@@ -184,7 +184,7 @@ const HeroSection = () => {
                     key={stat.id}
                     className="hero-reveal flex flex-col items-center justify-center text-center px-2 sm:px-5 will-change-transform"
                   >
-                    <p className="text-base sm:text-xl font-semibold text-white/55 leading-none tracking-tight">
+                    <p className="type-subhead font-semibold text-white/55 leading-none tracking-tight">
                       {stat.value}
                     </p>
                     <p className="type-caption text-white/40 mt-1.5 leading-snug">

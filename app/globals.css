@@ -3,6 +3,12 @@
 @import "lenis/dist/lenis.css";
 
 @theme {
+  /*
+   * Design scale — golden ratio φ ≈ 1.618 from Material 8px base
+   * 8 → 13 → 21 → 34 → 55 → 89
+   */
+  --phi: 1.618;
+
   /* Colors */
   --color-main-bg: #000000;
   --color-2nd-bg: #111111;
@@ -15,19 +21,31 @@
   --color-overlay: rgb(0 0 0 / 0.5);
   --color-star: #8f7330;
   --color-body: #ffffff;
+  --color-error: #c45c5c;
+  --color-success: #1f9d6a;
+  --color-map-property: #8f7330;
+  --color-map-plot: #1f9d6a;
 
   /* Font */
   --font-urbanist: "Urbanist", sans-serif;
   --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
 
-  /* Radius */
-  --radius-control: 12px;
-  --radius-media: 16px;
-  --radius-card: 24px;
+  /* Radius — φ steps from 8px (13 / 21 / 34) */
+  --radius-control: 0.8125rem;
+  --radius-media: 1.3125rem;
+  --radius-card: 2.125rem;
 
-  /* Page spacing (use with p-page / px-page-lg style utilities via spacing scale) */
-  --spacing-page: 1.5rem;
-  --spacing-page-lg: 2.5rem;
+  /* Spacing scale (use as gap-phi-* / p-phi-* / m-phi-*) */
+  --spacing-phi-1: 0.5rem; /* 8px */
+  --spacing-phi-2: 0.8125rem; /* 13px */
+  --spacing-phi-3: 1.3125rem; /* 21px */
+  --spacing-phi-4: 2.125rem; /* 34px */
+  --spacing-phi-5: 3.4375rem; /* 55px */
+  --spacing-phi-6: 5.5625rem; /* 89px */
+
+  /* Page gutters */
+  --spacing-page: var(--spacing-phi-3);
+  --spacing-page-lg: var(--spacing-phi-4);
 }
 
 html {
@@ -54,35 +72,97 @@ body {
   }
 }
 
-/* Section vertical rhythm */
+/* Section vertical rhythm — φ scale */
 .section-y-sm {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-top: var(--spacing-phi-3);
+  padding-bottom: var(--spacing-phi-3);
 }
 
 .section-y {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
+  padding-top: var(--spacing-phi-4);
+  padding-bottom: var(--spacing-phi-4);
 }
 
 .section-y-lg {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: var(--spacing-phi-5);
+  padding-bottom: var(--spacing-phi-5);
+}
+
+/* Marketing page heroes (about / contact / sell / …) */
+.page-hero-y {
+  padding-top: var(--spacing-phi-4);
+  padding-bottom: var(--spacing-phi-4);
+}
+
+@media (min-width: 640px) {
+  .page-hero-y {
+    padding-top: var(--spacing-phi-5);
+    padding-bottom: var(--spacing-phi-5);
+  }
 }
 
 @media (min-width: 1024px) {
   .section-y {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: var(--spacing-phi-5);
+    padding-bottom: var(--spacing-phi-5);
   }
 
   .section-y-lg {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: var(--spacing-phi-6);
+    padding-bottom: var(--spacing-phi-6);
+  }
+
+  .page-hero-y {
+    padding-top: var(--spacing-phi-6);
+    padding-bottom: var(--spacing-phi-6);
   }
 }
 
-/* Readable measure for long copy */
+/* Preferred stack / grid gaps (φ-aligned) */
+.gap-stack {
+  gap: var(--spacing-phi-3);
+}
+
+.gap-stack-lg {
+  gap: var(--spacing-phi-4);
+}
+
+@media (min-width: 1024px) {
+  .gap-stack {
+    gap: var(--spacing-phi-4);
+  }
+
+  .gap-stack-lg {
+    gap: var(--spacing-phi-5);
+  }
+}
+
+/* Brand ambient glow — prefer these over raw rgba(143,115,48,…) */
+.glow-primary-bottom {
+  background-image: radial-gradient(
+    ellipse 70% 50% at 50% 100%,
+    color-mix(in srgb, var(--color-primary) 22%, transparent),
+    transparent 55%
+  );
+}
+
+.glow-primary-top {
+  background-image: radial-gradient(
+    ellipse 70% 50% at 50% 0%,
+    color-mix(in srgb, var(--color-primary) 10%, transparent),
+    transparent 55%
+  );
+}
+
+.glow-primary-tr {
+  background-image: radial-gradient(
+    ellipse at top right,
+    color-mix(in srgb, var(--color-primary) 22%, transparent),
+    transparent 55%
+  );
+}
+
+/* Readable measure — φ×26ch ≈ 42rem body column */
 .prose-measure {
   max-width: 42rem;
 }
@@ -91,18 +171,21 @@ body {
   max-width: 48rem;
 }
 
-/* Typography scale — use these; avoid arbitrary text-[…] */
+/*
+ * Typography — modular scale on φ from 16px body
+ * 13 → 16 → 26 → 34 → 42 → 55 → 89
+ */
 .type-display {
-  font-size: clamp(30px, 6.2vw, 48px);
+  font-size: clamp(2.125rem, 5vw, 3.4375rem); /* 34→55 */
   font-weight: 600;
   line-height: 1.15;
 }
 
 /* Home hero H1 — larger Urbanist; accent span uses complementary display serif */
 .type-hero {
-  font-size: clamp(3rem, 12vw, 5.25rem);
+  font-size: clamp(3.4375rem, 12vw, 5.5625rem); /* 55→89 */
   font-weight: 600;
-  line-height: 1.04;
+  line-height: 1.05;
   letter-spacing: -0.02em;
   text-align: center;
 }
@@ -135,31 +218,31 @@ body {
 }
 
 .type-section {
-  font-size: clamp(20px, 2.5vw, 40px);
+  font-size: clamp(1.625rem, 3vw, 2.625rem); /* 26→42 */
   font-weight: 600;
   line-height: 1.25;
 }
 
 .type-subhead {
-  font-size: clamp(20px, 2.5vw, 32px);
+  font-size: clamp(1.3125rem, 2.5vw, 2.125rem); /* 21→34 */
   font-weight: 600;
   line-height: 1.3;
 }
 
 .type-card-title {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(1rem, 2vw, 1.625rem); /* 16→26 */
   font-weight: 600;
   line-height: 1.3;
 }
 
 .type-body {
-  font-size: clamp(14px, 1.6vw, 16px);
+  font-size: clamp(0.875rem, 1.6vw, 1rem); /* 14→16 */
   font-weight: 400;
   line-height: 1.5;
 }
 
 .type-caption {
-  font-size: clamp(13px, 1.5vw, 15px);
+  font-size: clamp(0.8125rem, 1.4vw, 0.9375rem); /* 13→15 */
   font-weight: 400;
   line-height: 1.4;
 }
@@ -171,13 +254,13 @@ body {
 }
 
 .type-price {
-  font-size: clamp(20px, 2.5vw, 28px);
+  font-size: clamp(1.3125rem, 2.5vw, 2.125rem); /* 21→34 */
   font-weight: 700;
   line-height: 1.2;
 }
 
 .type-stat {
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(2.125rem, 4vw, 3.4375rem); /* 34→55 */
   font-weight: 600;
   line-height: 1.2;
 }
@@ -217,12 +300,12 @@ body {
 .tpc-map-popup-card {
   width: 260px;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: var(--radius-media);
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: #0c0c0c;
   box-shadow:
     0 24px 48px rgba(0, 0, 0, 0.62),
-    0 0 0 1px rgba(201, 162, 39, 0.08);
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 12%, transparent);
   color: var(--color-body);
   font-family: var(--font-urbanist), system-ui, sans-serif;
 }
@@ -255,34 +338,34 @@ body {
 }
 
 .tpc-map-popup-badge--property {
-  background: rgba(201, 162, 39, 0.95);
+  background: color-mix(in srgb, var(--color-map-property) 95%, transparent);
   color: #0a0a0a;
 }
 
 .tpc-map-popup-badge--plot {
-  background: rgba(31, 157, 106, 0.95);
+  background: color-mix(in srgb, var(--color-map-plot) 95%, transparent);
   color: #06140e;
 }
 
 .tpc-map-popup-cta {
-  background: #c9a227 !important;
-  color: #0a0a0a !important;
+  background: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
   border-color: transparent !important;
   border-radius: 999px !important;
   font-weight: 700 !important;
   letter-spacing: 0.01em;
-  box-shadow: 0 8px 20px rgba(201, 162, 39, 0.28);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-primary) 28%, transparent);
 }
 
 .tpc-map-popup-cta:hover {
-  background: #d4b03a !important;
-  color: #0a0a0a !important;
+  background: var(--color-primary-hover) !important;
+  color: var(--color-on-primary) !important;
   filter: none !important;
 }
 
 .tpc-map-popup-cta svg {
-  color: #0a0a0a !important;
-  stroke: #0a0a0a !important;
+  color: var(--color-on-primary) !important;
+  stroke: var(--color-on-primary) !important;
 }
 
 .leaflet-popup-close-button {
@@ -298,7 +381,7 @@ body {
   background: rgba(0, 0, 0, 0.55) !important;
   border: 1px solid rgba(255, 255, 255, 0.16) !important;
   color: #fff !important;
-  font: 600 16px/1 Urbanist, system-ui, sans-serif !important;
+  font: 600 16px/1 var(--font-urbanist), system-ui, sans-serif !important;
   text-align: center !important;
   text-decoration: none !important;
   text-indent: 0 !important;
@@ -346,10 +429,10 @@ body {
   height: 32px;
   padding: 0 12px;
   box-sizing: border-box;
-  border-radius: 10px;
-  background: var(--pin-color, #c9a227);
+  border-radius: var(--radius-control);
+  background: var(--pin-color, var(--color-map-property));
   color: #0a0a0a;
-  font: 700 12px/1 Urbanist, system-ui, sans-serif;
+  font: 700 12px/1 var(--font-urbanist), system-ui, sans-serif;
   letter-spacing: 0.01em;
   white-space: nowrap;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -362,7 +445,7 @@ body {
   width: 10px;
   height: 7px;
   margin-top: -1px;
-  background: var(--pin-color, #c9a227);
+  background: var(--pin-color, var(--color-map-property));
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2));
 }
@@ -378,7 +461,7 @@ body {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.32),
     0 0 0 2px rgba(255, 255, 255, 0.55),
-    0 0 0 4px rgba(201, 162, 39, 0.25);
+    0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 
 .leaflet-marker-icon .marker-icon img {
@@ -391,7 +474,7 @@ body {
 
 .leaflet-control-zoom {
   border: 1px solid var(--color-header-stroke) !important;
-  border-radius: 8px !important;
+  border-radius: var(--radius-control) !important;
   overflow: hidden;
   box-shadow: none !important;
 }
@@ -513,12 +596,12 @@ body {
 
 /* react-toastify — dark shell + primary accent */
 :root {
-  --toastify-color-dark: #111111;
-  --toastify-color-progress-success: #8f7330;
-  --toastify-color-progress-error: #c45c5c;
-  --toastify-color-progress-info: #8f7330;
-  --toastify-color-progress-warning: #b39553;
-  --toastify-text-color-dark: #ffffff;
+  --toastify-color-dark: var(--color-2nd-bg);
+  --toastify-color-progress-success: var(--color-primary);
+  --toastify-color-progress-error: var(--color-error);
+  --toastify-color-progress-info: var(--color-primary);
+  --toastify-color-progress-warning: var(--color-primary-hover);
+  --toastify-text-color-dark: var(--color-body);
   --toastify-font-family: var(--font-urbanist);
 }
 

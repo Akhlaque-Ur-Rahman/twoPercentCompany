@@ -125,7 +125,7 @@ const TestimonialSection = () => {
 
   return (
     <section className="relative page-px section-y border-b border-header-stroke overflow-x-clip">
-      <div className="flex flex-col gap-8 lg:gap-10">
+      <div className="flex flex-col gap-stack-lg">
         <div className="max-w-xl">
           <p className="type-label text-primary mb-2">Testimonials</p>
           <h2 className="type-section text-body">

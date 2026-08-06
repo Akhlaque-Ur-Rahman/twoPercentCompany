@@ -86,7 +86,7 @@ const Newsletter: React.FC = () => {
                 </Button>
               </form>
               {error && (
-                <p className="type-caption text-red-400 mt-2" role="alert">
+                <p className="type-caption text-error mt-2" role="alert">
                   {error}
                 </p>
               )}

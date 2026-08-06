@@ -226,7 +226,7 @@ const MapSection: React.FC<MapSectionProps> = ({
           const isOpen = openMarkerId === key;
           const typeLabel = marker.type === "plot" ? "Plot" : "Property";
           const accent =
-            marker.type === "plot" ? "text-emerald-400" : "text-[#c9a227]";
+            marker.type === "plot" ? "text-map-plot" : "text-map-property";
 
           return (
             <Marker

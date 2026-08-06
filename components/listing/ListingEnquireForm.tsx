@@ -173,7 +173,7 @@ export default function ListingEnquireForm({
         </label>
 
         {status === "error" && error && (
-          <p className="type-caption text-red-400" role="alert">
+          <p className="type-caption text-error" role="alert">
             {error}
           </p>
         )}

@@ -92,8 +92,8 @@ export default function HomeInquirySection() {
         aria-hidden
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 55% 70% at 0% 40%, rgba(143, 115, 48, 0.16), transparent 58%),
-            radial-gradient(ellipse 40% 50% at 100% 80%, rgba(143, 115, 48, 0.07), transparent 52%)
+            radial-gradient(ellipse 55% 70% at 0% 40%, color-mix(in srgb, var(--color-primary) 16%, transparent), transparent 58%),
+            radial-gradient(ellipse 40% 50% at 100% 80%, color-mix(in srgb, var(--color-primary) 7%, transparent), transparent 52%)
           `,
         }}
       />
