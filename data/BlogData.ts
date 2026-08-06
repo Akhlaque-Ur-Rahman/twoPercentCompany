@@ -27,7 +27,7 @@ export const BlogPostData: BlogPost[] = [
 5. Align payment timeline with your loan or funds.
 
 2% Company helps you shortlist verified homes and stay clear on next steps — call or WhatsApp when you are ready to visit.`,
-    cover: "/images/seasidevilla.png",
+    cover: "/images/apartment1.png",
     category: "buying-tips",
     authorName: "2% Company",
     publishedAt: "2026-03-01T10:00:00.000Z",

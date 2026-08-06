@@ -6,7 +6,7 @@ import type { PropertyItem } from "@/data/PropertyData";
 import { matchesLocation } from "@/lib/listingFilters";
 
 const LOCALITY_IMAGES: Record<string, string> = {
-  patna: "/images/seasidevilla.png",
+  patna: "/images/apartment1.png",
   danapur: "/images/property2.webp",
   "bailey-road": "/images/property3.webp",
   kankarbagh: "/images/property4.webp",
@@ -27,7 +27,7 @@ export default function ExploreLocalitiesSection({
     return {
       ...loc,
       count,
-      image: LOCALITY_IMAGES[loc.value] ?? "/images/seasidevilla.png",
+      image: LOCALITY_IMAGES[loc.value] ?? "/images/apartment1.png",
       href: `/properties?location=${loc.value}`,
     };
   });

@@ -68,7 +68,7 @@ const LandlordPage = () => {
       {/* Hero — full-bleed rental visual + brand-first hierarchy */}
       <div className="relative min-h-[calc(100svh-4rem)] sm:min-h-[78svh] lg:min-h-[85svh] flex flex-col justify-end overflow-hidden border-b border-header-stroke">
         <Image
-          src="/images/seasidevilla.png"
+          src="/images/apartment2.png"
           alt=""
           fill
           priority

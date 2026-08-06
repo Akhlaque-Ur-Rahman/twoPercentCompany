@@ -21,7 +21,7 @@ function resolveCover(doc: PostDoc): string {
   if (doc.cover && typeof doc.cover === "object" && doc.cover.url) {
     return doc.cover.url;
   }
-  return "/images/seasidevilla.png";
+  return "/images/apartment1.png";
 }
 
 function mapPost(doc: PostDoc): BlogPost {

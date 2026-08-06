@@ -70,26 +70,54 @@ function isPublicAsset(url: string | null | undefined): url is string {
   );
 }
 
-/** Remap legacy / broken public assets to stable WebP plot images. */
+/** Remap legacy / broken public assets to stable replacements. */
 const PUBLIC_ASSET_ALIASES: Record<string, string> = {
   "/images/plainland.jpg": "/images/plot-plain.webp",
   "/images/plainland.png": "/images/plot-plain.webp",
   "/images/scenary.jpg": "/images/plot-scenery.webp",
   "/images/scenary.png": "/images/plot-scenery.webp",
+  "/images/seasidevilla.png": "/images/apartment1.png",
 };
+
+const FALLBACK_HOME_IMAGE = "/images/apartment1.png";
+
+function isBannedCoverImage(url: string | null | undefined): boolean {
+  if (!url) return true;
+  return /seasidevilla/i.test(url);
+}
 
 function canonicalizePublicAsset(url: string): string {
   return PUBLIC_ASSET_ALIASES[url] ?? url;
 }
 
+function staticImageForSlug(slug: string): string | undefined {
+  return PropertyData.find((item) => item.slug === slug)?.image;
+}
+
 function resolveImage(doc: ListingDoc): string {
+  const fromStatic = staticImageForSlug(doc.slug);
+
   // Prefer stable public paths over CMS media routes (MIME / optimizer issues).
-  if (isPublicAsset(doc.imageUrl)) return canonicalizePublicAsset(doc.imageUrl);
-  return (
-    mediaUrl(doc.image) ||
-    (doc.imageUrl ? canonicalizePublicAsset(doc.imageUrl) : undefined) ||
-    "/images/seasidevilla.png"
-  );
+  // Skip retired seasidevilla so each slug can use its PropertyData cover.
+  if (
+    isPublicAsset(doc.imageUrl) &&
+    !isBannedCoverImage(doc.imageUrl)
+  ) {
+    return canonicalizePublicAsset(doc.imageUrl);
+  }
+
+  const uploaded = mediaUrl(doc.image);
+  if (uploaded && !isBannedCoverImage(uploaded)) return uploaded;
+
+  if (
+    doc.imageUrl &&
+    !isBannedCoverImage(doc.imageUrl) &&
+    !isPublicAsset(doc.imageUrl)
+  ) {
+    return canonicalizePublicAsset(doc.imageUrl);
+  }
+
+  return fromStatic ?? FALLBACK_HOME_IMAGE;
 }
 
 function resolveUrlList(
@@ -99,12 +127,13 @@ function resolveUrlList(
   const fromUploads =
     uploads
       ?.map((item) => mediaUrl(item))
-      .filter((url): url is string => Boolean(url)) ?? [];
+      .filter((url): url is string => Boolean(url) && !isBannedCoverImage(url)) ?? [];
   const fromUrls =
     urlRows
       ?.map((row) => row.url)
       .filter(Boolean)
-      .map(canonicalizePublicAsset) ?? [];
+      .map(canonicalizePublicAsset)
+      .filter((url) => !isBannedCoverImage(url)) ?? [];
   const publicUrls = fromUrls.filter(isPublicAsset);
   if (publicUrls.length) return publicUrls;
   const merged = [...fromUploads, ...fromUrls];
@@ -125,7 +154,7 @@ function mapExpertFromRel(rel: TeamRelDoc | null | undefined): ListingExpert | u
   const photo =
     rel.photoUrl ||
     (rel.photo && typeof rel.photo === "object" ? rel.photo.url : undefined) ||
-    "/images/seasidevilla.png";
+    "/images/avatar1.png";
   return {
     name: rel.name,
     slug: rel.slug,

@@ -23,7 +23,7 @@ function resolvePhoto(doc: TeamDoc): string {
   if (doc.photo && typeof doc.photo === "object" && doc.photo.url) {
     return doc.photo.url;
   }
-  return "/images/seasidevilla.png";
+  return "/images/avatar1.png";
 }
 
 function mapTeamDoc(doc: TeamDoc): TeamMember {

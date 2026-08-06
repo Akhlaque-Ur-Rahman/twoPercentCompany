@@ -13,7 +13,7 @@ const CATEGORIES = [
     label: "Homes for sale",
     description: "Apartments, villas & independent houses",
     href: "/properties",
-    image: "/images/seasidevilla.png",
+    image: "/images/apartment1.png",
     match: (item: PropertyItem) => item.type === "property",
   },
   {
@@ -21,7 +21,7 @@ const CATEGORIES = [
     label: "Rentals",
     description: "Ready-to-move homes for tenants",
     href: "/rent/tenants",
-    image: "/images/property2.webp",
+    image: "/images/apartment2.png",
     match: (item: PropertyItem) => item.type === "property",
   },
   {

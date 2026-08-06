@@ -43,7 +43,7 @@ function gallerySources(property: ListingCardItem): string[] {
 }
 
 const FALLBACK_PLOT = "/images/plot2.webp";
-const FALLBACK_HOME = "/images/seasidevilla.png";
+const FALLBACK_HOME = "/images/apartment1.png";
 
 function ThumbImage({
   src,

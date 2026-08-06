@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "tsx scripts/push-schema-on-build.ts && tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && tsx scripts/seed-content.ts && next build",
+    "build": "tsx scripts/push-schema-on-build.ts && tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && tsx scripts/seed-content.ts && tsx scripts/sync-listing-images.ts && next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && tsx scripts/seed-content.ts",
+    "seed": "tsx scripts/seed-listings.ts && tsx scripts/seed-media.ts && tsx scripts/seed-content.ts && tsx scripts/sync-listing-images.ts",
+    "sync:images": "tsx scripts/sync-listing-images.ts",
     "push:schema": "tsx scripts/push-schema.ts",
     "payload": "payload",
     "generate:types": "payload generate:types",
