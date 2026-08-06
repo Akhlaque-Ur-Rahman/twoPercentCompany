@@ -226,7 +226,7 @@ const MapSection: React.FC<MapSectionProps> = ({
           const isOpen = openMarkerId === key;
           const typeLabel = marker.type === "plot" ? "Plot" : "Property";
           const accent =
-            marker.type === "plot" ? "text-emerald-400" : "text-primary";
+            marker.type === "plot" ? "text-emerald-400" : "text-[#c9a227]";
 
           return (
             <Marker
@@ -255,35 +255,36 @@ const MapSection: React.FC<MapSectionProps> = ({
                 },
               }}
             >
-              <Popup className="tpc-map-popup" maxWidth={240} minWidth={220}>
+              <Popup className="tpc-map-popup" maxWidth={280} minWidth={260}>
                 <article className="tpc-map-popup-card">
                   {marker.image ? (
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-2nd-bg">
+                    <div className="tpc-map-popup-media relative aspect-[16/10] w-full overflow-hidden bg-2nd-bg">
                       <Image
                         src={marker.image}
                         alt={marker.title}
                         fill
-                        sizes="220px"
+                        sizes="260px"
                         className="object-cover"
                         loading="lazy"
                       />
+                      <div className="tpc-map-popup-media__fade" aria-hidden />
                       <span
-                        className={`absolute left-2.5 bottom-2.5 rounded-md px-2 py-0.5 type-label font-semibold tracking-wide uppercase backdrop-blur-sm ${
+                        className={`tpc-map-popup-badge absolute left-3 top-3 ${
                           marker.type === "plot"
-                            ? "bg-emerald-900/80 text-emerald-200"
-                            : "bg-primary/90 text-on-primary"
+                            ? "tpc-map-popup-badge--plot"
+                            : "tpc-map-popup-badge--property"
                         }`}
                       >
                         {typeLabel}
                       </span>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-between gap-2 px-3.5 pt-3.5">
+                    <div className="flex items-center gap-2 px-4 pt-4">
                       <span
-                        className={`rounded-md px-2 py-0.5 type-label font-semibold tracking-wide uppercase ${
+                        className={`tpc-map-popup-badge ${
                           marker.type === "plot"
-                            ? "bg-emerald-900/60 text-emerald-300"
-                            : "bg-primary/20 text-primary"
+                            ? "tpc-map-popup-badge--plot"
+                            : "tpc-map-popup-badge--property"
                         }`}
                       >
                         {typeLabel}
@@ -291,19 +292,19 @@ const MapSection: React.FC<MapSectionProps> = ({
                     </div>
                   )}
 
-                  <div className="flex flex-col gap-2 px-3.5 pt-3 pb-3.5">
-                    <h3 className="font-semibold type-body text-body text-center leading-snug line-clamp-2">
-                      {marker.title}
-                    </h3>
-                    {marker.price && (
-                      <p
-                        className={`type-caption font-semibold text-center ${accent}`}
-                      >
-                        {formatPrice(marker.price)}
-                      </p>
-                    )}
+                  <div className="flex flex-col gap-2.5 px-4 pt-3.5 pb-4">
+                    <div className="space-y-1">
+                      <h3 className="font-semibold type-body text-body leading-snug line-clamp-2">
+                        {marker.title}
+                      </h3>
+                      {marker.price && (
+                        <p className={`type-body font-bold tracking-tight ${accent}`}>
+                          {formatPrice(marker.price)}
+                        </p>
+                      )}
+                    </div>
                     {marker.address && (
-                      <p className="type-caption text-secondary-text text-center leading-relaxed line-clamp-2">
+                      <p className="type-caption text-secondary-text leading-relaxed line-clamp-2">
                         {marker.address}
                       </p>
                     )}
@@ -312,10 +313,10 @@ const MapSection: React.FC<MapSectionProps> = ({
                         href={href}
                         variant="primary"
                         size="sm"
-                        className="mt-1 w-full"
+                        className="tpc-map-popup-cta mt-1 w-full"
                       >
                         View Details
-                        <ArrowUpRight size={15} aria-hidden />
+                        <ArrowUpRight size={15} strokeWidth={2.25} aria-hidden />
                       </Button>
                     )}
                   </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Urbanist } from "next/font/google";
+import { EB_Garamond, Urbanist } from "next/font/google";
 import "./globals.css";
 import { OrganizationSchema } from "@/components/StructuredData";
 
@@ -7,6 +7,14 @@ const urbanist = Urbanist({
   subsets: ["latin"],
   variable: "--font-urbanist",
   display: "swap",
+});
+
+const ebGaramond = EB_Garamond({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -73,7 +81,7 @@ export default function RootLayout({
         <OrganizationSchema />
       </head>
       <body
-        className={`${urbanist.variable} font-urbanist antialiased`}
+        className={`${urbanist.variable} ${ebGaramond.variable} font-urbanist antialiased`}
       >
         {children}
       </body>

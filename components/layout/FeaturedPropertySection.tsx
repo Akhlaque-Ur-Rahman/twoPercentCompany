@@ -4,7 +4,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 const FeaturedPropertySection = () => {
   return (
-    <section className="page-px section-y lg:space-y-6 border-b border-header-stroke">
+    <section className="page-px section-y space-y-6 lg:space-y-8 border-b border-header-stroke">
       <div className="space-y-2">
         <p className="type-label text-primary">Homes</p>
         <SectionHeader

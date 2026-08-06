@@ -11,7 +11,7 @@ const IntentPathSection = () => {
   const reduceMotion = usePrefersReducedMotion();
 
   return (
-    <section className="page-px section-y border-b border-header-stroke">
+    <section className="page-px pt-8 pb-10 sm:pt-12 sm:pb-12 lg:pt-16 lg:pb-16 border-b border-header-stroke">
       <div className="flex flex-col gap-8 lg:gap-10">
         <motion.div
           className="max-w-2xl"

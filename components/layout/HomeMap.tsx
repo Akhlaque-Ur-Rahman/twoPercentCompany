@@ -61,7 +61,8 @@ export default function HomeMap({
             {propertyCount > 0 && (
               <span className="inline-flex items-center gap-2">
                 <span
-                  className="size-2.5 rounded-full bg-primary shrink-0"
+                  className="size-2.5 rounded-full shrink-0"
+                  style={{ background: "#c9a227" }}
                   aria-hidden
                 />
                 Properties ({propertyCount})
@@ -70,7 +71,8 @@ export default function HomeMap({
             {plotCount > 0 && (
               <span className="inline-flex items-center gap-2">
                 <span
-                  className="size-2.5 rounded-full bg-emerald-600 shrink-0"
+                  className="size-2.5 rounded-full shrink-0"
+                  style={{ background: "#1f9d6a" }}
                   aria-hidden
                 />
                 Plots ({plotCount})

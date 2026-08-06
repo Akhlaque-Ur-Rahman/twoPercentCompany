@@ -1,17 +1,120 @@
 "use client";
 
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
 import { HeroSectionSlide, HeroStats } from "@/data/HeroSectionData";
 import HeroPropertySearch from "@/components/layout/HeroPropertySearch";
 
 const HeroSection = () => {
   const slide = HeroSectionSlide;
 
+  const rootRef = useRef<HTMLElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const lineRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const lines = lineRefs.current.filter(Boolean) as HTMLSpanElement[];
+    const statItems = statsRef.current
+      ? Array.from(statsRef.current.children)
+      : [];
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        root.classList.remove("hero-pending");
+      });
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.out" },
+          onComplete: () => {
+            root.classList.remove("hero-pending");
+          },
+        });
+
+        // CSS already hides .hero-reveal — only set transform offsets here
+        gsap.set(eyebrowRef.current, { y: 28 });
+        gsap.set(lines, { y: 52 });
+        gsap.set(descriptionRef.current, { y: 22 });
+        gsap.set(statItems, { y: 30 });
+        gsap.set(searchRef.current, { y: 80 });
+
+        tl.to(
+          imageRef.current,
+          { scale: 1, opacity: 1, duration: 1.9, ease: "power2.out" },
+          0
+        )
+          .to(overlayRef.current, { opacity: 1, duration: 1.15 }, 0.1)
+          .to(
+            eyebrowRef.current,
+            { y: 0, opacity: 1, duration: 0.72 },
+            0.28
+          )
+          .to(
+            lines,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.92,
+              stagger: 0.13,
+            },
+            0.42
+          )
+          .to(
+            descriptionRef.current,
+            { y: 0, opacity: 1, duration: 0.65 },
+            0.92
+          )
+          .to(
+            statItems,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.68,
+              stagger: 0.09,
+            },
+            1.02
+          )
+          .to(
+            searchRef.current,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.95,
+              ease: "power3.out",
+            },
+            1.12
+          );
+
+        return () => {
+          tl.kill();
+        };
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative w-full overflow-x-clip -mt-16 lg:-mt-[4.5rem] border-b border-header-stroke">
-      <div className="relative min-h-[100svh] lg:min-h-[680px] w-full max-w-[100vw]">
-        <div className="absolute inset-0 z-0">
+    <section
+      ref={rootRef}
+      className="hero-pending relative w-full -mt-16 lg:-mt-[4.5rem]"
+    >
+      <div className="relative min-h-[100svh] w-full max-w-[100vw] overflow-x-clip border-b border-header-stroke sm:min-h-[92svh] lg:min-h-[680px]">
+        <div
+          ref={imageRef}
+          className="hero-reveal-media absolute inset-0 z-0 will-change-transform origin-center"
+        >
           <Image
             src={slide.imageMain}
             alt=""
@@ -23,52 +126,84 @@ const HeroSection = () => {
         </div>
 
         <div
-          className="absolute inset-0 z-[1] bg-gradient-to-t from-black via-black/70 to-black/35"
+          ref={overlayRef}
+          className="hero-reveal-overlay absolute inset-0 z-[1] bg-gradient-to-t from-black via-black/75 to-black/40"
           aria-hidden
         />
 
-        {/*
-          Mobile spacing rules:
-          - Top spacer keeps image breathing room
-          - Fixed gap between headline and search (not flex-grow — that was pushing search under sticky bar)
-          - Large bottom pad clears Call/WhatsApp sticky bar so Search CTA stays fully visible
-        */}
-        <div className="relative z-10 flex min-h-[100svh] w-full flex-col page-px pt-20 pb-[calc(6.75rem+env(safe-area-inset-bottom))] sm:pt-28 sm:pb-12 lg:justify-center lg:pb-14 lg:pt-28">
-          <div className="flex-1 min-h-[12vh] sm:min-h-0 lg:hidden" aria-hidden />
+        <div className="relative z-10 flex min-h-[100svh] w-full flex-col page-px pt-[5.5rem] pb-[calc(11rem+env(safe-area-inset-bottom))] sm:min-h-[92svh] sm:pt-28 sm:pb-32 lg:min-h-[680px] lg:justify-center lg:pb-36 lg:pt-28">
+          <div className="flex flex-1 flex-col justify-center">
+            <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-5 text-center sm:gap-6 sm:max-w-3xl">
+              <p
+                ref={eyebrowRef}
+                className="hero-reveal type-label inline-block text-primary font-semibold tracking-[0.14em] sm:tracking-[0.12em] bg-black/55 sm:bg-primary/15 border border-primary/60 sm:border-primary/35 rounded-control px-3.5 py-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)] will-change-transform"
+              >
+                {slide.eyebrow}
+              </p>
 
-          <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-            <p className="type-label inline-block text-primary font-semibold tracking-[0.14em] sm:tracking-[0.12em] bg-black/55 sm:bg-primary/15 border border-primary/60 sm:border-primary/35 rounded-control px-3.5 py-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.35)]">
-              {slide.eyebrow}
-            </p>
-            <h1 className="type-display text-white leading-[1.08] mt-3 sm:mt-3 max-w-[14ch] sm:max-w-2xl text-balance">
-              {slide.heading}
-            </h1>
-            <p className="hidden sm:block text-white/80 type-body mt-3 max-w-xl text-balance">
-              {slide.description}
-            </p>
-          </div>
-
-          <div className="mx-auto mt-6 sm:mt-7 w-full max-w-5xl shrink-0">
-            <HeroPropertySearch trustSignals={slide.trustSignals} />
-          </div>
-
-          <div className="mx-auto mt-6 hidden sm:block w-full max-w-3xl">
-            <div className="grid grid-cols-3 gap-0 divide-x divide-white/10">
-              {HeroStats.map((stat) => (
-                <div
-                  key={stat.id}
-                  className="flex flex-col items-center text-center px-3 sm:px-5"
+              <h1 className="type-hero w-full text-center text-white">
+                <span
+                  ref={(el) => {
+                    lineRefs.current[0] = el;
+                  }}
+                  className="hero-reveal block will-change-transform"
                 >
-                  <p className="text-lg sm:text-xl font-semibold text-white/90 leading-none tracking-tight">
-                    {stat.value}
-                  </p>
-                  <p className="type-caption text-white/50 mt-1.5">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
+                  {slide.heading}
+                </span>
+                <span
+                  ref={(el) => {
+                    lineRefs.current[1] = el;
+                  }}
+                  className="hero-reveal type-hero-accent text-primary block will-change-transform"
+                >
+                  {slide.headingAccent}
+                </span>
+                <span
+                  ref={(el) => {
+                    lineRefs.current[2] = el;
+                  }}
+                  className="hero-reveal block will-change-transform"
+                >
+                  {slide.headingAfter}
+                </span>
+              </h1>
+
+              <p
+                ref={descriptionRef}
+                className="hero-reveal hidden sm:block text-white/80 type-body max-w-xl text-balance text-center will-change-transform"
+              >
+                {slide.description}
+              </p>
+
+              <div
+                ref={statsRef}
+                className="grid w-full max-w-3xl grid-cols-3 gap-0 divide-x divide-white/10"
+              >
+                {HeroStats.map((stat) => (
+                  <div
+                    key={stat.id}
+                    className="hero-reveal flex flex-col items-center justify-center text-center px-2 sm:px-5 will-change-transform"
+                  >
+                    <p className="text-base sm:text-xl font-semibold text-white/55 leading-none tracking-tight">
+                      {stat.value}
+                    </p>
+                    <p className="type-caption text-white/40 mt-1.5 leading-snug">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div
+        ref={searchRef}
+        className="hero-reveal relative z-20 page-px -mt-[11rem] sm:-mt-24 lg:-mt-[5.5rem] will-change-transform"
+      >
+        <div className="mx-auto w-full max-w-5xl pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:pb-0">
+          <HeroPropertySearch trustSignals={slide.trustSignals} />
         </div>
       </div>
     </section>

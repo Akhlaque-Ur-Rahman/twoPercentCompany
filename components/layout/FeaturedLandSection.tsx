@@ -17,7 +17,7 @@ const FeaturedLandSection = () => {
         }}
         aria-hidden
       />
-      <div className="relative page-px section-y lg:space-y-6">
+      <div className="relative page-px section-y space-y-6 lg:space-y-8">
         <div className="space-y-2">
           <p className="type-label text-primary">Land &amp; plots</p>
           <SectionHeader

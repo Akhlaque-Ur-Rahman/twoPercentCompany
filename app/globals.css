@@ -18,6 +18,7 @@
 
   /* Font */
   --font-urbanist: "Urbanist", sans-serif;
+  --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
 
   /* Radius */
   --radius-control: 12px;
@@ -97,6 +98,42 @@ body {
   line-height: 1.15;
 }
 
+/* Home hero H1 — larger Urbanist; accent span uses complementary display serif */
+.type-hero {
+  font-size: clamp(3rem, 12vw, 5.25rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.type-hero-accent {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Hero GSAP intro: hide before JS so content never flashes then vanishes */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-pending .hero-reveal {
+    opacity: 0;
+  }
+
+  .hero-pending .hero-reveal-media {
+    opacity: 0.75;
+    transform: scale(1.14);
+  }
+
+  .hero-pending .hero-reveal-overlay {
+    opacity: 0;
+  }
+}
+
 .type-section {
   font-size: clamp(20px, 2.5vw, 40px);
   font-weight: 600;
@@ -172,50 +209,117 @@ body {
   overflow: visible;
 }
 
+/* Leaflet sets `.leaflet-container a { color: #0078A8 }` — beat that for CTAs */
+.leaflet-container .tpc-map-popup-card a {
+  color: inherit;
+}
+
 .tpc-map-popup-card {
-  width: 220px;
+  width: 260px;
   overflow: hidden;
-  border-radius: var(--radius-media);
-  border: 1px solid var(--color-header-stroke);
-  background: var(--color-main-bg);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0c0c0c;
   box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(143, 115, 48, 0.12);
+    0 24px 48px rgba(0, 0, 0, 0.62),
+    0 0 0 1px rgba(201, 162, 39, 0.08);
   color: var(--color-body);
   font-family: var(--font-urbanist), system-ui, sans-serif;
 }
 
+.tpc-map-popup-media__fade {
+  position: absolute;
+  inset: auto 0 0;
+  height: 42%;
+  background: linear-gradient(
+    to top,
+    rgba(12, 12, 12, 0.92) 0%,
+    rgba(12, 12, 12, 0.35) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.tpc-map-popup-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.tpc-map-popup-badge--property {
+  background: rgba(201, 162, 39, 0.95);
+  color: #0a0a0a;
+}
+
+.tpc-map-popup-badge--plot {
+  background: rgba(31, 157, 106, 0.95);
+  color: #06140e;
+}
+
+.tpc-map-popup-cta {
+  background: #c9a227 !important;
+  color: #0a0a0a !important;
+  border-color: transparent !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 8px 20px rgba(201, 162, 39, 0.28);
+}
+
+.tpc-map-popup-cta:hover {
+  background: #d4b03a !important;
+  color: #0a0a0a !important;
+  filter: none !important;
+}
+
+.tpc-map-popup-cta svg {
+  color: #0a0a0a !important;
+  stroke: #0a0a0a !important;
+}
+
 .leaflet-popup-close-button {
-  top: 8px !important;
-  right: 8px !important;
-  width: 28px !important;
-  height: 28px !important;
+  top: 10px !important;
+  right: 10px !important;
+  width: 30px !important;
+  height: 30px !important;
   padding: 0 !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
-  border-radius: 8px !important;
-  background: rgba(0, 0, 0, 0.62) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 999px !important;
+  background: rgba(0, 0, 0, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   color: #fff !important;
-  font: 700 18px/1 Urbanist, system-ui, sans-serif !important;
+  font: 600 16px/1 Urbanist, system-ui, sans-serif !important;
   text-align: center !important;
   text-decoration: none !important;
   text-indent: 0 !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 20 !important;
   transition:
     background 0.15s ease,
     color 0.15s ease,
-    border-color 0.15s ease;
+    border-color 0.15s ease,
+    transform 0.15s ease;
 }
 
 .leaflet-popup-close-button:hover {
-  background: rgba(0, 0, 0, 0.85) !important;
-  color: var(--color-primary) !important;
-  border-color: rgba(143, 115, 48, 0.45) !important;
+  background: rgba(0, 0, 0, 0.82) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  transform: scale(1.04);
 }
 
-/* Price chip pins */
+/* Price chip pins — compact, high-contrast discovery chips */
 .tpc-price-pin-wrap {
   background: transparent !important;
   border: none !important;
@@ -226,11 +330,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.55));
   transform-origin: bottom center;
   transition:
-    transform 0.18s ease,
-    filter 0.18s ease;
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.2s ease;
   cursor: pointer;
 }
 
@@ -239,40 +343,42 @@ body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 30px;
-  padding: 0 11px;
+  height: 32px;
+  padding: 0 12px;
   box-sizing: border-box;
-  border-radius: 999px;
-  background: var(--pin-color, #8f7330);
+  border-radius: 10px;
+  background: var(--pin-color, #c9a227);
   color: #0a0a0a;
-  font: 600 11px/1 Urbanist, system-ui, sans-serif;
+  font: 700 12px/1 Urbanist, system-ui, sans-serif;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 1px 0 rgba(0, 0, 0, 0.15);
 }
 
 .tpc-price-pin__tip {
-  width: 0;
-  height: 0;
+  width: 10px;
+  height: 7px;
   margin-top: -1px;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 8px solid var(--pin-color, #8f7330);
-  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
+  background: var(--pin-color, #c9a227);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2));
 }
 
 .tpc-price-pin-wrap:hover .tpc-price-pin,
 .tpc-price-pin.is-active {
-  transform: translateY(-3px) scale(1.06);
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.55));
+  transform: translateY(-4px) scale(1.05);
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.6));
   z-index: 2;
 }
 
 .tpc-price-pin.is-active .tpc-price-pin__chip {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 0 0 2px rgba(255, 255, 255, 0.35);
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 0 0 2px rgba(255, 255, 255, 0.55),
+    0 0 0 4px rgba(201, 162, 39, 0.25);
 }
 
 .leaflet-marker-icon .marker-icon img {

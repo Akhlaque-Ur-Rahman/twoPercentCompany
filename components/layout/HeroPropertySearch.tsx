@@ -230,7 +230,7 @@ const HeroPropertySearch = ({ trustSignals }: HeroPropertySearchProps) => {
     <div className="w-full">
       <form
         onSubmit={handleSubmit}
-        className="rounded-media border border-white/15 bg-black/35 sm:bg-black/40 backdrop-blur-sm shadow-[0_8px_28px_rgba(0,0,0,0.22)] overflow-visible"
+        className="rounded-media border border-white/15 bg-black/55 sm:bg-black/50 backdrop-blur-md shadow-[0_12px_40px_rgba(0,0,0,0.35)] overflow-visible"
       >
         <div
           role="tablist"
@@ -341,13 +341,13 @@ const HeroPropertySearch = ({ trustSignals }: HeroPropertySearchProps) => {
         </AnimatePresence>
       </form>
 
-      <ul className="mt-3 sm:mt-4 hidden sm:flex flex-wrap justify-center gap-x-3 gap-y-2 sm:gap-x-5">
+      <ul className="mt-3 sm:mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2.5 sm:gap-x-5">
         {trustSignals.map((signal) => {
           const Icon = trustIcons[signal.icon];
           return (
             <li
               key={signal.id}
-              className="inline-flex items-center gap-1.5 type-caption text-white/65"
+              className="inline-flex shrink-0 items-center gap-1.5 type-caption text-white/65"
             >
               <Icon size={13} className="text-primary shrink-0" aria-hidden />
               <span>{signal.label}</span>

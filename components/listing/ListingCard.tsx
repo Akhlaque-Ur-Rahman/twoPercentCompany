@@ -241,7 +241,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         </div>
 
         {/* Desktop: reveal on hover · Mobile: always visible (no hover) */}
-        <div className="absolute right-3 top-3 z-[3] flex items-center gap-2 opacity-100 translate-y-0 lg:opacity-0 lg:-translate-y-1 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300">
+        <div className="absolute right-3 top-3 z-[3] flex flex-col items-center gap-2 opacity-100 translate-y-0 lg:opacity-0 lg:-translate-y-1 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-300">
           <SaveListingButton
             id={property.id}
             type={property.type}

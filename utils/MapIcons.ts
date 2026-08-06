@@ -10,27 +10,28 @@ function escapeHtml(text: string): string {
 
 function createPinIcon(color: string) {
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="41" viewBox="0 0 25 41">
-      <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 7.5 12.5 28.5 12.5 28.5S25 20 25 12.5C25 5.6 19.4 0 12.5 0z" fill="${color}" stroke="black"/>
-      <circle cx="12.5" cy="12.5" r="5" fill="white" stroke="black"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36" fill="none">
+      <path d="M14 0C6.268 0 0 6.268 0 14c0 9.5 14 22 14 22s14-12.5 14-22C28 6.268 21.732 0 14 0z" fill="${color}"/>
+      <circle cx="14" cy="14" r="5.5" fill="#0a0a0a" fill-opacity="0.22"/>
+      <circle cx="14" cy="14" r="3.25" fill="#fff"/>
     </svg>
   `;
 
   return new L.DivIcon({
     html: `<div class="marker-icon group">
-             <div class="transition-transform duration-200 group-hover:scale-100 group-[.active]:scale-100">
+             <div class="transition-transform duration-200 group-hover:scale-110 group-[.active]:scale-110">
                <img src="data:image/svg+xml;base64,${btoa(svg)}" alt="" />
              </div>
            </div>`,
     className: "",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
+    iconSize: [28, 36],
+    iconAnchor: [14, 36],
+    popupAnchor: [0, -32],
   });
 }
 
-export const PROPERTY_PIN_COLOR = "#8f7330";
-export const PLOT_PIN_COLOR = "#2f6b3c";
+export const PROPERTY_PIN_COLOR = "#c9a227";
+export const PLOT_PIN_COLOR = "#1f9d6a";
 
 /** Compact price chip pin for map discovery — width scales with label length */
 export function createPriceIcon(
@@ -38,9 +39,9 @@ export function createPriceIcon(
   color = PROPERTY_PIN_COLOR
 ): L.DivIcon {
   const label = escapeHtml(priceLabel);
-  const width = Math.min(148, Math.max(58, Math.ceil(priceLabel.length * 7.4) + 22));
-  const chipH = 30;
-  const tipH = 8;
+  const width = Math.min(156, Math.max(64, Math.ceil(priceLabel.length * 7.6) + 28));
+  const chipH = 32;
+  const tipH = 7;
   const totalH = chipH + tipH;
 
   return new L.DivIcon({

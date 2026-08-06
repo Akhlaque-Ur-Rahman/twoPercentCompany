@@ -13,6 +13,8 @@ export interface HeroTrustSignal {
 export interface HeroSlide {
   eyebrow: string;
   heading: string;
+  headingAccent: string;
+  headingAfter: string;
   description: string;
   imageMain: string;
   trustSignals: HeroTrustSignal[];
@@ -20,7 +22,9 @@ export interface HeroSlide {
 
 export const HeroSectionSlide: HeroSlide = {
   eyebrow: "BUY · SELL · RENT IN PATNA",
-  heading: "Discover your dream property in Patna",
+  heading: "Discover your",
+  headingAccent: "dream property",
+  headingAfter: "in Patna",
   description:
     "Explore verified homes and investments matched to how you want to live — and grow.",
   imageMain: "/images/luxury-house.png",
