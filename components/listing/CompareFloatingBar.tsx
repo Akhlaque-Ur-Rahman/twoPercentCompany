@@ -17,10 +17,10 @@ export default function CompareFloatingBar() {
   const hidden = HIDDEN_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
   );
-
-  if (!hydrated || count === 0 || hidden) return null;
-
   const onComparePage = pathname === "/compare";
+
+  // Full compare page already manages the set — avoid duplicate chrome
+  if (!hydrated || count === 0 || hidden || onComparePage) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-[55] pointer-events-none">
@@ -63,14 +63,12 @@ export default function CompareFloatingBar() {
             >
               Clear
             </button>
-            {!onComparePage && (
-              <Link
-                href="/compare"
-                className="min-h-10 px-4 inline-flex items-center justify-center rounded-control bg-primary text-on-primary type-caption font-semibold hover:brightness-110 transition"
-              >
-                Open compare
-              </Link>
-            )}
+            <Link
+              href="/compare"
+              className="min-h-10 px-4 inline-flex items-center justify-center rounded-control bg-primary text-on-primary type-caption font-semibold hover:brightness-110 transition"
+            >
+              Open compare
+            </Link>
           </div>
         </div>
         {count === 1 && (

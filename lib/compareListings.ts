@@ -78,3 +78,49 @@ export function specValue(
   );
   return tag?.label ?? "—";
 }
+
+/** First positive number from a display string (e.g. "2BHK", "2 Bathrooms"). */
+export function parseSpecNumber(value: string): number | null {
+  if (!value || value === "—") return null;
+  const m = value.replace(/,/g, "").match(/(\d+(?:\.\d+)?)/);
+  if (!m) return null;
+  const n = Number(m[1]);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+export type CompareWinnerDirection = "min" | "max";
+
+/**
+ * Returns indices that share the best numeric value.
+ * Ties keep all winners; missing values are ignored.
+ */
+export function bestValueIndices(
+  values: Array<number | null>,
+  direction: CompareWinnerDirection
+): Set<number> {
+  const present = values
+    .map((v, i) => (v == null ? null : { v, i }))
+    .filter((x): x is { v: number; i: number } => x != null);
+
+  if (present.length < 2) return new Set();
+
+  const target =
+    direction === "min"
+      ? Math.min(...present.map((p) => p.v))
+      : Math.max(...present.map((p) => p.v));
+
+  // Only highlight when there is a real spread
+  const hasSpread = present.some((p) => p.v !== target);
+  if (!hasSpread) return new Set();
+
+  return new Set(present.filter((p) => p.v === target).map((p) => p.i));
+}
+
+export function highlightLabels(item: CompareListingItem): string[] {
+  const fromFeatures = (item.features ?? []).filter(Boolean);
+  if (fromFeatures.length) return fromFeatures.slice(0, 4);
+  return (item.tags ?? [])
+    .map((t) => t.label)
+    .filter(Boolean)
+    .slice(0, 4);
+}
