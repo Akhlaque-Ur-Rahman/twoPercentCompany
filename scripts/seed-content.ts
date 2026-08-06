@@ -38,7 +38,35 @@ async function seed() {
       console.log(`[seed-content] team — ${m.slug}`);
     }
   } else {
-    console.log("[seed-content] Skip team-members (already seeded)");
+    const team = await payload.find({
+      collection: "team-members",
+      limit: 50,
+      depth: 0,
+      pagination: false,
+    });
+    let synced = 0;
+    for (const doc of team.docs) {
+      const source = TeamMemberData.find((m) => m.slug === doc.slug);
+      if (!source?.photo) continue;
+      const current =
+        typeof doc.photoUrl === "string" ? doc.photoUrl : "";
+      if (current === source.photo) continue;
+      await payload.update({
+        collection: "team-members",
+        id: doc.id,
+        data: {
+          photoUrl: source.photo,
+          photo: null,
+        },
+      });
+      synced += 1;
+      console.log(`[seed-content] team photo — ${doc.slug} → ${source.photo}`);
+    }
+    console.log(
+      synced
+        ? `[seed-content] Synced ${synced} team photo(s)`
+        : "[seed-content] Team photos already up to date"
+    );
   }
 
   const faqExisting = await payload.find({ collection: "faqs", limit: 1 });

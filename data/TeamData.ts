@@ -41,7 +41,7 @@ export const TeamMemberData: TeamMember[] = [
     slug: "rahul-singh",
     role: "Plots & Investment Advisor",
     bio: "Guides plot buyers on title clarity, locality growth, and long-term investment fit across Patna corridors.",
-    photo: "/images/plot-plain.webp",
+    photo: "/images/avatar3.png",
     areas: ["Danapur", "Patna outskirts"],
     phone: "+91 99559 96464",
     order: 3,

@@ -18,12 +18,21 @@ type TeamDoc = {
   published?: boolean | null;
 };
 
+function isPersonAvatar(url: string | null | undefined): boolean {
+  if (!url) return false;
+  return /\/images\/avatar\d+\.(png|webp|jpe?g)(?:\?|$)/i.test(url);
+}
+
 function resolvePhoto(doc: TeamDoc): string {
-  if (doc.photoUrl) return doc.photoUrl;
-  if (doc.photo && typeof doc.photo === "object" && doc.photo.url) {
-    return doc.photo.url;
-  }
-  return "/images/avatar1.png";
+  const fromStatic = TeamMemberData.find((m) => m.slug === doc.slug)?.photo;
+  const uploaded =
+    doc.photo && typeof doc.photo === "object" ? doc.photo.url : undefined;
+
+  // Prefer real avatar assets — never show building/plot stock as a headshot
+  if (isPersonAvatar(doc.photoUrl)) return doc.photoUrl!;
+  if (isPersonAvatar(uploaded)) return uploaded!;
+  if (fromStatic && isPersonAvatar(fromStatic)) return fromStatic;
+  return fromStatic ?? "/images/avatar1.png";
 }
 
 function mapTeamDoc(doc: TeamDoc): TeamMember {
