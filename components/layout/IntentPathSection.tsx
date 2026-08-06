@@ -46,7 +46,7 @@ const IntentPathSection = () => {
               >
                 <Link
                   href={item.href}
-                  className="group relative flex flex-col justify-between h-full min-h-[148px] sm:min-h-[168px] p-5 lg:p-6 rounded-card border border-header-stroke bg-2nd-bg overflow-hidden transition-colors duration-300 hover:border-primary/45"
+                  className="group relative flex flex-col justify-between h-full min-h-[9rem] sm:min-h-[10.5rem] p-phi-3 lg:p-phi-4 rounded-card border border-header-stroke bg-2nd-bg overflow-hidden transition-colors duration-300 hover:border-primary/45"
                 >
                   <div
                     className="pointer-events-none absolute inset-0 opacity-0 motion-safe:group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/10 via-transparent to-transparent"

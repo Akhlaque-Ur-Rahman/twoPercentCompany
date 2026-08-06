@@ -99,9 +99,9 @@ export default function HomeInquirySection() {
       />
 
       <div className="relative page-px section-y-lg">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 lg:items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-phi-4 lg:gap-phi-5 lg:items-center">
           <motion.div
-            className="lg:col-span-5 flex flex-col gap-8"
+            className="lg:col-span-5 flex flex-col gap-phi-4"
             {...fadeUp(reduceMotion)}
           >
             <div>
@@ -185,7 +185,7 @@ export default function HomeInquirySection() {
                 value={inquiryType}
                 onChange={setInquiryType}
                 options={INQUIRY_OPTIONS}
-                buttonClassName="bg-main-bg border-2"
+                buttonClassName="bg-main-bg border"
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -195,7 +195,7 @@ export default function HomeInquirySection() {
                 value={role}
                 onChange={setRole}
                 options={ROLE_OPTIONS}
-                buttonClassName="bg-main-bg border-2"
+                buttonClassName="bg-main-bg border"
               />
             </div>
             <Input

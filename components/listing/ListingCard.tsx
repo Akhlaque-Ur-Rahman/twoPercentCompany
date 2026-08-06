@@ -216,9 +216,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
     "group relative overflow-hidden rounded-media border border-white/10 bg-black",
     "transition-[border-color] duration-300 hover:border-primary/45",
     featured
-      ? "min-h-[240px] sm:min-h-[280px] h-full aspect-[3/4] lg:aspect-auto lg:min-h-0"
+      ? "min-h-[15rem] sm:min-h-[17.5rem] h-full aspect-[3/4] lg:aspect-auto lg:min-h-0"
       : compact
-        ? "min-h-[160px] sm:min-h-[170px] h-full lg:min-h-0"
+        ? "min-h-[10rem] sm:min-h-[10.625rem] h-full lg:min-h-0"
         : "aspect-[3/4] sm:aspect-[4/3]",
     className,
   ]

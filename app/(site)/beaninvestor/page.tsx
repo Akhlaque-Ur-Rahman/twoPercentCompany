@@ -348,9 +348,9 @@ const BeAnInvestor: React.FC = () => {
         id="investor-form"
         className="section-y page-px scroll-mt-20 sm:scroll-mt-24"
       >
-        <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 lg:gap-14 xl:gap-20 max-w-7xl mx-auto w-full min-w-0 items-start">
+        <div className="flex flex-col lg:flex-row gap-phi-4 lg:gap-phi-5 xl:gap-phi-6 max-w-7xl mx-auto w-full min-w-0 items-start">
           <motion.aside
-            className="lg:w-[42%] w-full min-w-0 order-2 lg:order-1 flex flex-col gap-6 sm:gap-8"
+            className="lg:w-[42%] w-full min-w-0 order-2 lg:order-1 flex flex-col gap-phi-3 sm:gap-phi-4"
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
@@ -417,7 +417,7 @@ const BeAnInvestor: React.FC = () => {
 
             <form
               onSubmit={handleSubmit}
-              className="w-full p-4 sm:p-6 lg:p-8 bg-2nd-bg rounded-card border border-header-stroke text-body min-w-0 overflow-hidden flex flex-col gap-4"
+              className="w-full p-phi-3 sm:p-phi-4 lg:p-phi-4 bg-2nd-bg rounded-card border border-header-stroke text-body min-w-0 overflow-hidden flex flex-col gap-phi-3"
               noValidate
             >
               <div className="flex items-end justify-between gap-3">

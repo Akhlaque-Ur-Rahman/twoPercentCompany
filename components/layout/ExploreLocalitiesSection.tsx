@@ -47,7 +47,7 @@ export default function ExploreLocalitiesSection({
           <li key={tile.value} className="min-h-0">
             <Link
               href={tile.href}
-              className="group relative block overflow-hidden rounded-media border border-header-stroke min-h-[200px] sm:min-h-[220px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+              className="group relative block overflow-hidden rounded-media border border-header-stroke min-h-[13.125rem] sm:min-h-[13.75rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
             >
               <Image
                 src={tile.image}

@@ -7,9 +7,19 @@ import { PropertyItem } from "@/data/PropertyData";
 import { toast } from "react-toastify";
 import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import PageState from "@/components/ui/PageState";
+import Button from "@/components/ui/Button";
+import {
+  fieldControlClass,
+  fileControlClass,
+  textareaControlClass,
+} from "@/components/ui/Input";
 import { formatPrice } from "@/lib/formatPrice";
 import { submitLead } from "@/lib/submitLead";
 import { uploadRoleFiles } from "@/lib/uploadLeadFiles";
+
+const enqField = fieldControlClass;
+const enqTextarea = textareaControlClass;
+const enqFile = fileControlClass;
 
 interface FormData {
   fullName: string;
@@ -168,10 +178,10 @@ const TenantEnquiryPageContent = ({
     <>
       <div className="min-h-screen bg-main-bg text-body page-px section-y">
         <AppToast />
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-phi-4">
           {/* Property Card */}
-          <div className="w-full lg:w-1/2 bg-2nd-bg rounded-card p-6 flex flex-col gap-4">
-            <div className="relative w-full h-[250px] lg:h-[300px] rounded-media overflow-hidden">
+          <div className="w-full lg:w-1/2 bg-2nd-bg rounded-card p-phi-4 flex flex-col gap-phi-3">
+            <div className="relative w-full h-[15.625rem] lg:h-[18.75rem] rounded-media overflow-hidden">
               <Image
                 src={property.image}
                 alt={property.title}
@@ -194,7 +204,7 @@ const TenantEnquiryPageContent = ({
           </div>
 
           {/* Enquiry Form */}
-          <div className="w-full lg:w-1/2 bg-2nd-bg rounded-card p-6 border border-header-stroke">
+          <div className="w-full lg:w-1/2 bg-2nd-bg rounded-card p-phi-4 border border-header-stroke">
             <h2 className="type-subhead text-body mb-2 text-center">
               Tenant Enquiry Form
             </h2>
@@ -214,7 +224,7 @@ const TenantEnquiryPageContent = ({
                       value={formData.fullName}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqField}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -227,7 +237,7 @@ const TenantEnquiryPageContent = ({
                       value={formData.phone}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqField}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -240,7 +250,7 @@ const TenantEnquiryPageContent = ({
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqField}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -253,7 +263,7 @@ const TenantEnquiryPageContent = ({
                       value={formData.currentAddress}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqField}
                     />
                   </div>
                 </>
@@ -269,7 +279,7 @@ const TenantEnquiryPageContent = ({
                       value={formData.moveInDate}
                       onChange={handleChange}
                       min={new Date().toISOString().split("T")[0]}
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqField}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5 relative w-full">
@@ -279,7 +289,7 @@ const TenantEnquiryPageContent = ({
                       name="leaseDuration"
                       value={formData.leaseDuration}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary appearance-none pr-10"
+                      className={`${enqField} appearance-none pr-10`}
                     >
                       <option value="">Select lease duration</option>
                       <option value="6 months">6 months</option>
@@ -297,7 +307,7 @@ const TenantEnquiryPageContent = ({
                       placeholder="e.g. 2"
                       value={formData.numberOfTenants}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                      className={`${enqField} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]`}
                     />
                   </div>
                 </>
@@ -313,7 +323,7 @@ const TenantEnquiryPageContent = ({
                       placeholder="Amount in ₹"
                       value={formData.monthlyBudget}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+                      className={`${enqField} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]`}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -325,7 +335,7 @@ const TenantEnquiryPageContent = ({
                       placeholder="Optional"
                       value={formData.occupation}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqField}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -337,7 +347,7 @@ const TenantEnquiryPageContent = ({
                       placeholder="Optional"
                       value={formData.references}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqField}
                     />
                   </div>
                 </>
@@ -351,7 +361,7 @@ const TenantEnquiryPageContent = ({
                     placeholder="Anything we should know?"
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 rounded-control text-primary bg-main-bg border border-header-stroke placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary resize-none"
+                    className={`${enqTextarea} resize-none`}
                     rows={4}
                   />
                 </div>
@@ -365,7 +375,7 @@ const TenantEnquiryPageContent = ({
                       type="file"
                       name="idProof"
                       onChange={handleChange}
-                      className="w-full text-primary rounded-control border border-header-stroke px-4 py-2 focus-visible:ring-2 focus-visible:ring-primary"
+                      className={enqFile}
                     />
                   </div>
                   <fieldset className="flex flex-col gap-2">
@@ -396,15 +406,21 @@ const TenantEnquiryPageContent = ({
                 </>
               )}
 
-              <div className="flex justify-between mt-4">
+              <div className="flex justify-between mt-4 gap-3">
                 {step > 1 && (
-                  <button type="button" onClick={handleBack} className="px-6 py-2 rounded-control bg-2nd-bg border-2 border-header-stroke text-primary hover:bg-main-bg transition">Back</button>
+                  <Button type="button" variant="secondary" size="sm" onClick={handleBack}>
+                    Back
+                  </Button>
                 )}
                 {step < 5 && (
-                  <button type="button" onClick={handleNext} className="px-6 py-2 rounded-control bg-primary text-on-primary hover:brightness-110 ml-auto">Next</button>
+                  <Button type="button" size="sm" onClick={handleNext} className="ml-auto">
+                    Next
+                  </Button>
                 )}
                 {step === 5 && (
-                  <button type="submit" className="px-6 py-2 rounded-control bg-primary text-on-primary hover:brightness-110 ml-auto">Submit</button>
+                  <Button type="submit" size="sm" className="ml-auto">
+                    Submit
+                  </Button>
                 )}
               </div>
             </form>

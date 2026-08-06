@@ -273,7 +273,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           {...sectionMotion}
           id="overview"
           aria-labelledby="overview-heading"
-          className="scroll-mt-28 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 lg:items-start"
+          className="scroll-mt-28 grid grid-cols-1 lg:grid-cols-2 gap-phi-4 lg:gap-phi-5 lg:items-start"
         >
           <ListingOverview
             item={item}
@@ -413,7 +413,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
             <span className="inline-flex items-center gap-2">
               <span
                 className={`size-2.5 rounded-full shrink-0 ${
-                  item.type === "plot" ? "bg-emerald-600" : "bg-primary"
+                  item.type === "plot" ? "bg-map-plot" : "bg-map-property"
                 }`}
                 aria-hidden
               />
@@ -435,7 +435,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
         </motion.section>
 
         <section
-          className="border-t border-header-stroke pt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          className="border-t border-header-stroke pt-phi-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
           aria-label="Next steps"
         >
           <div>
@@ -467,7 +467,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           <motion.div
             {...sectionMotion}
             id="similar"
-            className="scroll-mt-28 border-t border-header-stroke pt-10"
+            className="scroll-mt-28 border-t border-header-stroke pt-phi-4"
           >
             <SimilarListings items={similar} hrefFor={hrefForSimilar} />
           </motion.div>

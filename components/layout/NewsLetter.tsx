@@ -36,7 +36,7 @@ const Newsletter: React.FC = () => {
         aria-hidden
       />
 
-      <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 p-5 sm:p-6 lg:p-8 items-center">
+      <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-phi-3 lg:gap-phi-4 p-phi-3 sm:p-phi-4 lg:p-phi-4 items-center">
         <div className="lg:col-span-5">
           <p className="type-label text-primary mb-2 tracking-wide uppercase">
             Stay informed

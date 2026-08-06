@@ -4,8 +4,16 @@ function cx(...parts: Array<string | undefined | false>) {
   return parts.filter(Boolean).join(" ");
 }
 
-const fieldBase =
-  "w-full rounded-control bg-main-bg border border-header-stroke type-body text-body placeholder:text-secondary-text px-4 py-3 transition-colors duration-200 focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg disabled:opacity-50";
+/** Shared field chrome — use for custom forms that cannot use <Input> */
+export const fieldControlClass =
+  "w-full min-h-11 rounded-control bg-main-bg border border-header-stroke type-body text-body placeholder:text-secondary-text px-4 py-3 transition-colors duration-200 focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg disabled:opacity-50";
+
+export const textareaControlClass = `${fieldControlClass} resize-y min-h-[6.25rem]`;
+
+export const fileControlClass =
+  "block w-full max-w-full min-w-0 type-caption text-secondary-text file:mr-3 file:rounded-control file:border-0 file:bg-primary file:text-on-primary file:px-3 file:py-2 file:text-[0.8125rem] file:font-semibold file:cursor-pointer";
+
+const fieldBase = fieldControlClass;
 
 type FieldProps = {
   label?: string;
@@ -68,7 +76,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           id={inputId}
           ref={ref}
-          className={cx(fieldBase, "resize-none min-h-[6.25rem]", error && "border-error", className)}
+          className={cx(textareaControlClass, "resize-none", error && "border-error", className)}
           aria-invalid={!!error}
           aria-describedby={error && inputId ? `${inputId}-error` : undefined}
           {...props}

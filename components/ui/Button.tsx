@@ -8,7 +8,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-on-primary hover:brightness-110 border border-transparent",
   secondary:
-    "bg-2nd-bg text-primary border-2 border-header-stroke hover:bg-main-bg",
+    "bg-2nd-bg text-primary border border-header-stroke hover:bg-main-bg",
   ghost: "bg-transparent text-primary border border-transparent hover:brightness-125",
 };
 

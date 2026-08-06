@@ -39,7 +39,7 @@ export default async function TeamMemberPage({ params }: Props) {
           <span className="text-body">{member.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-phi-4 lg:gap-phi-5">
           <div className="relative aspect-[4/3] rounded-media overflow-hidden border border-header-stroke bg-black">
             <Image
               src={member.photo}

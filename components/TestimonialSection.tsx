@@ -94,7 +94,7 @@ function MarqueeColumn({
   const loopItems = useMemo(() => [...items, ...items], [items]);
 
   return (
-    <div className="testimonial-column-mask relative h-[560px] overflow-hidden lg:h-[620px]">
+    <div className="testimonial-column-mask relative h-[35rem] overflow-hidden lg:h-[38.75rem]">
       <div
         className={cx(
           "flex flex-col gap-4 will-change-transform",

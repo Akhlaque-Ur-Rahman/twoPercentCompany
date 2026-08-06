@@ -211,7 +211,7 @@ const MapSection: React.FC<MapSectionProps> = ({
         scrollWheelZoom={false}
         className={`w-full ${
           mapClassName ||
-          "h-[min(52vw,280px)] sm:h-[320px] md:h-[400px] lg:h-[460px]"
+          "h-[min(52vw,17.5rem)] sm:h-80 md:h-[25rem] lg:h-[28.75rem]"
         }`}
         attributionControl={false}
       >

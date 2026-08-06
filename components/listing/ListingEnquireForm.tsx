@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { listingEnquiryMessage, whatsappHref } from "@/lib/contact";
 import { submitLead } from "@/lib/submitLead";
+import { fieldControlClass, textareaControlClass } from "@/components/ui/Input";
 
 type ListingEnquireFormProps = {
   title: string;
@@ -14,9 +15,7 @@ type ListingEnquireFormProps = {
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg";
 
-const inputClass =
-  "w-full min-h-11 px-4 rounded-control border border-header-stroke bg-main-bg type-body text-body placeholder:text-secondary-text/70 transition-colors touch-manipulation " +
-  focusRing;
+const inputClass = `${fieldControlClass} placeholder:text-secondary-text/70 touch-manipulation`;
 
 const ROLES = ["Buyer", "Tenant", "Investor", "Other"] as const;
 
@@ -168,7 +167,7 @@ export default function ListingEnquireForm({
             rows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className={`${inputClass} min-h-[5.5rem] py-3 resize-y`}
+            className={`${textareaControlClass} placeholder:text-secondary-text/70 touch-manipulation`}
           />
         </label>
 

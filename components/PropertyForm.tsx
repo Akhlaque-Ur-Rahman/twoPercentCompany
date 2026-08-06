@@ -8,14 +8,15 @@ import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import { motion, AnimatePresence } from "framer-motion";
 import { submitLead } from "@/lib/submitLead";
 import { uploadLeadFiles } from "@/lib/uploadLeadFiles";
+import {
+  fieldControlClass,
+  fileControlClass,
+  textareaControlClass,
+} from "@/components/ui/Input";
 
-const inputClass =
-  "mb-0 p-3 min-h-11 text-base rounded-control bg-main-bg border border-header-stroke w-full min-w-0 placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg";
-
-const textareaClass = `${inputClass} resize-y min-h-[6.5rem]`;
-
-const fileFieldClass =
-  "block w-full max-w-full min-w-0 text-sm text-secondary-text file:mr-3 file:rounded-control file:border-0 file:bg-primary file:text-on-primary file:px-3 file:py-2 file:text-sm file:font-semibold file:cursor-pointer";
+const inputClass = `${fieldControlClass} mb-0 min-w-0`;
+const textareaClass = `${textareaControlClass} mb-0 min-w-0`;
+const fileFieldClass = fileControlClass;
 
 interface PropertyFormProps {
   type: "sell" | "rent";

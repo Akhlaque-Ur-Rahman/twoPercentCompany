@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
       {/* Main */}
       <div className="relative border-t border-header-stroke">
         <div className="page-px section-y">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10 xl:gap-14">
+          <div className="grid grid-cols-1 gap-phi-4 lg:grid-cols-12 lg:gap-phi-4 xl:gap-phi-5">
             {/* Brand column */}
             <div className="lg:col-span-5 flex flex-col gap-6">
               <Link

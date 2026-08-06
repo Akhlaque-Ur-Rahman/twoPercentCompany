@@ -157,7 +157,9 @@ Do **not** mix `rounded-lg` / `xl` / arbitrary `rounded-[20px]` on the same cont
 
 ### 6.2 Inputs
 
-- Surface: `bg-main-bg` + `border border-header-stroke` (1px — match SearchField / FilterSelect)
+- Prefer `<Input>` / `<Textarea>` / `<Select>` from `components/ui/Input.tsx`
+- Custom forms: import `fieldControlClass` / `textareaControlClass` / `fileControlClass`
+- Surface: `bg-main-bg` + `border border-header-stroke` (1px)
 - Focus: `focus-visible:ring-2 ring-primary`
 - Error: `border-error` + `text-error`
 - Always pair with a visible `<label>`
@@ -230,7 +232,8 @@ Ship **2–3 intentional** motions, not noise.
 - [x] Golden-ratio spacing + type scale in `@theme`
 - [x] Unified map gold with primary
 - [x] Error / success / map color tokens
-- [x] Marketing heroes → `.page-hero-y`
-- [x] Brand glow helpers
+- [x] Forms share `fieldControlClass` (PropertyForm, ListingEnquire, TenantEnquiry)
+- [x] Border width unified to 1px on controls
+- [x] Layout gaps on marketing / detail / footer use `gap-phi-*`
 
 When tokens change, **update this file’s tables first**, then code.

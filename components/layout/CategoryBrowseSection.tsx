@@ -67,7 +67,7 @@ export default function CategoryBrowseSection({
           <li key={tile.id}>
             <Link
               href={tile.href}
-              className="group relative flex min-h-[160px] overflow-hidden rounded-media border border-header-stroke focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
+              className="group relative flex min-h-[10.5rem] overflow-hidden rounded-media border border-header-stroke focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg"
             >
               <Image
                 src={tile.image}
