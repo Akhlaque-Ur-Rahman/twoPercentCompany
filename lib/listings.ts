@@ -1,10 +1,33 @@
 import type { Where } from "payload";
-import { FloorPlan, PropertyData, PropertyItem, TEMP_FLOOR_PLANS } from "@/data/PropertyData";
+import {
+  DEFAULT_PLOT_FEATURES,
+  DEFAULT_PROPERTY_FEATURES,
+  DEFAULT_VIRTUAL_TOUR_URL,
+  FloorPlan,
+  ListingExpert,
+  PropertyData,
+  PropertyItem,
+  TEMP_FLOOR_PLANS,
+} from "@/data/PropertyData";
 import { getPayload } from "@/lib/payload";
+import { TeamMemberData, type TeamMember } from "@/data/TeamData";
+import { getTeamMembers } from "@/lib/team";
 
 type MediaDoc = {
   url?: string | null;
   alt?: string | null;
+};
+
+type TeamRelDoc = {
+  id?: number | string;
+  name?: string;
+  slug?: string;
+  role?: string;
+  bio?: string | null;
+  photoUrl?: string | null;
+  photo?: number | string | MediaDoc | null;
+  phone?: string | null;
+  email?: string | null;
 };
 
 type ListingDoc = {
@@ -25,6 +48,9 @@ type ListingDoc = {
   floorPlanUrls?: { url: string; id?: string }[] | null;
   floorPlans?: (number | string | MediaDoc)[] | null;
   video?: string | null;
+  virtualTourUrl?: string | null;
+  features?: { label: string; id?: string }[] | null;
+  assignedExpert?: number | string | TeamRelDoc | null;
   tags?: { label: string; id?: string }[] | null;
   specifications?: { label: string; value: string; id?: string }[] | null;
   published?: boolean | null;
@@ -94,9 +120,57 @@ function resolveFloorPlans(
   return urls.map((url) => ({ url }));
 }
 
+function mapExpertFromRel(rel: TeamRelDoc | null | undefined): ListingExpert | undefined {
+  if (!rel || typeof rel !== "object" || !rel.name || !rel.slug) return undefined;
+  const photo =
+    rel.photoUrl ||
+    (rel.photo && typeof rel.photo === "object" ? rel.photo.url : undefined) ||
+    "/images/seasidevilla.png";
+  return {
+    name: rel.name,
+    slug: rel.slug,
+    role: rel.role || "Advisor",
+    photo,
+    phone: rel.phone ?? undefined,
+    email: rel.email ?? undefined,
+    bio: rel.bio ?? undefined,
+  };
+}
+
+function expertFromMember(m: TeamMember): ListingExpert {
+  return {
+    name: m.name,
+    slug: m.slug,
+    role: m.role,
+    photo: m.photo,
+    phone: m.phone,
+    email: m.email,
+    bio: m.bio,
+  };
+}
+
+function defaultExpertSlug(item: PropertyItem): string {
+  if (item.expertSlug) return item.expertSlug;
+  if (item.type === "plot") return "rahul-singh";
+  const rentalish = item.tags.some((t) =>
+    /rent|tenant|furnish/i.test(t.label)
+  );
+  if (rentalish) return "priya-sharma";
+  return "amit-kumar";
+}
+
 export function mapListingDoc(doc: ListingDoc): PropertyItem {
   const numericId =
     typeof doc.id === "number" ? doc.id : Number.parseInt(String(doc.id), 10) || 0;
+
+  const expert =
+    typeof doc.assignedExpert === "object"
+      ? mapExpertFromRel(doc.assignedExpert)
+      : undefined;
+
+  const features = (doc.features ?? [])
+    .map((f) => f.label)
+    .filter(Boolean);
 
   return {
     id: numericId,
@@ -109,6 +183,13 @@ export function mapListingDoc(doc: ListingDoc): PropertyItem {
     gallery: resolveUrlList(doc.gallery, doc.galleryUrls),
     floorPlans: resolveFloorPlans(doc.floorPlans, doc.floorPlanUrls),
     video: doc.video || undefined,
+    virtualTourUrl: doc.virtualTourUrl || undefined,
+    features: features.length ? features : undefined,
+    expert,
+    expertSlug:
+      typeof doc.assignedExpert === "object" && doc.assignedExpert?.slug
+        ? doc.assignedExpert.slug
+        : undefined,
     price: doc.price,
     tags: (doc.tags ?? []).map((tag) => ({
       label: tag.label,
@@ -127,9 +208,42 @@ function withCanonicalFloorPlans(item: PropertyItem): PropertyItem {
   return { ...item, floorPlans: TEMP_FLOOR_PLANS };
 }
 
+function withDetailDefaults(
+  item: PropertyItem,
+  members: TeamMember[]
+): PropertyItem {
+  const features =
+    item.features?.length
+      ? item.features
+      : item.type === "plot"
+        ? DEFAULT_PLOT_FEATURES
+        : DEFAULT_PROPERTY_FEATURES;
+
+  let expert = item.expert;
+  if (!expert) {
+    const slug = defaultExpertSlug(item);
+    const member =
+      members.find((m) => m.slug === slug) ??
+      TeamMemberData.find((m) => m.slug === slug) ??
+      members[0] ??
+      TeamMemberData[0];
+    if (member) expert = expertFromMember(member);
+  }
+
+  return {
+    ...item,
+    features,
+    virtualTourUrl: item.virtualTourUrl || DEFAULT_VIRTUAL_TOUR_URL,
+    expert,
+  };
+}
+
 /** Strip non-serializable Lucide icons before crossing the RSC boundary. */
-function toClientListing(item: PropertyItem): PropertyItem {
-  const normalized = withCanonicalFloorPlans(item);
+function toClientListing(
+  item: PropertyItem,
+  members: TeamMember[] = TeamMemberData
+): PropertyItem {
+  const normalized = withDetailDefaults(withCanonicalFloorPlans(item), members);
   return {
     ...normalized,
     image: canonicalizePublicAsset(normalized.image),
@@ -147,7 +261,7 @@ async function fetchPublishedListings(): Promise<PropertyItem[] | null> {
         published: { equals: true },
       },
       limit: 200,
-      depth: 1,
+      depth: 2,
       pagination: false,
     });
 
@@ -161,8 +275,11 @@ async function fetchPublishedListings(): Promise<PropertyItem[] | null> {
 }
 
 export async function getListings(): Promise<PropertyItem[]> {
-  const fromCms = await fetchPublishedListings();
-  return (fromCms ?? PropertyData).map(toClientListing);
+  const [fromCms, members] = await Promise.all([
+    fetchPublishedListings(),
+    getTeamMembers(),
+  ]);
+  return (fromCms ?? PropertyData).map((item) => toClientListing(item, members));
 }
 
 export async function getListingsByType(
@@ -176,6 +293,8 @@ export async function getListingBySlug(
   slug: string,
   type?: "property" | "plot"
 ): Promise<PropertyItem | undefined> {
+  const members = await getTeamMembers();
+
   try {
     const payload = await getPayload();
     const and: Where[] = [
@@ -190,11 +309,14 @@ export async function getListingBySlug(
       collection: "listings",
       where: { and },
       limit: 1,
-      depth: 1,
+      depth: 2,
     });
 
     if (result.docs[0]) {
-      return toClientListing(mapListingDoc(result.docs[0] as unknown as ListingDoc));
+      return toClientListing(
+        mapListingDoc(result.docs[0] as unknown as ListingDoc),
+        members
+      );
     }
   } catch (error) {
     console.error("[listings] CMS slug fetch failed, using static fallback:", error);
@@ -203,7 +325,7 @@ export async function getListingBySlug(
   const fallback = PropertyData.find(
     (item) => item.slug === slug && (type == null || item.type === type)
   );
-  return fallback ? toClientListing(fallback) : undefined;
+  return fallback ? toClientListing(fallback, members) : undefined;
 }
 
 export async function getSimilarListings(

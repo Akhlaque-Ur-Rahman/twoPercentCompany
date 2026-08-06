@@ -28,6 +28,41 @@ export const TEMP_FLOOR_PLANS: FloorPlan[] = [
   { url: "/floorplans/plan-c.png", label: "Layout plan C" },
 ];
 
+/** Assigned advisor shown on the listing detail page. */
+export type ListingExpert = {
+  name: string;
+  slug: string;
+  role: string;
+  photo: string;
+  phone?: string;
+  email?: string;
+  bio?: string;
+};
+
+/** Working Matterport demo — used when a listing has no custom tour URL. */
+export const DEFAULT_VIRTUAL_TOUR_URL =
+  "https://my.matterport.com/show/?m=Zh14WDtkjdC";
+
+export const DEFAULT_PROPERTY_FEATURES = [
+  "24/7 Security",
+  "Power Backup",
+  "Covered Parking",
+  "Lift",
+  "CCTV",
+  "Water Supply",
+  "Park",
+  "Clubhouse",
+];
+
+export const DEFAULT_PLOT_FEATURES = [
+  "Clear Title Support",
+  "Road Access",
+  "Electricity Nearby",
+  "Gated / Boundary Ready",
+  "Corner Option",
+  "Investment Fit",
+];
+
 // Main property/plot item type
 export interface PropertyItem {
   id: number;
@@ -39,6 +74,13 @@ export interface PropertyItem {
   image: string;
   gallery?: string[];
   video?: string;
+  /** Matterport / Kuula / similar embeddable tour URL */
+  virtualTourUrl?: string;
+  /** Amenity labels for the features grid */
+  features?: string[];
+  /** Slug of TeamMember when expert object is not embedded */
+  expertSlug?: string;
+  expert?: ListingExpert;
   price: string;
   tags: PropertyTag[];
   slug: string;

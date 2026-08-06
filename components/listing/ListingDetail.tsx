@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -14,6 +14,12 @@ import ScheduleVisit from "@/components/listing/ScheduleVisit";
 import ShareListing from "@/components/listing/ShareListing";
 import SimilarListings from "@/components/listing/SimilarListings";
 import EmiCalculator from "@/components/listing/EmiCalculator";
+import ListingSectionNav from "@/components/listing/ListingSectionNav";
+import ListingQuickStats from "@/components/listing/ListingQuickStats";
+import ListingFeatures from "@/components/listing/ListingFeatures";
+import ListingVirtualTour from "@/components/listing/ListingVirtualTour";
+import ListingExpertCard from "@/components/listing/ListingExpertCard";
+import ListingEnquireForm from "@/components/listing/ListingEnquireForm";
 import SectionHeader from "@/components/ui/SectionHeader";
 import type { PropertyItem } from "@/data/PropertyData";
 import type { MarkerType } from "@/types/MarkerType";
@@ -75,6 +81,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
 }) => {
   const reducedMotion = usePrefersReducedMotion();
   const floorPlans = item.floorPlans ?? [];
+  const features = item.features ?? [];
   const positionArray = toPositionArray(item.position);
 
   const resolvedBackHref =
@@ -105,6 +112,34 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
   const defaultSimilarHref = (s: PropertyItem) =>
     s.type === "plot" ? `/plots/${s.slug}` : `/properties/${s.slug}`;
   const hrefForSimilar = similarHrefFor ?? defaultSimilarHref;
+
+  const navItems = useMemo(() => {
+    const items: { id: string; label: string }[] = [
+      { id: "gallery", label: "Gallery" },
+      { id: "overview", label: "Overview" },
+    ];
+    if (features.length) items.push({ id: "features", label: "Features" });
+    if (item.specifications?.length) {
+      items.push({ id: "specifications", label: "Details" });
+    }
+    if (floorPlans.length) items.push({ id: "floor-plans", label: "Floor plans" });
+    items.push({ id: "visit", label: "Visit" });
+    if (item.type === "property") items.push({ id: "emi", label: "EMI" });
+    if (item.video) items.push({ id: "video", label: "Video" });
+    if (item.virtualTourUrl) items.push({ id: "virtual-tour", label: "360°" });
+    items.push({ id: "contact", label: "Contact" });
+    items.push({ id: "map", label: "Map" });
+    if (similar.length) items.push({ id: "similar", label: "Similar" });
+    return items;
+  }, [
+    features.length,
+    floorPlans.length,
+    item.specifications?.length,
+    item.type,
+    item.video,
+    item.virtualTourUrl,
+    similar.length,
+  ]);
 
   const sectionMotion = reducedMotion
     ? {}
@@ -142,7 +177,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
         </nav>
 
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <div>
+          <div className="min-w-0 flex-1">
             {modeNote && (
               <p className="type-caption text-secondary-text italic mb-2">{modeNote}</p>
             )}
@@ -159,6 +194,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
             <p className="type-caption text-secondary-text mt-2 max-w-xl">
               {item.description}
             </p>
+            <ListingQuickStats item={item} />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0 sm:items-center">
@@ -182,8 +218,17 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
         </div>
       </div>
 
+      <div className="page-px">
+        <ListingSectionNav items={navItems} />
+      </div>
+
       <div className="page-px section-y space-y-14 lg:space-y-20">
-        <motion.section {...sectionMotion} aria-labelledby="gallery-heading">
+        <motion.section
+          {...sectionMotion}
+          id="gallery"
+          aria-labelledby="gallery-heading"
+          className="scroll-mt-28"
+        >
           <h2 id="gallery-heading" className="type-section text-body mb-4">
             Gallery
           </h2>
@@ -192,8 +237,9 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
 
         <motion.section
           {...sectionMotion}
+          id="overview"
           aria-labelledby="overview-heading"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 lg:items-start"
+          className="scroll-mt-28 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 lg:items-start"
         >
           <ListingOverview
             item={item}
@@ -204,7 +250,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           />
 
           {item.specifications && item.specifications.length > 0 && (
-            <div className="lg:sticky lg:top-24">
+            <div id="specifications" className="scroll-mt-28 lg:sticky lg:top-28">
               <h2 className="type-subhead text-body mb-1">
                 {specificationsTitle}
               </h2>
@@ -230,8 +276,18 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           )}
         </motion.section>
 
-        {floorPlans.length > 0 && (
+        {features.length > 0 && (
           <motion.div {...sectionMotion}>
+            <ListingFeatures features={features} />
+          </motion.div>
+        )}
+
+        {floorPlans.length > 0 && (
+          <motion.div
+            {...sectionMotion}
+            id="floor-plans"
+            className="scroll-mt-28"
+          >
             <ListingFloorPlans
               item={item}
               plans={floorPlans}
@@ -241,18 +297,23 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           </motion.div>
         )}
 
-        <motion.div {...sectionMotion}>
+        <motion.div {...sectionMotion} id="visit" className="scroll-mt-28">
           <ScheduleVisit title={item.title} listingUrl={listingUrl} />
         </motion.div>
 
         {item.type === "property" && (
-          <motion.div {...sectionMotion}>
+          <motion.div {...sectionMotion} id="emi" className="scroll-mt-28">
             <EmiCalculator price={item.price} />
           </motion.div>
         )}
 
         {item.video && (
-          <motion.section {...sectionMotion} aria-labelledby="video-heading">
+          <motion.section
+            {...sectionMotion}
+            id="video"
+            aria-labelledby="video-heading"
+            className="scroll-mt-28"
+          >
             <h2 id="video-heading" className="type-section text-body mb-4">
               Walkthrough
             </h2>
@@ -264,10 +325,36 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
           </motion.section>
         )}
 
+        {item.virtualTourUrl && (
+          <motion.div {...sectionMotion}>
+            <ListingVirtualTour url={item.virtualTourUrl} />
+          </motion.div>
+        )}
+
+        <motion.div
+          {...sectionMotion}
+          id="contact"
+          className="scroll-mt-28 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 lg:items-start"
+        >
+          {item.expert && (
+            <ListingExpertCard
+              expert={item.expert}
+              listingTitle={item.title}
+              listingUrl={listingUrl}
+            />
+          )}
+          <ListingEnquireForm
+            title={item.title}
+            listingUrl={listingUrl}
+            expertPhone={item.expert?.phone}
+          />
+        </motion.div>
+
         <motion.section
           {...sectionMotion}
+          id="map"
           aria-label="Location"
-          className="flex flex-col gap-6 lg:gap-8"
+          className="scroll-mt-28 flex flex-col gap-6 lg:gap-8"
         >
           <div className="space-y-2">
             <p className="type-label text-primary">Location</p>
@@ -342,7 +429,11 @@ const ListingDetail: React.FC<ListingDetailProps> = ({
         </section>
 
         {similar.length > 0 && (
-          <motion.div {...sectionMotion} className="border-t border-header-stroke pt-10">
+          <motion.div
+            {...sectionMotion}
+            id="similar"
+            className="scroll-mt-28 border-t border-header-stroke pt-10"
+          >
             <SimilarListings items={similar} hrefFor={hrefForSimilar} />
           </motion.div>
         )}

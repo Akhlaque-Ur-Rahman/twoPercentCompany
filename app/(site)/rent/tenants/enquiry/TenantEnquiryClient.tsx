@@ -9,6 +9,7 @@ import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import PageState from "@/components/ui/PageState";
 import { formatPrice } from "@/lib/formatPrice";
 import { submitLead } from "@/lib/submitLead";
+import { uploadRoleFiles } from "@/lib/uploadLeadFiles";
 
 interface FormData {
   fullName: string;
@@ -97,6 +98,13 @@ const TenantEnquiryPageContent = ({
     e.preventDefault();
     if (!validateStep()) return;
 
+    const uploaded = formData.idProof
+      ? await uploadRoleFiles(
+          [{ file: formData.idProof, role: "idProof" }],
+          "tenant-enquiry"
+        )
+      : null;
+
     const result = await submitLead({
       type: "tenant_enquiry",
       name: formData.fullName,
@@ -114,6 +122,9 @@ const TenantEnquiryPageContent = ({
       references: formData.references,
       agreementType: formData.agreementType,
       hasIdProof: Boolean(formData.idProof),
+      mediaStorage: uploaded?.storage,
+      mediaDraftId: uploaded?.draftId,
+      attachments: uploaded?.attachments,
     });
 
     if (!result.ok) {

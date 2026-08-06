@@ -132,7 +132,7 @@ This file is the **program roadmap**. Detailed UX checklists live in `UI_UX_IMPR
 |----|------|------------|--------|
 | 6.1 | Lead API | Contact / sell / rent / enquiry / investor / newsletter / tour persist via `POST /api/leads` → Payload `leads` | [x] |
 | 6.2 | Validation | Shared Zod schema (`lib/leadSchema.ts`) on `POST /api/leads` | [x] |
-| 6.3 | Uploads | Secure storage for sell/landlord media | [ ] |
+| 6.3 | Uploads | Sell/landlord media → Vercel Blob when `BLOB_READ_WRITE_TOKEN` set; else IndexedDB browser store + lead attachment metadata | [x] |
 | 6.4 | CMS or admin | Payload listings CMS + seed + frontend data layer | [x] |
 | 6.5 | Env-based site URL | Single `NEXT_PUBLIC_SITE_URL` for metadata/sitemap/schema | [ ] |
 | 6.6 | Wire remaining JSON-LD | Property + Breadcrumb on detail pages | [ ] |

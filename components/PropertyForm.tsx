@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import AppToast, { toastCopy } from "@/components/ui/AppToast";
 import { motion, AnimatePresence } from "framer-motion";
 import { submitLead } from "@/lib/submitLead";
+import { uploadLeadFiles } from "@/lib/uploadLeadFiles";
 
 const inputClass =
   "mb-0 p-3 min-h-11 text-base rounded-control bg-main-bg border border-header-stroke w-full min-w-0 placeholder:text-secondary-text focus:outline-none focus:border-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-main-bg";
@@ -238,6 +239,13 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
     setSubmitting(true);
 
     try {
+      const uploaded = await uploadLeadFiles({
+        images: formData.images,
+        gallery: formData.gallery,
+        floorPlans: formData.floorPlans,
+        video: formData.video,
+      });
+
       const result = await submitLead({
         type: type === "rent" ? "rent_landlord" : "sell",
         name: formData.landlordName || formData.title,
@@ -253,13 +261,20 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ type }) => {
         floorPlanCount: formData.floorPlans.length,
         hasVideo: Boolean(formData.video),
         specifications: formData.specifications,
+        mediaStorage: uploaded.storage,
+        mediaDraftId: uploaded.draftId,
+        attachments: uploaded.attachments,
       });
       if (!result.ok) {
         toast.error(result.error || toastCopy.submitError);
         return;
       }
       setSubmitted(true);
-      toast.success(toastCopy.submitSuccess);
+      const storageNote =
+        uploaded.storage === "blob"
+          ? " Photos uploaded to cloud storage."
+          : " Photos saved in this browser (connect Vercel Blob for cloud).";
+      toast.success(`${toastCopy.submitSuccess}${storageNote}`);
     } catch {
       toast.error(toastCopy.submitError);
     } finally {

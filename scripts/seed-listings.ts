@@ -46,6 +46,8 @@ async function seed() {
         galleryUrls: item.gallery?.map((url) => ({ url })),
         floorPlanUrls: item.floorPlans?.map((fp) => ({ url: fp.url })),
         video: item.video || undefined,
+        virtualTourUrl: item.virtualTourUrl || undefined,
+        features: item.features?.map((label) => ({ label })),
         tags: item.tags.map((tag) => ({ label: tag.label })),
         specifications: item.specifications?.map((spec) => ({
           label: spec.label,

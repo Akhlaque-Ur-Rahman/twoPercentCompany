@@ -147,6 +147,37 @@ export const Listings: CollectionConfig = {
       },
     },
     {
+      name: "virtualTourUrl",
+      type: "text",
+      admin: {
+        description:
+          "360° / Matterport / Kuula URL (embeddable). Leave blank to use the default demo tour.",
+      },
+    },
+    {
+      name: "features",
+      type: "array",
+      labels: { singular: "Feature", plural: "Features" },
+      admin: {
+        description: "Amenities shown in the features grid on the detail page",
+      },
+      fields: [
+        {
+          name: "label",
+          type: "text",
+          required: true,
+        },
+      ],
+    },
+    {
+      name: "assignedExpert",
+      type: "relationship",
+      relationTo: "team-members",
+      admin: {
+        description: "Advisor shown on this listing’s detail page",
+      },
+    },
+    {
       name: "tags",
       type: "array",
       fields: [
