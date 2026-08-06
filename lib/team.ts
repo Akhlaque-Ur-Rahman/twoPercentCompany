@@ -20,7 +20,8 @@ type TeamDoc = {
 
 function isPersonAvatar(url: string | null | undefined): boolean {
   if (!url) return false;
-  return /\/images\/avatar\d+\.(png|webp|jpe?g)(?:\?|$)/i.test(url);
+  // Named photo headshots only (avatar-amit.jpg) — not old cartoon avatar1.png packs
+  return /\/images\/avatar-[a-z]+\.(?:jpe?g|webp|png)(?:\?|$)/i.test(url);
 }
 
 function resolvePhoto(doc: TeamDoc): string {
@@ -32,7 +33,7 @@ function resolvePhoto(doc: TeamDoc): string {
   if (isPersonAvatar(doc.photoUrl)) return doc.photoUrl!;
   if (isPersonAvatar(uploaded)) return uploaded!;
   if (fromStatic && isPersonAvatar(fromStatic)) return fromStatic;
-  return fromStatic ?? "/images/avatar1.png";
+  return fromStatic ?? "/images/avatar-amit.jpg";
 }
 
 function mapTeamDoc(doc: TeamDoc): TeamMember {

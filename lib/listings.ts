@@ -154,7 +154,7 @@ function mapExpertFromRel(rel: TeamRelDoc | null | undefined): ListingExpert | u
   const photo =
     rel.photoUrl ||
     (rel.photo && typeof rel.photo === "object" ? rel.photo.url : undefined) ||
-    "/images/avatar1.png";
+    "/images/avatar-amit.jpg";
   return {
     name: rel.name,
     slug: rel.slug,
